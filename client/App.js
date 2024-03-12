@@ -15,7 +15,7 @@ export default function App() {
     }, []);
     return (
         <>
-            <CustomIcon name="search" size={25}></CustomIcon>
+            {/* <CustomIcon name="search" size={25}></CustomIcon> */}
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen
