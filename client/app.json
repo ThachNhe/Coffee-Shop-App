@@ -5,9 +5,9 @@
                 "expo-font",
                 {
                     "fonts": [
-                        "./assets/fonts/Poppins-SemiBold.ttf",
-                        "./assets/fonts/Poppins-Medium.ttf",
-                        "./assets/fonts/Poppins-Light.ttf"
+                        "../assets/fonts/Poppins-SemiBold.ttf",
+                        "../assets/fonts/Poppins-Medium.ttf",
+                        "../assets/fonts/Poppins-Light.ttf"
                     ]
                 }
             ]

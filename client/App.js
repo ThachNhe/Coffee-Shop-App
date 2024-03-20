@@ -4,15 +4,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
 import TabNavigator from './src/navigators/TabNavigator';
 import SplashScreen from 'react-native-splash-screen';
-import { Colors, FontSize } from './src/theme/theme';
 import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
-import CustomIcon from './src/components/CustomIcon';
-import { StatusBar } from 'react-native';
-import { useFonts } from 'expo-font';
 const Stack = createNativeStackNavigator();
 export default function App() {
-    
     useEffect(() => {
         // SplashScreen.hide();
     }, []);

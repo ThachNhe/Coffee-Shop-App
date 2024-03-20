@@ -17,12 +17,13 @@ const useStore = create(
             addToCart: (cartItem) =>
                 set(
                     produce((state) => {
+                        console.log('item size : ', cartItem);
                         let found = false;
-                        for (let i = 0; i < state.length; i++) {
+                        for (let i = 0; i < state.CartList.length; i++) {
                             if (state.CartList[i].id == cartItem.id) {
                                 found = true;
                                 let size = false;
-                                for (let j = 0; j < state.CartList[i]; j++) {
+                                for (let j = 0; j < state.CartList[i].prices.length; j++) {
                                     if (state.CartList[i].prices[j].size == cartItem.prices[0].size) {
                                         size = true;
                                         state.CartList[i].prices[j].quantity++;
@@ -32,6 +33,7 @@ const useStore = create(
                                 if (size == false) {
                                     state.CartList[i].prices.push(cartItem.prices[0]);
                                 }
+
                                 state.CartList[i].prices.sort((a, b) => {
                                     if (a.size > b.size) return -1;
                                     if (a.size < b.size) return 1;
@@ -45,21 +47,23 @@ const useStore = create(
                         }
                     }),
                 ),
-            calculateTotalPrice: () =>
+
+            calculateCartPrice: () =>
                 set(
                     produce((state) => {
-                        let totalPrice = 0;
+                        let totalprice = 0;
                         for (let i = 0; i < state.CartList.length; i++) {
-                            let tempPrice = 0;
+                            let tempprice = 0;
                             for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                                tempPrice +=
+                                tempprice =
+                                    tempprice +
                                     parseFloat(state.CartList[i].prices[j].price) *
-                                    state.CartList[i].prices[j].quantity;
+                                        state.CartList[i].prices[j].quantity;
                             }
-                            state.CartList[i].itemPrice = tempPrice.toFixed(2).toString();
-                            totalPrice += tempPrice;
+                            state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
+                            totalprice = totalprice + tempprice;
                         }
-                        state.CartPrice = totalPrice.toFixed(2).toString();
+                        state.CartPrice = totalprice.toFixed(2).toString();
                     }),
                 ),
             addToFavoritesList: (type, id) =>
@@ -125,7 +129,50 @@ const useStore = create(
                         state.FavoritesList.splice(spliceIndex, 1);
                     }),
                 ),
+            incrementCartItemQuantity: (id, size) =>
+                set(
+                    produce((state) => {
+                        for (let i = 0; i < state.CartList.length; i++) {
+                            if (state.CartList[i].id == id) {
+                                for (let j = 0; j < state.CartList[i].prices.length; j++) {
+                                    if (state.CartList[i].prices[j].size == size) {
+                                        state.CartList[i].prices[j].quantity++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }),
+                ),
+            decrementCartItemQuantity: (id, size) =>
+                set(
+                    produce((state) => {
+                        for (let i = 0; i < state.CartList.length; i++) {
+                            if (state.CartList[i].id == id) {
+                                for (let j = 0; j < state.CartList[i].prices.length; j++) {
+                                    if (state.CartList[i].prices[j].size == size) {
+                                        if (state.CartList[i].prices.length > 1) {
+                                            if (state.CartList[i].prices[j].quantity > 1) {
+                                                state.CartList[i].prices[j].quantity--;
+                                            } else {
+                                                state.CartList[i].prices.splice(j, 1);
+                                            }
+                                        } else {
+                                            if (state.CartList[i].prices[j].quantity > 1) {
+                                                state.CartList[i].prices[j].quantity--;
+                                            } else {
+                                                state.CartList.splice(i, 1);
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }),
+                ),
         }),
+
         {
             name: 'coffee-app',
             storage: createJSONStorage(() => AsyncStorage),

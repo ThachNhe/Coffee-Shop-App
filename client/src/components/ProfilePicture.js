@@ -4,7 +4,7 @@ import { Colors, Spacing } from '../theme/theme';
 const ProfilePicture = () => {
     return (
         <View style={styles.imageContainer}>
-            <Image source={require('../assets/app_images/avatar.png')} style={styles.image} />
+            <Image source={require('../assets/app_images/me.jpg')} style={styles.image} />
         </View>
     );
 };
