@@ -9,16 +9,12 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: true,
     },
     phone: {
         type: String,
-        required: true,
-        unique: true,
     },
     address: {
         type: String,
-        required: true,
     },
     name: {
         type: String,
@@ -26,7 +22,6 @@ const UserSchema = new Schema({
     },
     googleId: {
         type: String,
-        required: true,
     },
 });
 
