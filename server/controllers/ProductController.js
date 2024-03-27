@@ -4,13 +4,7 @@ class ProductController {
 
     //POST /createProduct
     async createNewProduct(req, res) {
-        const name = "Espresso";
-        const description = "Espresso coffee";
-        const price = 45000;
-        const image = [
-            "https://vuanem.com/blog/wp-content/uploads/2022/12/cach-pha-espresso-1.jpg",
-            "https://pos.cafeongbau.com:4433/images/list/eppresso.png",
-        ];
+        const {name, description, price, image} = req.body;
         const newProduct = await Product.create({
             name: name,
             description: description,
@@ -20,6 +14,37 @@ class ProductController {
         return res.status(200).json({
             newProduct,
             message: "Create successfully",
+        })
+    }
+
+    //GET /product/:productId
+    async getProductById(req, res) {
+        const productId = req.params.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found",
+            });
+        }
+        return res.status(200).json({
+            product,
+            message: "Query successfully",
+        })
+    }
+
+    //GET /product
+    async getAllProduct(req, res) {
+        const products = await Product.find();
+        if (!products) {
+            return res.status(200).json({
+                message: "There is no product",
+            });
+        }
+        return res.status(200).json({
+            products,
+            message: "Query successfully",
         })
     }
 }
