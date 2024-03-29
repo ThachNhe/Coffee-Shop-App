@@ -1,8 +1,21 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { useFonts } from 'expo-font';
 
 const PaymentFooter = ({ price, buttonPressHandler, buttonTitle }) => {
+    const [fontsLoad] = useFonts({
+        poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
+        poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
+        poppins_light: require('../assets/fonts/Poppins-Light.ttf'),
+        poppins_black: require('../assets/fonts/Poppins-Black.ttf'),
+        poppins_bold: require('../assets/fonts/Poppins-Bold.ttf'),
+        poppins_extrabold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
+        poppins_extralight: require('../assets/fonts/Poppins-ExtraLight.ttf'),
+        poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
+        poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
+    });
+    
     return (
         <View style={styles.PriceFooter}>
             <View style={styles.PriceContainer}>
@@ -25,18 +38,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         gap: Spacing.space_20,
         padding: Spacing.space_20,
+        marginBottom: 15,
     },
     PriceContainer: {
         alignItems: 'center',
         width: 100,
     },
     PriceTitle: {
-        fontFamily: FontFamily.poppins_medium,
+        fontFamily: "poppins_medium",
         fontSize: FontSize.size_14,
         color: Colors.secondaryLightGreyHex,
     },
     PriceText: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: "poppins_semibold",
         fontSize: FontSize.size_24,
         color: Colors.primaryOrangeHex,
     },
@@ -52,7 +66,7 @@ const styles = StyleSheet.create({
         borderRadius: BorderRadius.radius_20,
     },
     ButtonText: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: "poppins_semibold",
         fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
     },
