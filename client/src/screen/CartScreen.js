@@ -7,7 +7,7 @@ import HeaderBar from '../components/HeaderBar';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import PaymentFooter from '../components/PaymentFooter';
 import CartItem from '../components/CartItem';
-const CartScreen = (navigation, route) => {
+const CartScreen = ({ navigation, route }) => {
     const CartList = useStore((state) => state.CartList);
     // console.log('check list cartScreen: ', CartList);
     const CartPrice = useStore((state) => state.CartPrice);

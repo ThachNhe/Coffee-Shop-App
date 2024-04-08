@@ -5,7 +5,7 @@ import { Colors } from '../theme/theme';
 import { BlurView } from 'expo-blur';
 // import { BlurView } from '@react-native-community/blur';
 import HomeScreen from '../screen/HomeScreen';
-import FavoritesScreen from '../screen/FavoritesScreen';
+import FavouritesScreen from '../screen/FavouritesScreen';
 import CartScreen from '../screen/CartScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OrderHistoryScreen from '../screen/OrderHistoryScreen';
@@ -52,7 +52,7 @@ const TabNavigator = () => {
             ></Tab.Screen>
             <Tab.Screen
                 name="Favourite"
-                component={FavoritesScreen}
+                component={FavouritesScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => (
                         <CustomIcon

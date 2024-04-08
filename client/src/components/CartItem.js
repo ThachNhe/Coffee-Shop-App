@@ -5,6 +5,18 @@ import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/th
 import CustomIcon from './CustomIcon';
 import { useFonts } from 'expo-font';
 const CartItem = (props) => {
+    const [fontsLoad] = useFonts({
+        poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
+        poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
+        poppins_light: require('../assets/fonts/Poppins-Light.ttf'),
+        poppins_black: require('../assets/fonts/Poppins-Black.ttf'),
+        poppins_bold: require('../assets/fonts/Poppins-Bold.ttf'),
+        poppins_extrabold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
+        poppins_extralight: require('../assets/fonts/Poppins-ExtraLight.ttf'),
+        poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
+        poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
+    });
+    
     const {
         id,
         name,
@@ -165,12 +177,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     CartItemTitle: {
-        FontFamily: FontFamily.poppins_medium,
-        FontSize: FontSize.size_18,
+        fontFamily: "poppins_medium",
+        fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
     },
     CartItemSubtitle: {
-        FontFamily: FontFamily.poppins_regular,
+        fontFamily: "poppins_regular",
         FontSize: FontSize.size_12,
         color: Colors.secondaryLightGreyHex,
     },
@@ -183,8 +195,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryDarkGreyHex,
     },
     CartItemRoastedText: {
-        FontFamily: FontFamily.poppins_regular,
-        FontSize: FontSize.size_10,
+        fontFamily: "poppins_regular",
+        fontSize: FontSize.size_10,
         color: Colors.primaryWhiteHex,
     },
     CartItemSizeRowContainer: {
@@ -209,11 +221,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     SizeText: {
-        FontFamily: FontFamily.poppins_medium,
+        fontFamily: "poppins_medium",
         color: Colors.secondaryLightGreyHex,
     },
     SizeCurrency: {
-        FontFamily: FontFamily.poppins_semibold,
+        fontFamily: "poppins_semibold",
         FontSize: FontSize.size_18,
         color: Colors.primaryOrangeHex,
     },
@@ -235,8 +247,8 @@ const styles = StyleSheet.create({
         paddingVertical: Spacing.space_4,
     },
     CartItemQuantityText: {
-        FontFamily: FontFamily.poppins_semibold,
-        FontSize: FontSize.size_16,
+        fontFamily: "poppins_semibold",
+        fontSize: FontSize.size_16,
         color: Colors.primaryWhiteHex,
     },
     CartItemSingleLinearGradient: {
