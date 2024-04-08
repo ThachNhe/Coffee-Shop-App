@@ -2,7 +2,7 @@ const Product = require("../models/product");
 
 class ProductController {
 
-    //POST /createProduct
+    //POST /products/createProduct
     async createNewProduct(req, res) {
         const {name, description, price, image} = req.body;
         const newProduct = await Product.create({
@@ -17,7 +17,7 @@ class ProductController {
         })
     }
 
-    //GET /product/:productId
+    //GET /products/:productId
     async getProductById(req, res) {
         const productId = req.params.productId;
         const product = await Product.findOne({
@@ -34,8 +34,8 @@ class ProductController {
         })
     }
 
-    //GET /product
-    async getAllProduct(req, res) {
+    //GET /products
+    async getAllProducts(req, res) {
         const products = await Product.find();
         if (!products) {
             return res.status(200).json({
