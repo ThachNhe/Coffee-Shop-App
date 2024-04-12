@@ -30,58 +30,58 @@ const CartScreen = ({ navigation, route }) => {
         calculateCartPrice();
     };
     return (
-        <View style={styles.ScreenContainer}>
-            <StatusBar backgroundColor={Colors.primaryBlackHex} />
+        <>
+            <View style={styles.ScreenContainer}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
+                    <View style={[styles.ScrollViewInnerView, { marginBottom: tabBarHeight }]}>
+                        <View style={styles.ItemContainer}>
+                            <HeaderBar title="Cart" />
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
-                <View style={[styles.ScrollViewInnerView, { marginBottom: tabBarHeight }]}>
-                    <View style={styles.ItemContainer}>
-                        <HeaderBar title="Cart" />
+                            {CartList.length == 0 ? (
+                                <EmptyListAnimation title={'Cart is Empty'} />
+                            ) : (
+                                <View style={styles.ListItemContainer}>
+                                    {CartList.map((data) => (
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                navigation.push('Details', {
+                                                    index: data.index,
+                                                    id: data.id,
+                                                    type: data.type,
+                                                });
+                                            }}
+                                            key={data.id}
+                                        >
+                                            <CartItem
+                                                id={data.id}
+                                                name={data.name}
+                                                imagelink_square={data.imagelink_square}
+                                                special_ingredient={data.special_ingredient}
+                                                roasted={data.roasted}
+                                                prices={data.prices}
+                                                type={data.type}
+                                                incrementCartItemQuantityHandler={incrementCartItemQuantityHandler}
+                                                decrementCartItemQuantityHandler={decrementCartItemQuantityHandler}
+                                            />
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            )}
+                        </View>
 
-                        {CartList.length == 0 ? (
-                            <EmptyListAnimation title={'Cart is Empty'} />
+                        {CartList.length != 0 ? (
+                            <PaymentFooter
+                                buttonPressHandler={buttonPressHandler}
+                                buttonTitle="Pay"
+                                price={{ price: CartPrice, currency: '$' }}
+                            />
                         ) : (
-                            <View style={styles.ListItemContainer}>
-                                {CartList.map((data) => (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            navigation.push('Details', {
-                                                index: data.index,
-                                                id: data.id,
-                                                type: data.type,
-                                            });
-                                        }}
-                                        key={data.id}
-                                    >
-                                        <CartItem
-                                            id={data.id}
-                                            name={data.name}
-                                            imagelink_square={data.imagelink_square}
-                                            special_ingredient={data.special_ingredient}
-                                            roasted={data.roasted}
-                                            prices={data.prices}
-                                            type={data.type}
-                                            incrementCartItemQuantityHandler={incrementCartItemQuantityHandler}
-                                            decrementCartItemQuantityHandler={decrementCartItemQuantityHandler}
-                                        />
-                                    </TouchableOpacity>
-                                ))}
-                            </View>
+                            <></>
                         )}
                     </View>
-
-                    {CartList.length != 0 ? (
-                        <PaymentFooter
-                            buttonPressHandler={buttonPressHandler}
-                            buttonTitle="Pay"
-                            price={{ price: CartPrice, currency: '$' }}
-                        />
-                    ) : (
-                        <></>
-                    )}
-                </View>
-            </ScrollView>
-        </View>
+                </ScrollView>
+            </View>
+        </>
     );
 };
 
