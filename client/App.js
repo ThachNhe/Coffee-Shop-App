@@ -7,6 +7,7 @@ import SplashScreen from 'react-native-splash-screen';
 import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
 import { Colors } from './src/theme/theme';
+import ProfileScreen from './src/screen/ProfileScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
     useEffect(() => {
@@ -30,6 +31,11 @@ export default function App() {
                     <Stack.Screen
                         name="Payment"
                         component={PaymentScreen}
+                        options={{ animation: 'slide_from_bottom' }}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="Profile"
+                        component={ProfileScreen}
                         options={{ animation: 'slide_from_bottom' }}
                     ></Stack.Screen>
                 </Stack.Navigator>

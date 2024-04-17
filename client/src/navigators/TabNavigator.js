@@ -8,9 +8,8 @@ import HomeScreen from '../screen/HomeScreen';
 import FavouritesScreen from '../screen/FavouritesScreen';
 import CartScreen from '../screen/CartScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import OrderHistoryScreen from '../screen/OrderHistoryScreen';
-import { Fontisto } from '@expo/vector-icons';
 import CustomIcon from '../components/CustomIcon';
+import ProfileScreen from '../screen/ProfileScreen';
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -63,13 +62,14 @@ const TabNavigator = () => {
                     ),
                 }}
             ></Tab.Screen>
+
             <Tab.Screen
-                name="History"
-                component={OrderHistoryScreen}
+                name="Profile"
+                component={ProfileScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => (
-                        <CustomIcon
-                            name="bell"
+                        <Icon
+                            name="user"
                             size={25}
                             color={focused ? Colors.primaryOrangeHex : Colors.primaryLightGreyHex}
                         />
