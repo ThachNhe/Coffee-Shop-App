@@ -109,7 +109,6 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.ScreenContainer}>
-            <StatusBar />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewFlex}>
                 {/* App Header */}
                 <HeaderBar />
