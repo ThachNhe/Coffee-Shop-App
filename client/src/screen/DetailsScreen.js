@@ -55,7 +55,8 @@ const DetailsScreen = ({ navigation, route }) => {
     };
     return (
         <View style={styles.screenContainer}>
-            <StatusBar backgroundColor={Colors.primaryBlackHex} />
+            {/* <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" /> */}
+
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewFlex}>
                 <ImageBackgroundInfo
                     EnableBackHandler={true}

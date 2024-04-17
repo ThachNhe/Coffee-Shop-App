@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
 import TabNavigator from './src/navigators/TabNavigator';
 import SplashScreen from 'react-native-splash-screen';
 import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
+import { Colors } from './src/theme/theme';
 const Stack = createNativeStackNavigator();
 export default function App() {
     useEffect(() => {
@@ -13,7 +14,7 @@ export default function App() {
     }, []);
     return (
         <>
-            {/* <CustomIcon name="search" size={25}></CustomIcon> */}
+            <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" />
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen
