@@ -4,17 +4,35 @@ class ProductController {
 
     //POST /products/createProduct
     async createNewProduct(req, res) {
-        const {name, description, price, image} = req.body;
-        const newProduct = await Product.create({
-            name: name,
-            description: description,
-            price: price,
-            image: image,
-        });
-        return res.status(200).json({
-            newProduct,
-            message: "Create successfully",
-        })
+        const {
+            name,
+            description,
+            image_square,
+            image_portrait,
+            type,
+            ingredients,
+            special_ingredient,
+            prices,
+            roasted,
+        } = req.body;
+        try {
+            await Product.create({
+                name: name,
+                description: description,
+                image_square: image_square,
+                image_portrait: image_portrait,
+                type: type,
+                ingredients: ingredients,
+                special_ingredient: special_ingredient,
+                prices: prices,
+                roasted: roasted,
+            });
+            return res.status(200).json({
+                msg: "OK",
+            })
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     //GET /products/:productId
@@ -36,17 +54,41 @@ class ProductController {
 
     //GET /products
     async getAllProducts(req, res) {
-        const products = await Product.find();
-        if (!products) {
-            return res.status(200).json({
-                message: "There is no product",
-            });
-        }
-        return res.status(200).json({
-            products,
-            message: "Query successfully",
-        })
+        const products = await Product.aggregate([
+            {
+                $lookup: {
+                    from: "reviews",
+                    localField: "_id",
+                    foreignField: "product_id",
+                    as: "reviews",
+                }
+            }, {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    description: 1,
+                    type:1,
+                    average_rating: {
+                        $cond: {
+                            if: {$gt: [{$size: '$reviews'}, 0]},
+                            then: {$avg: '$reviews.rating'},
+                            else: 0,
+                        },
+                    },
+                    ratings_count: {
+                        $size: '$reviews',
+                    },
+                    roasted:1,
+                    image_square:1,
+                    image_portrait:1,
+                    ingredients:1,
+                    special_ingredient:1,
+                }
+            }
+        ]);
+        return res.status(200).json(products);
     }
 }
 
-module.exports = new ProductController();
+module
+    .exports = new ProductController();
