@@ -4,20 +4,32 @@ const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
     name: {
         type: String,
-        required: true,
     },
     description: {
         type: String,
-        required: true,
     },
-    price: {
-        type: Number,
-        required: true,
-    },
-    image: {
+
+    image_square: {
         type: [String],
-        required: true,
     },
+    image_portrait: [String],
+    type: {
+        type: String,
+    },
+    ingredients: {
+        type: [String],
+    },
+    special_ingredient: [String],
+    prices: [{
+        size: String,
+        price: Number,
+        currency: {
+            type: String,
+            default: "$",
+        },
+    },
+    ],
+    roasted: String,
 });
 
 module.exports = mongoose.model("Product", ProductSchema);
