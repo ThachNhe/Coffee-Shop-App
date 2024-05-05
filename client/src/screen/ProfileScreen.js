@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     LinearGradientStyleAccountSetting: {
         gap: Spacing.space_36,
         paddingVertical: Spacing.space_10,
-        borderTopLeftRadius: Spacing.space_36,
-        borderTopRightRadius: Spacing.space_36,
+        borderTopLeftRadius: Spacing.space_20,
+        borderTopRightRadius: Spacing.space_20,
     },
     orderHistoryText: {
         fontFamily: 'poppins_medium',
@@ -211,6 +211,9 @@ const styles = StyleSheet.create({
     StyleBorderAccountSetting: {
         borderTopLeftRadius: Spacing.space_36,
         borderTopRightRadius: Spacing.space_36,
+    },
+    descriptionSettings: {
+        flexDirection: 'column',
     },
 });
 
