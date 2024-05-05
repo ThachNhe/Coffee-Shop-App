@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius } from '../theme/theme';
 import { LinearGradient } from 'expo-linear-gradient';
-const ProfileScreen = () => {
+import Icon from 'react-native-vector-icons/FontAwesome';
+const ProfileScreen = ({ navigation, route }) => {
+    const buttonPressHandler = () => {
+        navigation.push('Address');
+    };
     return (
         <View style={styles.screenContainer}>
             <View style={styles.personalInfoContainer}>
@@ -28,43 +32,68 @@ const ProfileScreen = () => {
                     <View>
                         <Text style={styles.orderHistoryText}>Order History</Text>
                         <View style={styles.orderHistoryContainer}>
-                            <View style={styles.orderItem}></View>
-                            <View style={styles.orderItem}></View>
-                            <View style={styles.orderItem}></View>
-                            <View style={styles.orderItem}></View>
+                            <TouchableOpacity style={styles.orderItem}>
+                                <Icon name="check-circle" size={30} style={styles.iconHistoryStyle} />
+                                <View>
+                                    <Text style={styles.descriptionText}>Confirmation</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.orderItem}>
+                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+
+                                <View>
+                                    <Text style={styles.descriptionText}>Delivering</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.orderItem}>
+                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+
+                                <View>
+                                    <Text style={styles.descriptionText}>Completed</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.orderItem}>
+                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                                <View>
+                                    <Text style={styles.descriptionText}>Canceled</Text>
+                                </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.accountSettingContainer}>
                         <Text style={styles.orderHistoryText}>Account Settings</Text>
                         <View style={styles.accountSettingContent}>
-                            <View style={styles.accountSettingItemContainer}>
-                                <View style={styles.accountSettingItem}></View>
+                            <TouchableOpacity
+                                style={styles.accountSettingItemContainer}
+                                onPress={() => buttonPressHandler()}
+                            >
+                                <View style={styles.accountSettingItem}>
+                                    <Icon name="map-marker" size={25} style={styles.iconSettingAccountStyle} />
+                                </View>
                                 <View style={styles.descriptionSettings}>
                                     <Text style={styles.SettingName}>My address</Text>
                                     <Text style={styles.descriptionText}>Set shopping delivery address</Text>
                                 </View>
-                            </View>
-                            <View style={styles.accountSettingItemContainer}>
-                                <View style={styles.accountSettingItem}></View>
-                                <View style={styles.descriptionSettings}>
-                                    <Text style={styles.SettingName}>My address</Text>
-                                    <Text style={styles.descriptionText}>Set shopping delivery address</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.accountSettingItemContainer}>
+                                <View style={styles.accountSettingItem}>
+                                    <Icon name="shopping-cart" size={25} style={styles.iconSettingAccountStyle} />
                                 </View>
-                            </View>
-                            <View style={styles.accountSettingItemContainer}>
-                                <View style={styles.accountSettingItem}></View>
                                 <View style={styles.descriptionSettings}>
                                     <Text style={styles.SettingName}>My Cart</Text>
                                     <Text style={styles.descriptionText}>Add remove products and move to checkout</Text>
                                 </View>
-                            </View>
-                            <View style={styles.accountSettingItemContainer}>
-                                <View style={styles.accountSettingItem}></View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.accountSettingItemContainer}>
+                                <View style={styles.accountSettingItem}>
+                                    <Icon name="list-alt" size={25} style={styles.iconSettingAccountStyle} />
+                                </View>
                                 <View style={styles.descriptionSettings}>
                                     <Text style={styles.SettingName}>My Orders</Text>
                                     <Text style={styles.descriptionText}>In-progress and completed orders </Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -103,6 +132,7 @@ const styles = StyleSheet.create({
     },
 
     LinearGradientStyleAccountSetting: {
+        flex: 1,
         gap: Spacing.space_36,
         paddingVertical: Spacing.space_10,
         borderTopLeftRadius: Spacing.space_20,
@@ -161,9 +191,12 @@ const styles = StyleSheet.create({
         gap: Spacing.space_20,
     },
     orderItem: {
-        height: Spacing.space_36,
-        width: Spacing.space_36,
-        backgroundColor: 'red',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignContent: 'center',
+        // backgroundColor: 'red',
+        // height: Spacing.space_36,
+        // width: Spacing.space_36 * 2,
     },
     accountSettingItemContainer: {
         flexDirection: 'row',
@@ -171,9 +204,11 @@ const styles = StyleSheet.create({
         gap: Spacing.space_15,
     },
     accountSettingItem: {
+        justifyContent: 'center',
+        alignItems: 'center',
         height: Spacing.space_36,
         width: Spacing.space_36,
-        backgroundColor: 'gray',
+        // backgroundColor: 'gray',
     },
     SettingName: {
         fontFamily: 'poppins_medium',
@@ -214,6 +249,16 @@ const styles = StyleSheet.create({
     },
     descriptionSettings: {
         flexDirection: 'column',
+    },
+    iconSettingAccountStyle: {
+        alignContent: 'center',
+        justifyContent: 'center',
+        color: Colors.primaryOrangeHex,
+    },
+
+    iconHistoryStyle: {
+        // paddingLeft: 30,
+        color: Colors.primaryOrangeHex,
     },
 });
 

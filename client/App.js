@@ -8,6 +8,7 @@ import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
 import { Colors } from './src/theme/theme';
 import ProfileScreen from './src/screen/ProfileScreen';
+import AddressScreen from './src/screen/AddressScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
     useEffect(() => {
@@ -36,6 +37,11 @@ export default function App() {
                     <Stack.Screen
                         name="Profile"
                         component={ProfileScreen}
+                        options={{ animation: 'slide_from_bottom' }}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="Address"
+                        component={AddressScreen}
                         options={{ animation: 'slide_from_bottom' }}
                     ></Stack.Screen>
                 </Stack.Navigator>
