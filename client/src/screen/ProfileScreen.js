@@ -7,6 +7,9 @@ const ProfileScreen = ({ navigation, route }) => {
     const buttonPressHandler = () => {
         navigation.push('Address');
     };
+    const buttonPressRedirectCartScreen = () => {
+        navigation.navigate('Cart');
+    };
     return (
         <View style={styles.screenContainer}>
             <View style={styles.personalInfoContainer}>
@@ -76,7 +79,10 @@ const ProfileScreen = ({ navigation, route }) => {
                                 </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.accountSettingItemContainer}>
+                            <TouchableOpacity
+                                style={styles.accountSettingItemContainer}
+                                onPress={() => buttonPressRedirectCartScreen()}
+                            >
                                 <View style={styles.accountSettingItem}>
                                     <Icon name="shopping-cart" size={25} style={styles.iconSettingAccountStyle} />
                                 </View>
