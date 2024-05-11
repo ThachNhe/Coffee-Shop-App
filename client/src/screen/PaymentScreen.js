@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
         paddingTop: StatusBar.currentHeight + 2,
         flex: 1,
         backgroundColor: Colors.primaryBlackHex,
+        paddingTop: 35,
     },
     LottieAnimation: {
         flex: 1,

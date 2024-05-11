@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius } from '../theme/theme';
 import { LinearGradient } from 'expo-linear-gradient';
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation, route }) => {
     return (
         <View style={styles.screenContainer}>
             <View style={styles.personalInfoContainer}>
@@ -70,8 +70,14 @@ const ProfileScreen = () => {
                 </View>
 
                 <View style={styles.LogoutContainer}>
-                    <TouchableOpacity style={styles.PayButton}>
-                        <Text style={styles.ButtonText}>Logout</Text>
+                    <TouchableOpacity
+                        style={styles.PayButton}
+                        onPress={() => {
+                            navigation.push('SignIn');
+                            console.log("Pressed sign in")
+                        }}
+                    >
+                        <Text style={styles.ButtonText}>Log out</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -85,6 +91,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flex: 1,
         backgroundColor: Colors.primaryBlackHex,
+        paddingTop: 50,
     },
     tileAccount: {
         paddingLeft: Spacing.space_20,
