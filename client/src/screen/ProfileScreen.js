@@ -99,8 +99,14 @@ const ProfileScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={styles.LogoutContainer}>
-                    <TouchableOpacity style={styles.PayButton}>
-                        <Text style={styles.ButtonText}>Logout</Text>
+                    <TouchableOpacity
+                        style={styles.PayButton}
+                        onPress={() => {
+                            navigation.push('SignIn');
+                            console.log("Pressed sign in")
+                        }}
+                    >
+                        <Text style={styles.ButtonText}>Log out</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -114,6 +120,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         flex: 1,
         backgroundColor: Colors.primaryBlackHex,
+        paddingTop: 50,
     },
     tileAccount: {
         paddingLeft: Spacing.space_20,

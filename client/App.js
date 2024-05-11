@@ -8,7 +8,9 @@ import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
 import { Colors } from './src/theme/theme';
 import ProfileScreen from './src/screen/ProfileScreen';
-import AddressScreen from './src/screen/AddressScreen';
+import SignInScreen from './src/screen/Auth/SignInScreen';
+import SignUpScreen from './src/screen/Auth/SignUpScreen';
+import OrderHistoryScreen from './src/screen/OrderHistoryScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
     useEffect(() => {
@@ -40,8 +42,18 @@ export default function App() {
                         options={{ animation: 'slide_from_bottom' }}
                     ></Stack.Screen>
                     <Stack.Screen
-                        name="Address"
-                        component={AddressScreen}
+                        name="SignIn"
+                        component={SignInScreen}
+                        options={{ animation: 'slide_from_bottom' }}
+                    ></Stack.Screen>
+                     <Stack.Screen
+                        name="SignUp"
+                        component={SignUpScreen}
+                        options={{ animation: 'slide_from_bottom' }}
+                    ></Stack.Screen>
+                      <Stack.Screen
+                        name="History"
+                        component={OrderHistoryScreen}
                         options={{ animation: 'slide_from_bottom' }}
                     ></Stack.Screen>
                 </Stack.Navigator>
