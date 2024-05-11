@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     },
     ListItemContainer: {
         paddingHorizontal: Spacing.space_20,
+
         gap: Spacing.space_20,
     },
 });

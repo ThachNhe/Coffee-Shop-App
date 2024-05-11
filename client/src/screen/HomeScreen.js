@@ -10,7 +10,7 @@ import {
     Dimensions,
     ToastAndroid,
 } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import useStore from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -18,7 +18,7 @@ import HeaderBar from '../components/HeaderBar';
 import CustomIcon from '../components/CustomIcon';
 import CoffeeCard from '../components/CoffeeCard';
 import { useFonts } from 'expo-font';
-
+import * as services from '../services/index';
 const HomeScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -31,6 +31,30 @@ const HomeScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+
+    const [CoffeeList, setCoffeeList] = useState(0);
+
+    useEffect(() => {
+        const fetchDataOnMount = async () => {
+            try {
+                const result = await services.getCoffeeList(); // Call your API function
+                setCoffeeList(result); // Set the data received from API to state
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchDataOnMount();
+    }, []);
+    const getCoffeeList = (category, data) => {
+        console.log('check data coffee OKOKO : ', CoffeeList);
+        if (category === 'All') {
+            console.log('OK');
+            return data;
+        } else {
+            const coffeeList = data.filter((item) => item.name === category);
+            return coffeeList;
+        }
+    };
     const getCategoryFromData = (data) => {
         let temp = {};
         for (let i = 0; i < data.length; i++) {
@@ -44,29 +68,28 @@ const HomeScreen = ({ navigation }) => {
         categories.unshift('All');
         return categories;
     };
-
-    const getCoffeeList = (category, data) => {
-        if (category === 'All') {
-            return data;
-        } else {
-            const coffeeList = data.filter((item) => item.name === category);
-            return coffeeList;
-        }
-    };
-    const CoffeeList = useStore((state) => state.CoffeeList);
-    const BeanList = useStore((state) => state.BeanList);
     const [categories, setCategories] = useState(getCategoryFromData(CoffeeList));
-    const [searchText, setSearchText] = useState('');
     const [categoryIndex, setCategoryIndex] = useState({
         index: 0,
-
         category: categories[0],
     });
+    const [sortedCoffee, setSortedCoffee] = useState(getCoffeeList(categoryIndex.category, CoffeeList));
+    useEffect(() => {
+        let sorted = getCoffeeList(categoryIndex.category, CoffeeList);
+        let category = getCategoryFromData(CoffeeList);
+        setCategories(category);
+        setSortedCoffee(sorted);
+    }, [CoffeeList]);
+
+    // const CoffeeList = useStore((state) => state.CoffeeList);
+    const BeanList = useStore((state) => state.BeanList);
+
+    const [searchText, setSearchText] = useState('');
+
     const CartList = useStore((state) => state.CartList);
     const addToCart = useStore((state) => state.addToCart);
-    const [sortedCoffee, setSortedCoffee] = useState(getCoffeeList(categoryIndex.category, CoffeeList));
+
     const ListRef = useRef();
-    console.log('check sorted coffee : ', sortedCoffee[0]);
 
     const tabBarHeight = useBottomTabBarHeight();
     const searchCoffee = (search) => {
@@ -220,7 +243,7 @@ const HomeScreen = ({ navigation }) => {
                                 imagelink_square={item.imagelink_square}
                                 special_ingredient={item.special_ingredient}
                                 average_rating={item.average_rating}
-                                price={item.prices[2]}
+                                price={{ size: 'M', price: '3.15', currency: '$' }}
                                 buttonPressHandler={CoffeCardAddToCart}
                             />
                         </TouchableOpacity>
@@ -254,7 +277,7 @@ const HomeScreen = ({ navigation }) => {
                                 imagelink_square={item.imagelink_square}
                                 special_ingredient={item.special_ingredient}
                                 average_rating={item.average_rating}
-                                price={item.prices[2]}
+                                price={5}
                                 buttonPressHandler={CoffeCardAddToCart}
                             />
                         </TouchableOpacity>
