@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, ImageProps, Image } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { BORDERRADIUS, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 
 //
 
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     CardLinearGradient: {
         gap: Spacing.space_20,
         padding: Spacing.space_20,
-        borderRadius: BORDERRADIUS.radius_25,
+        borderRadius: BorderRadius.radius_25,
     },
     CardInfoContainer: {
         flexDirection: 'row',
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     Image: {
         height: 90,
         width: 90,
-        borderRadius: BORDERRADIUS.radius_15,
+        borderRadius: BorderRadius.radius_15,
     },
     CardTitle: {
         fontFamily: FontFamily.poppins_medium,
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryBlackHex,
         height: 45,
         flex: 1,
-        borderTopLeftRadius: BORDERRADIUS.radius_10,
-        borderBottomLeftRadius: BORDERRADIUS.radius_10,
+        borderTopLeftRadius: BorderRadius.radius_10,
+        borderBottomLeftRadius: BorderRadius.radius_10,
         justifyContent: 'center',
         alignItems: 'center',
         borderRightWidth: 1,
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryBlackHex,
         height: 45,
         flex: 1,
-        borderTopRightRadius: BORDERRADIUS.radius_10,
-        borderBottomRightRadius: BORDERRADIUS.radius_10,
+        borderTopRightRadius: BorderRadius.radius_10,
+        borderBottomRightRadius: BorderRadius.radius_10,
         justifyContent: 'center',
         alignItems: 'center',
         borderLeftWidth: 1,
