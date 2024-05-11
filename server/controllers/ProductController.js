@@ -7,8 +7,8 @@ class ProductController {
         const {
             name,
             description,
-            image_square,
-            image_portrait,
+            imagelink_square,
+            imagelink_portrait,
             type,
             ingredients,
             special_ingredient,
@@ -19,8 +19,8 @@ class ProductController {
             await Product.create({
                 name: name,
                 description: description,
-                image_square: image_square,
-                image_portrait: image_portrait,
+                imagelink_square: imagelink_square,
+                imagelink_portrait: imagelink_portrait,
                 type: type,
                 ingredients: ingredients,
                 special_ingredient: special_ingredient,
