@@ -98,8 +98,8 @@ function queryAllProducts() {
                     $size: '$reviews',
                 },
                 roasted: 1,
-                image_square: 1,
-                image_portrait: 1,
+                imagelink_square: 1,
+                imagelink_portrait: 1,
                 ingredients: 1,
                 special_ingredient: 1,
             }
