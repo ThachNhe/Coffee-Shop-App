@@ -8,7 +8,8 @@ class CartController {
     //POST /cart/addToCart
     async addToCart(req, res) {
         try {
-            const userId = req.session.User;
+            // const userId = req.session.User;
+            const userId = "6613d5018c360f7f06ef7a53";
             if (!userId) {
                 return res.status(401).json({
                     msg: "Login first",
@@ -60,7 +61,8 @@ class CartController {
 
     //GET /cart/myCart
     async getMyCart(req, res) {
-        return res.json(await getCart(req.session.User));
+        // return res.json(await getCart(req.session.User));
+        return res.json(await getCart("6613d5018c360f7f06ef7a53"));
     }
 }
 
