@@ -2,11 +2,11 @@ import { View, Text, ScrollView, TouchableWithoutFeedback, StyleSheet } from 're
 import React, { useState, useEffect } from 'react';
 import useStore from '../store/store';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
-import { StatusBar } from 'expo-status-bar';
 import { TouchableOpacity } from 'react-native';
 import PaymentFooter from '../components/PaymentFooter';
 import { useFonts } from 'expo-font';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
+import { useSelector, useDispatch } from 'react-redux';
 import * as services from '../services/index';
 const DetailsScreen = ({ navigation, route }) => {
     const [fontsLoad] = useFonts({
@@ -20,33 +20,11 @@ const DetailsScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    const [CoffeeList, setCoffeeList] = useState([]);
-    // const [itemOfIndex, setItemOfIndex] = useState({});
     console.log('route.params', route.params);
-    // useEffect(() => {
-    //     const fetchDataOnMount = async () => {
-    //         try {
-    //             const result = await services.getCoffeeList();
-    //             console.log('====================================');
-    //             console.log('check get coffeList : ', result);
-    //             console.log('====================================');
-    //             setCoffeeList(result);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //         }
-    //     };
-    //     fetchDataOnMount();
-    // }, []);
+    const CoffeeList = useSelector((state) => state.CoffeeList);
 
-    // useEffect(() => {
-    //     console.log('CoffeeListThach : ', CoffeeList);
-    //     let tmp = CoffeeList.find((coffee) => coffee._id === route.params.id);
-    //     setItemOfIndex(tmp);
-    // }, [CoffeeList]);
-
-    // const itemOfIndex = CoffeeList.find((coffee) => coffee._id === route.params.id);
-    const itemOfIndex = useStore((state) => (route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList))[0];
-    console.log('itemOfIndex', itemOfIndex);
+    const itemOfIndex = CoffeeList.find((coffee) => coffee._id === route.params.id);
+    console.log('itemOfIndex.imagelink_portraitOKO : ', itemOfIndex.imagelink_portrait);
     const addToFavouriteList = useStore((state) => state.addToFavouriteList);
     const deleteFromFavouriteList = useStore((state) => state.deleteFromFavouriteList);
     const addToCart = useStore((state) => state.addToCart);

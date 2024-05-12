@@ -8,31 +8,22 @@ import EmptyListAnimation from '../components/EmptyListAnimation';
 import PaymentFooter from '../components/PaymentFooter';
 import CartItem from '../components/CartItem';
 import * as services from '../services/index';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../redux/actions/index';
 const CartScreen = ({ navigation, route }) => {
     // const CartList = useStore((state) => state.CartList);
-    const [CartList, setCartList] = useState([]);
-    const [CartPrice, setCartPrice] = useState(0);
+    const dispatch = useDispatch();
     useEffect(() => {
-        const fetchDataOnMount = async () => {
-            try {
-                const result = await services.getCartListService();
-                // console.log('====================================');
-                // console.log('check cartlistOKOKOKOK', result[0].products);
-                // console.log('====================================');
-                setCartList(result[0].products);
-                setCartPrice(result[0].cost);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchDataOnMount();
-    }, []);
+        dispatch(actions.getCartListAction());
+    }, [dispatch]);
+    const CartList = useSelector((state) => state.CartList);
+    const CartPrice = useSelector((state) => state.CartPrice);
 
     const incrementCartItemQuantity = useStore((state) => state.incrementCartItemQuantity);
     const decrementCartItemQuantity = useStore((state) => state.decrementCartItemQuantity);
     const calculateCartPrice = useStore((state) => state.calculateCartPrice);
     const tabBarHeight = useBottomTabBarHeight();
-    console.log('check list cartScreen: ', CartList);
+    console.log('check list cartScreen: ', CartList[0]);
     const buttonPressHandler = () => {
         navigation.push('Payment', { amount: CartPrice });
     };
@@ -63,7 +54,7 @@ const CartScreen = ({ navigation, route }) => {
                                             onPress={() => {
                                                 navigation.push('Details', {
                                                     index: data.index,
-                                                    id: data.id,
+                                                    id: data.product_id,
                                                     type: data.type,
                                                 });
                                             }}

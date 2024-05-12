@@ -29,6 +29,9 @@ const FavouriteItemCard = ({
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    // const image = {
+    //     uri: String(imagelink_portrait),
+    // };
     return (
         <View style={styles.CardContainer}>
             <ImageBackgroundInfo

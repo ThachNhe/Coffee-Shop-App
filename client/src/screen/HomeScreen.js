@@ -18,6 +18,8 @@ import CustomIcon from '../components/CustomIcon';
 import CoffeeCard from '../components/CoffeeCard';
 import { useFonts } from 'expo-font';
 import * as services from '../services/index';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../redux/actions/index';
 const HomeScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -30,22 +32,14 @@ const HomeScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-
-    const [CoffeeList, setCoffeeList] = useState(0);
-
+    const dispatch = useDispatch();
     useEffect(() => {
-        const fetchDataOnMount = async () => {
-            try {
-                const result = await services.getCoffeeList(); // Call your API function
-                setCoffeeList(result); // Set the data received from API to state
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchDataOnMount();
-    }, []);
+        dispatch(actions.getCoffeeListAction());
+    }, [dispatch]);
+    const CoffeeList = useSelector((state) => state.CoffeeList);
+    // console.log('check CoffeeList homeScreen : ', CoffeeList.CoffeeList);
+
     const getCoffeeList = (category, data) => {
-        // console.log('check data coffee OKOKO : ', CoffeeList);
         if (category === 'All') {
             return data;
         } else {
@@ -78,8 +72,7 @@ const HomeScreen = ({ navigation }) => {
         setCategories(category);
         setSortedCoffee(sorted);
     }, [CoffeeList]);
-
-    // const CoffeeList = useStore((state) => state.CoffeeList);
+    // console.log('check  sortedCoffee:', sortedCoffee);
     const BeanList = useStore((state) => state.BeanList);
 
     const [searchText, setSearchText] = useState('');
