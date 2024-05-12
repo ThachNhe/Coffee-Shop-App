@@ -48,7 +48,6 @@ const ProfileScreen = ({ navigation, route }) => {
                         <Text style={styles.orderHistoryText}>Order History</Text>
                         <View style={styles.orderHistoryContainer}>
                             <TouchableOpacity style={styles.orderItem}>
-                                <Icon name="check-circle" size={30} style={styles.iconHistoryStyle} />
                                 <View>
                                     <Text style={styles.descriptionText}>Confirmation</Text>
                                 </View>

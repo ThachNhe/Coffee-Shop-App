@@ -7,6 +7,7 @@ import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
+import { useSelector, useDispatch } from 'react-redux';
 const OrderHistoryScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -19,12 +20,12 @@ const OrderHistoryScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    const OrderHistory = [];
     const OrderHistoryList = useStore((state) => state.OrderHistoryList);
-    console.log('====================================');
-    console.log('OrderHistoryList  : ', OrderHistoryList[0]);
-    console.log('====================================');
     const [showAnimation, setShowAnimation] = useState(false);
-
+    const CartList = useSelector((state) => state.CartList);
+    const CartPrice = useSelector((state) => state.CartPrice);
+    const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
     const navigationHandler = ({ index, id, type }) => {
         navigation.push('Details', {
             index,
@@ -66,8 +67,15 @@ const OrderHistoryScreen = ({ navigation }) => {
                             <Text style={styles.HeaderText}>Order History</Text>
                             <View style={styles.EmptyView} />
                         </View>
-
-                        {OrderHistoryList.length == 0 ? (
+                        <OrderHistoryCard
+                            key={1}
+                            navigationHandler={navigationHandler}
+                            CartList={CartList}
+                            CartListPrice={CartPrice}
+                            OrderDate={OrderDate}
+                            type={'ORDER_SCREEN'}
+                        />
+                        {/* {OrderHistoryList.length == 0 ? (
                             <EmptyListAnimation title={'No Order History'} />
                         ) : (
                             <View style={styles.ListItemContainer}>
@@ -81,9 +89,9 @@ const OrderHistoryScreen = ({ navigation }) => {
                                     />
                                 ))}
                             </View>
-                        )}
+                        )} */}
                     </View>
-                    {OrderHistoryList.length > 0 ? (
+                    {/* {OrderHistoryList.length > 0 ? (
                         <TouchableOpacity
                             style={styles.DownloadButton}
                             onPress={() => {
@@ -94,7 +102,7 @@ const OrderHistoryScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     ) : (
                         <></>
-                    )}
+                    )} */}
                 </View>
             </ScrollView>
         </View>
@@ -105,6 +113,7 @@ const styles = StyleSheet.create({
     ScreenContainer: {
         flex: 1,
         backgroundColor: Colors.primaryBlackHex,
+        paddingHorizontal: Spacing.space_20,
     },
     HeaderContainer: {
         paddingHorizontal: Spacing.space_24,

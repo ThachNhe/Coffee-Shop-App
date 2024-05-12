@@ -15,6 +15,9 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    const image = {
+        uri: String(imagelink_square),
+    };
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -24,7 +27,7 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
         >
             <View style={styles.CardInfoContainer}>
                 <View style={styles.CardImageInfoContainer}>
-                    <Image source={imagelink_square} style={styles.Image} />
+                    <Image source={image} style={styles.Image} />
                     <View>
                         <Text style={styles.CardTitle}>{name}</Text>
                         <Text style={styles.CardSubtitle}>{special_ingredient}</Text>

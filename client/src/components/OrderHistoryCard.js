@@ -3,7 +3,8 @@ import React from 'react';
 import { Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import OrderItemCard from './OrderItemCard';
 import { useFonts } from 'expo-font';
-const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDate }) => {
+import { BorderRadius } from '../theme/theme';
+const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDate, type }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -15,9 +16,13 @@ const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDat
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    console.log('====================================');
-    console.log('Check cartlist in orderhostorycart  :', CartList);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log('Check cartlist in orderhostorycart  :', CartList);
+    // console.log('====================================');
+    const prices = [
+        { price: 5, size: 'M', quantity: 1, currency: '$' },
+        { price: 2, size: 'S', quantity: 3, currency: '$' },
+    ];
     return (
         <View style={styles.CardContainer}>
             <View style={styles.CardHeader}>
@@ -36,8 +41,8 @@ const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDat
                         key={index.toString() + data.id}
                         onPress={() => {
                             navigationHandler({
-                                index: data.index,
-                                id: data.id,
+                                index: 1,
+                                id: data.product_id,
                                 type: data.type,
                             });
                         }}
@@ -47,12 +52,25 @@ const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDat
                             name={data.name}
                             imagelink_square={data.imagelink_square}
                             special_ingredient={data.special_ingredient}
-                            prices={data.prices}
+                            prices={[
+                                { price: 5, size: 'M', quantity: 1, currency: '$' },
+                                { price: 2, size: 'S', quantity: 3, currency: '$' },
+                            ]}
                             ItemPrice={data.ItemPrice}
                         />
                     </TouchableOpacity>
                 ))}
             </View>
+            {type === 'ORDER_SCREEN' && (
+                <TouchableOpacity
+                    style={styles.DownloadButton}
+                    onPress={() => {
+                        buttonPressHandler();
+                    }}
+                >
+                    <Text style={styles.ButtonText}>Cancel Order</Text>
+                </TouchableOpacity>
+            )}
         </View>
     );
 };
@@ -60,6 +78,19 @@ const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDat
 const styles = StyleSheet.create({
     CardContainer: {
         gap: Spacing.space_10,
+    },
+    ButtonText: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_18,
+        color: Colors.primaryWhiteHex,
+    },
+    DownloadButton: {
+        margin: Spacing.space_20,
+        backgroundColor: Colors.primaryRedHex,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Spacing.space_24 * 2,
+        borderRadius: BorderRadius.radius_20,
     },
     CardHeader: {
         flexDirection: 'row',

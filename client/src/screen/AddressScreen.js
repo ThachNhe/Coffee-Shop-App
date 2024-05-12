@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
-import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import GradientBGIcon from '../components/GradientBGIcon';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import PopUpAnimation from '../components/PopUpAnimation';
+import AddressModal from '../components/modals/AddressModal';
 const AddressScreen = ({ navigation, route }) => {
-    const [showAnimation, setShowAnimation] = useState(false);
+    const [isOpenModalAddress, setIsOpenModalAddress] = useState(false);
+    handleOpenModalAddAddress = () => {
+        setIsOpenModalAddress();
+    };
     return (
         <View style={styles.ScreenContainer}>
-            {showAnimation ? (
-                <PopUpAnimation style={styles.LottieAnimation} source={require('../lottie/successful.json')} />
-            ) : (
-                <></>
-            )}
-
+            <AddressModal modalVisible={isOpenModalAddress} />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 <View style={styles.HeaderContainer}>
                     <TouchableOpacity
@@ -48,7 +46,7 @@ const AddressScreen = ({ navigation, route }) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.addAddressContainer}>
+                <View style={styles.addAddressContainer} onPress={() => handleOpenModalAddAddress()}>
                     <TouchableOpacity style={styles.iconContainer}>
                         <Icon name="plus" size={25} style={styles.icon} />
                     </TouchableOpacity>

@@ -15,21 +15,21 @@ const PaymentList = [
         icon: 'icon',
         isIcon: true,
     },
-    {
-        name: 'Google Pay',
-        icon: require('../assets/app_images/gpay.png'),
-        isIcon: false,
-    },
-    {
-        name: 'Apple Pay',
-        icon: require('../assets/app_images/applepay.png'),
-        isIcon: false,
-    },
-    {
-        name: 'Amazon Pay',
-        icon: require('../assets/app_images/amazonpay.png'),
-        isIcon: false,
-    },
+    // {
+    //     name: 'Google Pay',
+    //     icon: require('../assets/app_images/gpay.png'),
+    //     isIcon: false,
+    // },
+    // {
+    //     name: 'Apple Pay',
+    //     icon: require('../assets/app_images/applepay.png'),
+    //     isIcon: false,
+    // },
+    // {
+    //     name: 'Amazon Pay',
+    //     icon: require('../assets/app_images/amazonpay.png'),
+    //     isIcon: false,
+    // },
 ];
 
 const PaymentScreen = ({ navigation, route }) => {
@@ -53,7 +53,7 @@ const PaymentScreen = ({ navigation, route }) => {
     const buttonPressHandler = () => {
         setShowAnimation(true);
         addToOrderHistoryListFromCart();
-        calculateCartPrice();
+        // calculateCartPrice();
         setTimeout(() => {
             setShowAnimation(false);
             navigation.navigate('History');
