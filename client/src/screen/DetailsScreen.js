@@ -20,9 +20,14 @@ const DetailsScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    // console.log('route.params', route.params);
+
+    const CoffeeList = useStore((state) => state.CoffeeList);
+
     const itemOfIndex = useStore((state) => (route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList))[
         route.params.index
     ];
+    console.log('itemOfIndex', itemOfIndex);
     const addToFavouriteList = useStore((state) => state.addToFavouriteList);
     const deleteFromFavouriteList = useStore((state) => state.deleteFromFavouriteList);
     const addToCart = useStore((state) => state.addToCart);

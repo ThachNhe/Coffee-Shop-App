@@ -4,7 +4,8 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CoffeeData from '../data/CoffeeData';
 import BeansData from '../data/BeansData';
-
+import { useEffect } from 'react';
+import * as services from '../services/index';
 const useStore = create(
     persist(
         (set, get) => ({

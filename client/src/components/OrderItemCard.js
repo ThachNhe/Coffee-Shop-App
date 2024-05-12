@@ -1,11 +1,20 @@
 import { StyleSheet, Text, View, ImageProps, Image } from 'react-native';
 import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
-
-//
-
+import { useFonts } from 'expo-font';
 const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, prices, ItemPrice }) => {
+    const [fontsLoad] = useFonts({
+        poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
+        poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
+        poppins_light: require('../assets/fonts/Poppins-Light.ttf'),
+        poppins_black: require('../assets/fonts/Poppins-Black.ttf'),
+        poppins_bold: require('../assets/fonts/Poppins-Bold.ttf'),
+        poppins_extrabold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
+        poppins_extralight: require('../assets/fonts/Poppins-ExtraLight.ttf'),
+        poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
+        poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
+    });
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -27,39 +36,43 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                     </Text>
                 </View>
             </View>
-            {prices.map((data, index) => (
-                <View key={index.toString()} style={styles.CardTableRow}>
-                    <View style={styles.CardTableRow}>
-                        <View style={styles.SizeBoxLeft}>
-                            <Text
-                                style={[
-                                    styles.SizeText,
-                                    {
-                                        fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
-                                    },
-                                ]}
-                            >
-                                {data.size}
-                            </Text>
+            {prices ? (
+                prices.map((data, index) => (
+                    <View key={index.toString()} style={styles.CardTableRow}>
+                        <View style={styles.CardTableRow}>
+                            <View style={styles.SizeBoxLeft}>
+                                <Text
+                                    style={[
+                                        styles.SizeText,
+                                        {
+                                            fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
+                                        },
+                                    ]}
+                                >
+                                    {data.size}
+                                </Text>
+                            </View>
+                            <View style={styles.PriceBoxRight}>
+                                <Text style={styles.PriceCurrency}>
+                                    {data.currency}
+                                    <Text style={styles.Price}> {data.price}</Text>
+                                </Text>
+                            </View>
                         </View>
-                        <View style={styles.PriceBoxRight}>
-                            <Text style={styles.PriceCurrency}>
-                                {data.currency}
-                                <Text style={styles.Price}> {data.price}</Text>
-                            </Text>
-                        </View>
-                    </View>
 
-                    <View style={styles.CardTableRow}>
-                        <Text style={styles.CardQuantityPriceText}>
-                            X <Text style={styles.Price}>{data.quantity}</Text>
-                        </Text>
-                        <Text style={styles.CardQuantityPriceText}>
-                            $ {(data.quantity * data.price).toFixed(2).toString()}
-                        </Text>
+                        <View style={styles.CardTableRow}>
+                            <Text style={styles.CardQuantityPriceText}>
+                                X <Text style={styles.Price}>{data.quantity}</Text>
+                            </Text>
+                            <Text style={styles.CardQuantityPriceText}>
+                                $ {(data.quantity * data.price).toFixed(2).toString()}
+                            </Text>
+                        </View>
                     </View>
-                </View>
-            ))}
+                ))
+            ) : (
+                <></>
+            )}
         </LinearGradient>
     );
 };
@@ -86,17 +99,17 @@ const styles = StyleSheet.create({
         borderRadius: BorderRadius.radius_15,
     },
     CardTitle: {
-        fontFamily: FontFamily.poppins_medium,
+        fontFamily: 'poppins_medium',
         fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
     },
     CardSubtitle: {
-        fontFamily: FontFamily.poppins_regular,
+        fontFamily: 'poppins_regular',
         fontSize: FontSize.size_12,
         color: Colors.secondaryLightGreyHex,
     },
     CardCurrency: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_20,
         color: Colors.primaryOrangeHex,
     },
@@ -121,7 +134,7 @@ const styles = StyleSheet.create({
         borderRightColor: Colors.primaryGreyHex,
     },
     SizeText: {
-        fontFamily: FontFamily.poppins_medium,
+        fontFamily: 'poppins_medium',
         color: Colors.secondaryLightGreyHex,
     },
     PriceBoxRight: {
@@ -136,7 +149,7 @@ const styles = StyleSheet.create({
         borderLeftColor: Colors.primaryGreyHex,
     },
     PriceCurrency: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_18,
         color: Colors.primaryOrangeHex,
     },
@@ -146,7 +159,7 @@ const styles = StyleSheet.create({
     CardQuantityPriceText: {
         flex: 1,
         textAlign: 'center',
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_18,
         color: Colors.primaryOrangeHex,
     },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import useStore from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
@@ -7,10 +7,28 @@ import HeaderBar from '../components/HeaderBar';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import PaymentFooter from '../components/PaymentFooter';
 import CartItem from '../components/CartItem';
+import * as services from '../services/index';
 const CartScreen = ({ navigation, route }) => {
-    const CartList = useStore((state) => state.CartList);
+    // const CartList = useStore((state) => state.CartList);
+    const [CartList, setCartList] = useState([]);
+    const [CartPrice, setCartPrice] = useState(0);
+    useEffect(() => {
+        const fetchDataOnMount = async () => {
+            try {
+                const result = await services.getCartListService();
+                // console.log('====================================');
+                // console.log('check cartlistOKOKOKOK', result[0].products);
+                // console.log('====================================');
+                setCartList(result[0].products);
+                setCartPrice(result[0].cost);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchDataOnMount();
+    }, []);
     // console.log('check list cartScreen: ', CartList);
-    const CartPrice = useStore((state) => state.CartPrice);
+
     const incrementCartItemQuantity = useStore((state) => state.incrementCartItemQuantity);
     const decrementCartItemQuantity = useStore((state) => state.decrementCartItemQuantity);
     const calculateCartPrice = useStore((state) => state.calculateCartPrice);
@@ -37,7 +55,7 @@ const CartScreen = ({ navigation, route }) => {
                         <View style={styles.ItemContainer}>
                             <HeaderBar title="Cart" />
 
-                            {CartList.length == 0 ? (
+                            {CartList && CartList?.length == 0 ? (
                                 <EmptyListAnimation title={'Cart is Empty'} />
                             ) : (
                                 <View style={styles.ListItemContainer}>
@@ -58,7 +76,8 @@ const CartScreen = ({ navigation, route }) => {
                                                 imagelink_square={data.imagelink_square}
                                                 special_ingredient={data.special_ingredient}
                                                 roasted={data.roasted}
-                                                prices={data.prices}
+                                                quantity={data.quantity}
+                                                size={data.size}
                                                 type={data.type}
                                                 incrementCartItemQuantityHandler={incrementCartItemQuantityHandler}
                                                 decrementCartItemQuantityHandler={decrementCartItemQuantityHandler}

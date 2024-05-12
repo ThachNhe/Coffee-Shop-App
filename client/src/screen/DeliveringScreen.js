@@ -7,7 +7,7 @@ import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
-const OrderHistoryScreen = ({ navigation }) => {
+const DeliveringScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -63,7 +63,7 @@ const OrderHistoryScreen = ({ navigation }) => {
                                     size={FontSize.size_16}
                                 />
                             </TouchableOpacity>
-                            <Text style={styles.HeaderText}>Order History</Text>
+                            <Text style={styles.HeaderText}>Delivering</Text>
                             <View style={styles.EmptyView} />
                         </View>
 
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OrderHistoryScreen;
+export default DeliveringScreen;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ImageProps, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import CustomIcon from './CustomIcon';
 import { useFonts } from 'expo-font';
 const CartItem = (props) => {
@@ -16,21 +16,28 @@ const CartItem = (props) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    
+
     const {
         id,
         name,
         imagelink_square,
         special_ingredient,
+        size,
+        quantity,
         roasted,
-        prices,
         type,
         incrementCartItemQuantityHandler,
         decrementCartItemQuantityHandler,
     } = props;
+    console.log('====================================');
+    console.log('check prop cartitem  :', props);
+    console.log('====================================');
+    const image = {
+        uri: String(imagelink_square ? imagelink_square : ''),
+    };
     return (
         <View>
-            {prices.length != 1 ? (
+            {/* {prices.length != 1 ? (
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
@@ -38,7 +45,7 @@ const CartItem = (props) => {
                     style={styles.CartItemLinearGradient}
                 >
                     <View style={styles.CartItemRow}>
-                        <Image source={imagelink_square} style={styles.CartItemImage} />
+                        <Image source={image} style={styles.CartItemImage} />
                         <View style={styles.CartItemInfo}>
                             <View>
                                 <Text style={styles.CartItemTitle}>{name}</Text>
@@ -93,63 +100,62 @@ const CartItem = (props) => {
                         </View>
                     ))}
                 </LinearGradient>
-            ) : (
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    colors={[Colors.primaryGreyHex, Colors.primaryBlackHex]}
-                    style={styles.CartItemSingleLinearGradient}
-                >
+            ) : ( */}
+            <LinearGradient
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                colors={[Colors.primaryGreyHex, Colors.primaryBlackHex]}
+                style={styles.CartItemSingleLinearGradient}
+            >
+                <View>
+                    <Image source={image} style={styles.CartItemSingleImage} />
+                </View>
+                <View style={styles.CartItemSingleInfoContainer}>
                     <View>
-                        <Image source={imagelink_square} style={styles.CartItemSingleImage} />
+                        <Text style={styles.CartItemTitle}>{name}</Text>
+                        <Text style={styles.CartItemSubtitle}>{special_ingredient}</Text>
                     </View>
-                    <View style={styles.CartItemSingleInfoContainer}>
-                        <View>
-                            <Text style={styles.CartItemTitle}>{name}</Text>
-                            <Text style={styles.CartItemSubtitle}>{special_ingredient}</Text>
-                        </View>
-                        <View style={styles.CartItemSingleSizeValueContainer}>
-                            <View style={styles.SizeBox}>
-                                <Text
-                                    style={[
-                                        styles.SizeText,
-                                        {
-                                            fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
-                                        },
-                                    ]}
-                                >
-                                    {prices[0].size}
-                                </Text>
-                            </View>
-                            <Text style={styles.SizeCurrency}>
-                                {prices[0].currency}
-                                <Text style={styles.SizePrice}> {prices[0].price}</Text>
+                    <View style={styles.CartItemSingleSizeValueContainer}>
+                        <View style={styles.SizeBox}>
+                            <Text
+                                style={[
+                                    styles.SizeText,
+                                    {
+                                        fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
+                                    },
+                                ]}
+                            >
+                                M
                             </Text>
                         </View>
-                        <View style={styles.CartItemSingleQuantityContainer}>
-                            <TouchableOpacity
-                                style={styles.CartItemIcon}
-                                onPress={() => {
-                                    decrementCartItemQuantityHandler(id, prices[0].size);
-                                }}
-                            >
-                                <CustomIcon name="minus" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
-                            </TouchableOpacity>
-                            <View style={styles.CartItemQuantityContainer}>
-                                <Text style={styles.CartItemQuantityText}>{prices[0].quantity}</Text>
-                            </View>
-                            <TouchableOpacity
-                                style={styles.CartItemIcon}
-                                onPress={() => {
-                                    incrementCartItemQuantityHandler(id, prices[0].size);
-                                }}
-                            >
-                                <CustomIcon name="add" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
-                            </TouchableOpacity>
-                        </View>
+                        <Text style={styles.SizeCurrency}>
+                            {size.currency}
+                            <Text style={styles.SizePrice}> {size.price}</Text>
+                        </Text>
                     </View>
-                </LinearGradient>
-            )}
+                    <View style={styles.CartItemSingleQuantityContainer}>
+                        <TouchableOpacity
+                            style={styles.CartItemIcon}
+                            // onPress={() => {
+                            //     decrementCartItemQuantityHandler(id, prices[0].size);
+                            // }}
+                        >
+                            <CustomIcon name="minus" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
+                        </TouchableOpacity>
+                        <View style={styles.CartItemQuantityContainer}>
+                            <Text style={styles.CartItemQuantityText}>{quantity}</Text>
+                        </View>
+                        <TouchableOpacity
+                            style={styles.CartItemIcon}
+                            // onPress={() => {
+                            //     incrementCartItemQuantityHandler(id, prices[0].size);
+                            // }}
+                        >
+                            <CustomIcon name="add" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </LinearGradient>
         </View>
     );
 };
@@ -177,12 +183,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     CartItemTitle: {
-        fontFamily: "poppins_medium",
+        fontFamily: 'poppins_medium',
         fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
     },
     CartItemSubtitle: {
-        fontFamily: "poppins_regular",
+        fontFamily: 'poppins_regular',
         FontSize: FontSize.size_12,
         color: Colors.secondaryLightGreyHex,
     },
@@ -195,7 +201,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primaryDarkGreyHex,
     },
     CartItemRoastedText: {
-        fontFamily: "poppins_regular",
+        fontFamily: 'poppins_regular',
         fontSize: FontSize.size_10,
         color: Colors.primaryWhiteHex,
     },
@@ -221,11 +227,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     SizeText: {
-        fontFamily: "poppins_medium",
+        fontFamily: 'poppins_medium',
         color: Colors.secondaryLightGreyHex,
     },
     SizeCurrency: {
-        fontFamily: "poppins_semibold",
+        fontFamily: 'poppins_semibold',
         FontSize: FontSize.size_18,
         color: Colors.primaryOrangeHex,
     },
@@ -247,7 +253,7 @@ const styles = StyleSheet.create({
         paddingVertical: Spacing.space_4,
     },
     CartItemQuantityText: {
-        fontFamily: "poppins_semibold",
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_16,
         color: Colors.primaryWhiteHex,
     },

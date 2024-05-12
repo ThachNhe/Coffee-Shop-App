@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
 import useStore from '../store/store';
 import PopUpAnimation from '../components/PopUpAnimation';
-
+import { useFonts } from 'expo-font';
 const PaymentList = [
     {
         name: 'Wallet',
@@ -33,6 +33,17 @@ const PaymentList = [
 ];
 
 const PaymentScreen = ({ navigation, route }) => {
+    const [fontsLoad] = useFonts({
+        poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
+        poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
+        poppins_light: require('../assets/fonts/Poppins-Light.ttf'),
+        poppins_black: require('../assets/fonts/Poppins-Black.ttf'),
+        poppins_bold: require('../assets/fonts/Poppins-Bold.ttf'),
+        poppins_extrabold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
+        poppins_extralight: require('../assets/fonts/Poppins-ExtraLight.ttf'),
+        poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
+        poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
+    });
     const calculateCartPrice = useStore((state) => state.calculateCartPrice);
     const addToOrderHistoryListFromCart = useStore((state) => state.addToOrderHistoryListFromCart);
 
@@ -172,7 +183,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     HeaderText: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_20,
         color: Colors.primaryWhiteHex,
     },
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
     },
     CreditCardTitle: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_14,
         color: Colors.primaryWhiteHex,
         marginLeft: Spacing.space_10,
@@ -217,18 +228,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     CreditCardNumber: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
         letterSpacing: Spacing.space_4 + Spacing.space_2,
     },
     CreditCardNameSubitle: {
-        fontFamily: FontFamily.poppins_regular,
+        fontFamily: 'poppins_regular',
         fontSize: FontSize.size_12,
         color: Colors.secondaryLightGreyHex,
     },
     CreditCardNameTitle: {
-        fontFamily: FontFamily.poppins_medium,
+        fontFamily: 'poppins_medium',
         fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
     },

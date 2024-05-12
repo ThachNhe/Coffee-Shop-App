@@ -1,7 +1,7 @@
 import { Dimensions, ImageBackground, Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
 import { useFonts } from 'expo-font';
@@ -10,9 +10,10 @@ const CARD_WIDTH = Dimensions.get('window').width * 0.32;
 
 const CoffeeCard = (props) => {
     const {
-        id,
-        index,
+        productId,
+        quantity,
         type,
+        size,
         roasted,
         imagelink_square,
         name,
@@ -21,6 +22,7 @@ const CoffeeCard = (props) => {
         price,
         buttonPressHandler,
     } = props;
+    // console.log('check props  :', props);
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -32,6 +34,10 @@ const CoffeeCard = (props) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    const image = {
+        uri: String(imagelink_square),
+    };
+
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -39,7 +45,7 @@ const CoffeeCard = (props) => {
             style={styles.cardLinearGradientContainer}
             colors={[Colors.primaryGreyHex, Colors.primaryBlackHex]}
         >
-            <ImageBackground source={imagelink_square} style={styles.cardImageBG} resizeMode="cover">
+            <ImageBackground source={image} style={styles.cardImageBG} resizeMode="cover">
                 <View style={styles.cardRatingContainer}>
                     <CustomIcon name="star" color={Colors.primaryOrangeHex} size={FontSize.size_16} />
                     <Text style={styles.cardRatingText}>{average_rating}</Text>
@@ -54,14 +60,10 @@ const CoffeeCard = (props) => {
                 <TouchableOpacity
                     onPress={() => {
                         buttonPressHandler({
-                            id,
-                            index,
-                            type,
-                            roasted,
-                            imagelink_square,
+                            productId,
+                            quantity,
+                            size,
                             name,
-                            special_ingredient,
-                            prices: [{ ...price, quantity: 1 }],
                         });
                     }}
                 >

@@ -11,6 +11,7 @@ import ProfileScreen from './src/screen/ProfileScreen';
 import AddressScreen from './src/screen/AddressScreen';
 import CartScreen from './src/screen/CartScreen';
 import OrderHistoryScreen from './src/screen/OrderHistoryScreen';
+import DeliveringScreen from './src/screen/DeliveringScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
     useEffect(() => {
@@ -49,6 +50,11 @@ export default function App() {
                     <Stack.Screen
                         name="History"
                         component={OrderHistoryScreen}
+                        options={{ animation: 'slide_from_bottom' }}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="Delivering"
+                        component={DeliveringScreen}
                         options={{ animation: 'slide_from_bottom' }}
                     ></Stack.Screen>
                 </Stack.Navigator>

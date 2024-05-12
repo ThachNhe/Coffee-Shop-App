@@ -2,8 +2,22 @@ import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-nativ
 import React from 'react';
 import { Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import OrderItemCard from './OrderItemCard';
-
+import { useFonts } from 'expo-font';
 const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDate }) => {
+    const [fontsLoad] = useFonts({
+        poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
+        poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
+        poppins_light: require('../assets/fonts/Poppins-Light.ttf'),
+        poppins_black: require('../assets/fonts/Poppins-Black.ttf'),
+        poppins_bold: require('../assets/fonts/Poppins-Bold.ttf'),
+        poppins_extrabold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
+        poppins_extralight: require('../assets/fonts/Poppins-ExtraLight.ttf'),
+        poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
+        poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
+    });
+    console.log('====================================');
+    console.log('Check cartlist in orderhostorycart  :', CartList);
+    console.log('====================================');
     return (
         <View style={styles.CardContainer}>
             <View style={styles.CardHeader}>
@@ -54,12 +68,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     HeaderTitle: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_16,
         color: Colors.primaryWhiteHex,
     },
     HeaderSubtitle: {
-        fontFamily: FontFamily.poppins_light,
+        fontFamily: 'poppins_light',
         fontSize: FontSize.size_16,
         color: Colors.primaryWhiteHex,
     },
@@ -67,7 +81,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     HeaderPrice: {
-        fontFamily: FontFamily.poppins_medium,
+        fontFamily: 'poppins_medium',
         fontSize: FontSize.size_18,
         color: Colors.primaryOrangeHex,
     },

@@ -71,12 +71,12 @@ const styles = StyleSheet.create({
         borderRadius: BorderRadius.radius_15 * 2,
     },
     PaymentTitle: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_16,
         color: Colors.primaryWhiteHex,
     },
     PaymentPrice: {
-        fontFamily: FontFamily.poppins_regular,
+        fontFamily: 'poppins_regular',
         fontSize: FontSize.size_16,
         color: Colors.secondaryLightGreyHex,
     },

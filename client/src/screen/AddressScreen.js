@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import GradientBGIcon from '../components/GradientBGIcon';
-import PaymentMethod from '../components/PaymentMethod';
-import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PopUpAnimation from '../components/PopUpAnimation';
 const AddressScreen = ({ navigation, route }) => {
@@ -78,7 +76,7 @@ const styles = StyleSheet.create({
     },
 
     HeaderText: {
-        fontFamily: FontFamily.poppins_semibold,
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_20,
         color: Colors.primaryWhiteHex,
     },

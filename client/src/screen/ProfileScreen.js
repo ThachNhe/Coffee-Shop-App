@@ -10,6 +10,15 @@ const ProfileScreen = ({ navigation, route }) => {
     const buttonPressRedirectCartScreen = () => {
         navigation.navigate('Cart');
     };
+    const buttonPressRedirectOrderHistoryScreen = () => {
+        navigation.navigate('History');
+    };
+    const pressHandlerRedirectCompletedScreen = () => {
+        navigation.navigate('History');
+    };
+    const pressHandlerRedirectDeliveringScreen = () => {
+        navigation.navigate('Delivering');
+    };
     return (
         <View style={styles.screenContainer}>
             <View style={styles.personalInfoContainer}>
@@ -41,14 +50,20 @@ const ProfileScreen = ({ navigation, route }) => {
                                     <Text style={styles.descriptionText}>Confirmation</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.orderItem}>
+                            <TouchableOpacity
+                                style={styles.orderItem}
+                                onPress={() => pressHandlerRedirectDeliveringScreen()}
+                            >
                                 <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
 
                                 <View>
                                     <Text style={styles.descriptionText}>Delivering</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.orderItem}>
+                            <TouchableOpacity
+                                style={styles.orderItem}
+                                onPress={() => pressHandlerRedirectCompletedScreen()}
+                            >
                                 <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
 
                                 <View>
@@ -91,7 +106,10 @@ const ProfileScreen = ({ navigation, route }) => {
                                     <Text style={styles.descriptionText}>Add remove products and move to checkout</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.accountSettingItemContainer}>
+                            <TouchableOpacity
+                                style={styles.accountSettingItemContainer}
+                                onPress={() => buttonPressRedirectOrderHistoryScreen()}
+                            >
                                 <View style={styles.accountSettingItem}>
                                     <Icon name="list-alt" size={25} style={styles.iconSettingAccountStyle} />
                                 </View>
@@ -200,9 +218,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignContent: 'center',
-        // backgroundColor: 'red',
-        // height: Spacing.space_36,
-        // width: Spacing.space_36 * 2,
     },
     accountSettingItemContainer: {
         flexDirection: 'row',
