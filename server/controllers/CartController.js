@@ -88,7 +88,6 @@ async function getCart(userId) {
                     user_id: 1,
                     product: {
                         product_id: "$products.product_id",
-                        quantity: "$products.quantity",
                         name: "$product_info.name",
                         imagelink_square: "$product_info.imagelink_square",
                         special_ingredient: "$product_info.special_ingredient",
@@ -103,6 +102,7 @@ async function getCart(userId) {
                                 },
                             },
                         },
+                        quantity: "$products.quantity",
                     },
                 },
             },
