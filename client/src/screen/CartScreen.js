@@ -27,13 +27,12 @@ const CartScreen = ({ navigation, route }) => {
         };
         fetchDataOnMount();
     }, []);
-    // console.log('check list cartScreen: ', CartList);
 
     const incrementCartItemQuantity = useStore((state) => state.incrementCartItemQuantity);
     const decrementCartItemQuantity = useStore((state) => state.decrementCartItemQuantity);
     const calculateCartPrice = useStore((state) => state.calculateCartPrice);
     const tabBarHeight = useBottomTabBarHeight();
-
+    console.log('check list cartScreen: ', CartList);
     const buttonPressHandler = () => {
         navigation.push('Payment', { amount: CartPrice });
     };

@@ -29,9 +29,9 @@ const CartItem = (props) => {
         incrementCartItemQuantityHandler,
         decrementCartItemQuantityHandler,
     } = props;
-    console.log('====================================');
-    console.log('check prop cartitem  :', props);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log('check prop cartitem  :', props);
+    // console.log('====================================');
     const image = {
         uri: String(imagelink_square ? imagelink_square : ''),
     };

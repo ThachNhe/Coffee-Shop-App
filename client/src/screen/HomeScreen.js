@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
         setCategories(category);
         setSortedCoffee(sorted);
     }, [CoffeeList]);
-    console.log('sorted coffee: ', sortedCoffee);
+
     // const CoffeeList = useStore((state) => state.CoffeeList);
     const BeanList = useStore((state) => state.BeanList);
 

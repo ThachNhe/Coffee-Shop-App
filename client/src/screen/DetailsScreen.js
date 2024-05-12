@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useStore from '../store/store';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import { StatusBar } from 'expo-status-bar';
@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native';
 import PaymentFooter from '../components/PaymentFooter';
 import { useFonts } from 'expo-font';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
-
+import * as services from '../services/index';
 const DetailsScreen = ({ navigation, route }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -20,20 +20,39 @@ const DetailsScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    // console.log('route.params', route.params);
+    const [CoffeeList, setCoffeeList] = useState([]);
+    // const [itemOfIndex, setItemOfIndex] = useState({});
+    console.log('route.params', route.params);
+    // useEffect(() => {
+    //     const fetchDataOnMount = async () => {
+    //         try {
+    //             const result = await services.getCoffeeList();
+    //             console.log('====================================');
+    //             console.log('check get coffeList : ', result);
+    //             console.log('====================================');
+    //             setCoffeeList(result);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
+    //     fetchDataOnMount();
+    // }, []);
 
-    const CoffeeList = useStore((state) => state.CoffeeList);
+    // useEffect(() => {
+    //     console.log('CoffeeListThach : ', CoffeeList);
+    //     let tmp = CoffeeList.find((coffee) => coffee._id === route.params.id);
+    //     setItemOfIndex(tmp);
+    // }, [CoffeeList]);
 
-    const itemOfIndex = useStore((state) => (route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList))[
-        route.params.index
-    ];
+    // const itemOfIndex = CoffeeList.find((coffee) => coffee._id === route.params.id);
+    const itemOfIndex = useStore((state) => (route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList))[0];
     console.log('itemOfIndex', itemOfIndex);
     const addToFavouriteList = useStore((state) => state.addToFavouriteList);
     const deleteFromFavouriteList = useStore((state) => state.deleteFromFavouriteList);
     const addToCart = useStore((state) => state.addToCart);
     const calculateCartPrice = useStore((state) => state.calculateCartPrice);
-
-    const [price, setPrice] = useState(itemOfIndex.prices[0]);
+    // const [price, setPrice] = useState(itemOfIndex.prices[0]);
+    const [price, setPrice] = useState({ price: 5 });
     const [fullDesc, setFullDesc] = useState(false);
 
     const ToggleFavourite = (favourite, type, id) => {
@@ -45,23 +64,21 @@ const DetailsScreen = ({ navigation, route }) => {
     };
 
     const addToCartHandler = ({ id, index, name, roasted, imagelink_square, special_ingredient, type, price }) => {
-        addToCart({
-            id,
-            index,
-            name,
-            roasted,
-            imagelink_square,
-            special_ingredient,
-            type,
-            prices: [{ ...price, quantity: 1 }],
-        });
-        calculateCartPrice();
-        navigation.navigate('Cart');
+        // addToCart({
+        //     id,
+        //     index,
+        //     name,
+        //     roasted,
+        //     imagelink_square,
+        //     special_ingredient,
+        //     type,
+        //     prices: [{ ...price, quantity: 1 }],
+        // });
+        // calculateCartPrice();
+        // navigation.navigate('Cart');
     };
     return (
         <View style={styles.screenContainer}>
-            {/* <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" /> */}
-
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewFlex}>
                 <ImageBackgroundInfo
                     EnableBackHandler={true}
@@ -102,38 +119,41 @@ const DetailsScreen = ({ navigation, route }) => {
                     )}
                     <Text style={styles.infoTitle}>Size</Text>
                     <View style={styles.sizeOuterContainer}>
-                        {itemOfIndex.prices.map((data) => (
-                            <TouchableOpacity
-                                key={data.size}
-                                onPress={() => {
-                                    setPrice(data);
-                                }}
-                                style={[
-                                    styles.sizeBox,
-                                    {
-                                        borderColor:
-                                            data.size == price.size
-                                                ? Colors.primaryOrangeHex
-                                                : Colors.primaryDarkGreyHex,
-                                    },
-                                ]}
-                            >
-                                <Text
+                        {itemOfIndex &&
+                            itemOfIndex.prices &&
+                            itemOfIndex.prices.map((data) => (
+                                <TouchableOpacity
+                                    key={data.size}
+                                    onPress={() => {
+                                        setPrice(data);
+                                    }}
                                     style={[
-                                        styles.sizeText,
+                                        styles.sizeBox,
                                         {
-                                            fontSize: itemOfIndex.type == 'Bean' ? FontSize.size_14 : FontSize.size_16,
-                                            color:
+                                            borderColor:
                                                 data.size == price.size
                                                     ? Colors.primaryOrangeHex
-                                                    : Colors.secondaryLightGreyHex,
+                                                    : Colors.primaryDarkGreyHex,
                                         },
                                     ]}
                                 >
-                                    {data.size}
-                                </Text>
-                            </TouchableOpacity>
-                        ))}
+                                    <Text
+                                        style={[
+                                            styles.sizeText,
+                                            {
+                                                fontSize:
+                                                    itemOfIndex.type == 'Bean' ? FontSize.size_14 : FontSize.size_16,
+                                                color:
+                                                    data.size == price.size
+                                                        ? Colors.primaryOrangeHex
+                                                        : Colors.secondaryLightGreyHex,
+                                            },
+                                        ]}
+                                    >
+                                        {data.size}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
                     </View>
                 </View>
                 <PaymentFooter

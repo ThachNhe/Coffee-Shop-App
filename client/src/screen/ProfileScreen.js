@@ -19,6 +19,9 @@ const ProfileScreen = ({ navigation, route }) => {
     const pressHandlerRedirectDeliveringScreen = () => {
         navigation.navigate('Delivering');
     };
+    const pressHandlerRedirectCanceledScreen = () => {
+        navigation.navigate('Canceled');
+    };
     return (
         <View style={styles.screenContainer}>
             <View style={styles.personalInfoContainer}>
@@ -70,7 +73,10 @@ const ProfileScreen = ({ navigation, route }) => {
                                     <Text style={styles.descriptionText}>Completed</Text>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.orderItem}>
+                            <TouchableOpacity
+                                style={styles.orderItem}
+                                onPress={() => pressHandlerRedirectCanceledScreen()}
+                            >
                                 <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
                                 <View>
                                     <Text style={styles.descriptionText}>Canceled</Text>

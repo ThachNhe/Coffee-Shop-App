@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import TabNavigator from './src/navigators/TabNavigator';
-import SplashScreen from 'react-native-splash-screen';
 import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
 import { Colors } from './src/theme/theme';
 import ProfileScreen from './src/screen/ProfileScreen';
 import AddressScreen from './src/screen/AddressScreen';
-import CartScreen from './src/screen/CartScreen';
 import OrderHistoryScreen from './src/screen/OrderHistoryScreen';
 import DeliveringScreen from './src/screen/DeliveringScreen';
+import CanceledSCreen from './src/screen/CanceledSCreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
     useEffect(() => {
@@ -55,6 +54,11 @@ export default function App() {
                     <Stack.Screen
                         name="Delivering"
                         component={DeliveringScreen}
+                        options={{ animation: 'slide_from_bottom' }}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                        name="Canceled"
+                        component={CanceledSCreen}
                         options={{ animation: 'slide_from_bottom' }}
                     ></Stack.Screen>
                 </Stack.Navigator>
