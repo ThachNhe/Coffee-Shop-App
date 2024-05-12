@@ -26,21 +26,41 @@ class CartController {
             }
             const existingCart = await Cart.findOne({user_id: userId});
             if (existingCart) {
-                await Cart.updateOne(
-                    {user_id: userId},
-                    {
-                        $addToSet: {
-                            products: {
-                                product_id: productId,
-                                quantity: quantity,
-                                size: size,
-                            }
+                const existingProduct = await Cart.findOne({
+                    user_id: userId,
+                    "products.product_id": productId,
+                    "products.size": size,
+                })
+                if (existingProduct) {
+                    await Cart.updateOne({
+                        user_id: userId,
+                        'products.product_id': productId,
+                        'products.size': size
+                    }, {
+                        $inc: {
+                            "products.$.quantity": quantity,
+                        }
+                    });
+                    return res.status(200).json({
+                        msg: "Product quantity updated in the cart",
+                    })
+                } else {
+                    await Cart.updateOne(
+                        {user_id: userId},
+                        {
+                            $addToSet: {
+                                products: {
+                                    product_id: productId,
+                                    quantity: quantity,
+                                    size: size,
+                                }
+                            },
                         },
-                    },
-                );
-                return res.status(200).json({
-                    msg: "Product added to the cart",
-                });
+                    );
+                    return res.status(200).json({
+                        msg: "Product added to the cart",
+                    })
+                }
             } else {
                 await Cart.create({
                     user_id: userId,
