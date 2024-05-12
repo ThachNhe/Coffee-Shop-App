@@ -121,6 +121,7 @@ function queryAllProducts() {
                 imagelink_square: 1,
                 imagelink_portrait: 1,
                 ingredients: 1,
+                prices: 1,
                 special_ingredient: 1,
             }
         }
