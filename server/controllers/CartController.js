@@ -89,6 +89,11 @@ async function getCart(userId) {
                     product: {
                         product_id: "$products.product_id",
                         quantity: "$products.quantity",
+                        name: "$product_info.name",
+                        imagelink_square: "$product_info.imagelink_square",
+                        special_ingredient: "$product_info.special_ingredient",
+                        roasted: "$product_info.roasted",
+                        type: "$product_info.size",
                         size: {
                             $filter: {
                                 input: "$product_info.prices",
