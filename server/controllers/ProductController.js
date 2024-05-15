@@ -1,5 +1,4 @@
 const Product = require("../models/product");
-const collect = require("collect");
 
 class ProductController {
 

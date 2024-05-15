@@ -1,8 +1,10 @@
-const express=require("express");
-const paymentController=require("../controllers/PaymentController");
-const router=express.Router();
+const express = require("express");
+const paymentController = require("../controllers/PaymentController");
+const router = express.Router();
 
 
-router.get("/create-payment-link",paymentController.createPaymentLink);
+router.post("/create-payment-link", paymentController.createPaymentLink);
+router.get("/payment/:orderId", paymentController.getPaymentLink);
+router.get("/payment/:orderId", paymentController.cancelPaymentLink);
 
-module.exports=router;
+module.exports = router;
