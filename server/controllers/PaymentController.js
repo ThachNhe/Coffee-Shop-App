@@ -1,4 +1,5 @@
 const PayOS = require("@payos/node");
+const Payment = require("../models/payment")
 
 const payOs = new PayOS(
     "0f5eabbd-c66e-4a00-9d2d-06c4eae6ce45",
@@ -9,6 +10,12 @@ const payOs = new PayOS(
 class PaymentController {
     //POST /create-payment-link
     async createPaymentLink(req, res) {
+        const userId = req.session.User;
+        if (!userId) {
+            return res.status(403).json({
+                msg: "Login first",
+            })
+        }
         const {amount, description, cancelUrl, returnUrl} = req.body;
         const order = {
             orderCode: Number(String(new Date().getTime()).slice(-6)),
@@ -19,6 +26,10 @@ class PaymentController {
         };
         try {
             const paymentLinkRes = await payOs.createPaymentLink(order);
+            await Payment.create({
+                user_id: userId,
+                order_id: paymentLinkRes.orderCode,
+            });
             return res.status(200).json({
                 bin: paymentLinkRes.bin,
                 checkoutUrl: paymentLinkRes.checkoutUrl,
