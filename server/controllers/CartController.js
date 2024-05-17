@@ -18,6 +18,7 @@ class CartController {
             const productId = req.body.productId;
             const size = req.body.size;
             const quantity = req.body.quantity;
+            console.log(productId);
             const product = await Product.findOne({_id: productId});
             if (!product) {
                 return res.status(404).json({
@@ -25,37 +26,34 @@ class CartController {
                 });
             }
             const existingCart = await Cart.findOne({user_id: userId});
+
             if (existingCart) {
-                const existingProduct = await Cart.findOne({
-                    user_id: userId,
-                    "products.product_id": productId,
-                    "products.size": size,
-                })
+
+                const existingProduct = existingCart.products.find((product) =>
+                    product.product_id == productId &&
+                    product.size == size,
+                )
+                console.log(existingProduct);
+
                 if (existingProduct) {
-                    await Cart.updateOne({
-                        user_id: userId,
-                        'products.product_id': productId,
-                        'products.size': size
-                    }, {
-                        $inc: {
-                            "products.$.quantity": quantity,
-                        }
-                    });
+                    existingProduct.quantity += Number(quantity);
+                    await existingCart.save();
                     return res.status(200).json({
                         msg: "Product quantity updated in the cart",
-                    })
+                    });
                 } else {
                     await Cart.updateOne(
                         {user_id: userId},
                         {
-                            $addToSet: {
+                            $push: {
                                 products: {
                                     product_id: productId,
-                                    quantity: quantity,
                                     size: size,
+                                    quantity: quantity
                                 }
-                            },
+                            }
                         },
+                        {upsert: true}
                     );
                     return res.status(200).json({
                         msg: "Product added to the cart",
