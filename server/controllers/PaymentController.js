@@ -10,7 +10,8 @@ const payOs = new PayOS(
 class PaymentController {
     //POST /create-payment-link
     async createPaymentLink(req, res) {
-        const userId = req.session.User;
+        // const userId = req.session.User;
+        const userId = "6613d5018c360f7f06ef7a53";
         if (!userId) {
             return res.status(403).json({
                 msg: "Login first",
@@ -103,7 +104,9 @@ class PaymentController {
                 data: null,
             });
         }
-    }cd
+    }
+
+    cd
 }
 
 module.exports = new PaymentController();
