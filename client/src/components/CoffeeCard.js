@@ -8,21 +8,24 @@ import { useFonts } from 'expo-font';
 
 const CARD_WIDTH = Dimensions.get('window').width * 0.32;
 
-const CoffeeCard = (props) => {
-    const {
-        productId,
-        quantity,
-        type,
-        size,
-        roasted,
-        imagelink_square,
-        name,
-        special_ingredient,
-        average_rating,
-        price,
-        buttonPressHandler,
-    } = props;
-    // console.log('check props  :', props);
+const CoffeeCard = ({
+    productId,
+    quantity,
+    type,
+    size,
+    roasted,
+    imagelink_square,
+    name,
+    special_ingredient,
+    average_rating,
+    price,
+    buttonPressHandler,
+}) => {
+    console.log('check props proID  :', productId);
+
+    console.log('check props quantity  :', quantity);
+    console.log('check props size  :', size);
+
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -59,12 +62,7 @@ const CoffeeCard = (props) => {
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        buttonPressHandler({
-                            productId,
-                            quantity,
-                            size,
-                            name,
-                        });
+                        buttonPressHandler(productId, quantity, size, name);
                     }}
                 >
                     <BGIcon

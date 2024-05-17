@@ -7,6 +7,7 @@ const initialState = {
     CoffeeList: [],
     CartList: [],
     CartPrice: 0,
+    orderDateNow: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
 };
 
 function rootReducer(state = initialState, action) {

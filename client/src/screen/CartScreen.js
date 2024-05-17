@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
 import useStore from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Colors, Spacing } from '../theme/theme';
@@ -19,23 +19,39 @@ const CartScreen = ({ navigation, route }) => {
     const CartList = useSelector((state) => state.CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
 
-    const incrementCartItemQuantity = useStore((state) => state.incrementCartItemQuantity);
-    const decrementCartItemQuantity = useStore((state) => state.decrementCartItemQuantity);
     const calculateCartPrice = useStore((state) => state.calculateCartPrice);
     const tabBarHeight = useBottomTabBarHeight();
-    console.log('check list cartScreen: ', CartList[0]);
+
     const buttonPressHandler = () => {
         navigation.push('Payment', { amount: CartPrice });
     };
 
-    const incrementCartItemQuantityHandler = (id, size) => {
-        incrementCartItemQuantity(id, size);
-        calculateCartPrice();
+    const incrementCartItemQuantityHandler = async (productId, quantity = 1, size, name) => {
+        try {
+            let data = { productId, quantity: 1, size };
+            console.log('check req  :', data);
+            let response = await services.CoffeeCardAddToCartService(data);
+            if (response) {
+                dispatch(actions.getCartListAction());
+                //ToastAndroid.showWithGravity(`${name} is remove from Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
-    const decrementCartItemQuantityHandler = (id, size) => {
-        decrementCartItemQuantity(id, size);
-        calculateCartPrice();
+    const decrementCartItemQuantityHandler = async (productId, quantity, size, name) => {
+        try {
+            let data = { productId, quantity: -1, size };
+            console.log('check req  :', data);
+            let response = await services.CoffeeCardAddToCartService(data);
+            if (response) {
+                dispatch(actions.getCartListAction());
+                //ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
     return (
         <>
@@ -61,13 +77,13 @@ const CartScreen = ({ navigation, route }) => {
                                             key={data.id}
                                         >
                                             <CartItem
-                                                id={data.id}
+                                                productId={data.product_id}
+                                                size={data.size.size}
+                                                quantity={data.quantity}
                                                 name={data.name}
                                                 imagelink_square={data.imagelink_square}
                                                 special_ingredient={data.special_ingredient}
                                                 roasted={data.roasted}
-                                                quantity={data.quantity}
-                                                size={data.size}
                                                 type={data.type}
                                                 incrementCartItemQuantityHandler={incrementCartItemQuantityHandler}
                                                 decrementCartItemQuantityHandler={decrementCartItemQuantityHandler}

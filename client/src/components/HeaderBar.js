@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { Colors, FontSize, Spacing } from '../theme/theme';
 import ProfilePicture from './ProfilePicture';
 import GradientBGIcon from './GradientBGIcon';
 import { useFonts } from 'expo-font';
 
-const HeaderBar = (props) => {
+const HeaderBar = ({ title }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -16,10 +16,11 @@ const HeaderBar = (props) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+
     return (
         <View style={styles.headerContainer}>
             <GradientBGIcon name="menu" color={Colors.primaryLightGreyHex} size={FontSize.size_16} />
-            <Text style={styles.headerText}>{props.title}</Text>
+            <Text style={styles.headerText}>{title}</Text>
             <ProfilePicture />
         </View>
     );

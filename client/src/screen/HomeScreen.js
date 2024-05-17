@@ -77,9 +77,6 @@ const HomeScreen = ({ navigation }) => {
 
     const [searchText, setSearchText] = useState('');
 
-    const CartList = useStore((state) => state.CartList);
-    const addToCart = useStore((state) => state.addToCart);
-
     const ListRef = useRef();
 
     const tabBarHeight = useBottomTabBarHeight();
@@ -106,18 +103,20 @@ const HomeScreen = ({ navigation }) => {
         setSearchText('');
     };
 
-    CoffeeCardAddToCart = async ({ productId, quantity = 2, size = 'M', name }) => {
+    CoffeeCardAddToCart = async (productId, quantity, size, name) => {
         try {
-            let data = { productId, quantity, size };
+            let data = { productId, quantity, size, name };
             console.log('check req  :', data);
             let response = await services.CoffeeCardAddToCartService(data);
             if (response) {
                 ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+                dispatch(actions.getCartListAction());
             }
         } catch (err) {
             console.log(err);
         }
     };
+
     return (
         <View style={styles.ScreenContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewFlex}>
@@ -225,8 +224,8 @@ const HomeScreen = ({ navigation }) => {
                             <CoffeeCard
                                 name={item.name}
                                 productId={item._id}
-                                quantity={2}
-                                size={'M'}
+                                quantity={1}
+                                size={item.prices[1].size}
                                 index={item.index}
                                 type={item.type}
                                 roasted={item.roasted}

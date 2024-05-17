@@ -9,29 +9,40 @@ import CustomIcon from '../components/CustomIcon';
 import useStore from '../store/store';
 import PopUpAnimation from '../components/PopUpAnimation';
 import { useFonts } from 'expo-font';
+import OrderHistoryCard from '../components/OrderHistoryCard';
+import OrderItemCard from '../components/OrderItemCard';
+import ItemPayment from '../components/ItemPayment';
+import { useSelector, useDispatch } from 'react-redux';
 const PaymentList = [
     {
         name: 'Wallet',
         icon: 'icon',
         isIcon: true,
     },
-    // {
-    //     name: 'Google Pay',
-    //     icon: require('../assets/app_images/gpay.png'),
-    //     isIcon: false,
-    // },
-    // {
-    //     name: 'Apple Pay',
-    //     icon: require('../assets/app_images/applepay.png'),
-    //     isIcon: false,
-    // },
+    {
+        name: 'Google Pay',
+        icon: require('../assets/app_images/gpay.png'),
+        isIcon: false,
+    },
+    {
+        name: 'Apple Pay',
+        icon: require('../assets/app_images/applepay.png'),
+        isIcon: false,
+    },
     // {
     //     name: 'Amazon Pay',
     //     icon: require('../assets/app_images/amazonpay.png'),
     //     isIcon: false,
     // },
 ];
-
+//  <OrderHistoryCard
+//      key={1}
+//      navigationHandler={navigationHandler}
+//      CartList={CartList}
+//      CartListPrice={CartPrice}
+//      OrderDate={OrderDate}
+//      type={'ORDER_SCREEN'}
+//  />;
 const PaymentScreen = ({ navigation, route }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -59,7 +70,10 @@ const PaymentScreen = ({ navigation, route }) => {
             navigation.navigate('History');
         }, 2000);
     };
-
+    const CartList = useSelector((state) => state.CartList);
+    const CartPrice = useSelector((state) => state.CartPrice);
+    const OrderDate = useSelector((state) => state.orderDateNow);
+    navigationHandler = () => {};
     return (
         <View style={styles.ScreenContainer}>
             {showAnimation ? (
@@ -80,8 +94,50 @@ const PaymentScreen = ({ navigation, route }) => {
                     <Text style={styles.HeaderText}>Payments</Text>
                     <View style={styles.EmptyView} />
                 </View>
-
+                <View style={styles.orderItemContainer}>
+                    <ItemPayment
+                        key={1}
+                        navigationHandler={navigationHandler}
+                        CartList={CartList}
+                        CartListPrice={CartPrice}
+                        OrderDate={OrderDate}
+                    />
+                </View>
+                <View style={styles.orderItemContainer}>
+                    <Text style={styles.AddressTitle}>Shipping address</Text>
+                    <TouchableOpacity style={styles.addressBox}>
+                        <View style={styles.checkBoxAndNameContainer}>
+                            <Text style={styles.userName}>Đinh Văn Thạch</Text>
+                        </View>
+                        <Text style={styles.userPhone}>Phone: 0846236478</Text>
+                        <Text style={styles.userAddress}>
+                            Kí túc xã Ngoại Ngữ, số 2 Phạm Văn Đồng, Dịch Vọng Hậu, Cầu Giấy, Hà Nội
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.orderItemContainer}>
+                    {/* <Text style={styles.AddressTitle}>Money</Text> */}
+                    <View style={styles.FeeContainer}>
+                        <Text style={styles.FeeTitle}>Subtotal</Text>
+                        <Text style={styles.FeeValue}>$1000</Text>
+                    </View>
+                    <View style={styles.FeeContainer}>
+                        <Text style={styles.FeeTitle}>Shipping fee</Text>
+                        <Text style={styles.FeeValue}>$10</Text>
+                    </View>
+                    <View style={styles.FeeContainer}>
+                        <Text style={styles.FeeTitle}>Voucher discount</Text>
+                        <Text style={styles.FeeValue}>$0</Text>
+                    </View>
+                    <View style={styles.FeeContainer}>
+                        <Text style={styles.TotalFeeTitle}>Oder Total</Text>
+                        <Text style={styles.TotalFeeValue}>$1100</Text>
+                    </View>
+                </View>
                 <View style={styles.PaymentOptionsContainer}>
+                    <View style={styles.MethodContainer}>
+                        <Text style={styles.MethodTitle}>Payment Method</Text>
+                    </View>
                     <TouchableOpacity
                         onPress={() => {
                             setPaymentMode('Credit Card');
@@ -169,11 +225,88 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.primaryBlackHex,
     },
+    FeeContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     LottieAnimation: {
         flex: 1,
     },
+    AddressTitle: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_18,
+        color: Colors.primaryWhiteHex,
+    },
+
+    MethodTitle: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_18,
+        color: Colors.primaryWhiteHex,
+    },
+    FeeTitle: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_16,
+        color: Colors.primaryWhiteHex,
+    },
+    FeeValue: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_14,
+        color: Colors.primaryWhiteHex,
+    },
+    orderItemContainer: {
+        marginHorizontal: Spacing.space_20,
+        marginVertical: Spacing.space_10,
+        padding: Spacing.space_10,
+        flexDirection: 'column',
+        borderRadius: BorderRadius.radius_10 * 2,
+        borderWidth: 1,
+        borderColor: Colors.primaryLightGreyHex,
+    },
+    TotalFeeTitle: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_16,
+        color: Colors.primaryWhiteHex,
+    },
+    TotalFeeValue: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_18,
+        color: Colors.primaryWhiteHex,
+    },
+    ListContainer: {
+        gap: Spacing.space_20,
+    },
+    addressBox: {
+        borderRadius: BorderRadius.radius_25,
+        padding: Spacing.space_15,
+        backgroundColor: Colors.primaryDarkGreyHex,
+    },
+    userPhone: {
+        fontFamily: 'poppins_medium',
+        fontSize: FontSize.size_14,
+        color: Colors.primaryWhiteHex,
+    },
+    userAddress: {
+        fontFamily: 'poppins_medium',
+        fontSize: FontSize.size_14,
+        color: Colors.primaryWhiteHex,
+        marginBottom: Spacing.space_4,
+    },
+    checkBoxAndNameContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    userName: {
+        fontFamily: 'poppins_medium',
+        fontSize: FontSize.size_16,
+        color: Colors.primaryWhiteHex,
+    },
     ScrollViewFlex: {
         flexGrow: 1,
+    },
+    addressContainer: {
+        marginHorizontal: Spacing.space_20,
+        flexDirection: 'column',
+        gap: Spacing.space_12,
     },
     HeaderContainer: {
         paddingHorizontal: Spacing.space_24,
@@ -192,8 +325,13 @@ const styles = StyleSheet.create({
         width: Spacing.space_36,
     },
     PaymentOptionsContainer: {
-        padding: Spacing.space_15,
-        gap: Spacing.space_15,
+        marginHorizontal: Spacing.space_20,
+        marginVertical: Spacing.space_10,
+        padding: Spacing.space_10,
+        borderRadius: BorderRadius.radius_10 * 2,
+        borderWidth: 1,
+        borderColor: Colors.primaryLightGreyHex,
+        gap: Spacing.space_10,
     },
     CreditCardContainer: {
         padding: Spacing.space_10,

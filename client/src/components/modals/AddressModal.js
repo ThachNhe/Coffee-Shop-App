@@ -12,7 +12,6 @@ const AddressModal = ({ modalVisible, pressHandler }) => {
             transparent={true}
             visible={false}
             onRequestClose={() => {
-                // Alert.alert('Modal has been closed.');
                 pressHandler(!modalVisible);
             }}
         >

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageProps, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
@@ -27,11 +27,14 @@ const CartItem = (props) => {
         roasted,
         type,
         incrementCartItemQuantityHandler,
+        productId,
         decrementCartItemQuantityHandler,
     } = props;
-    // console.log('====================================');
-    // console.log('check prop cartitem  :', props);
-    // console.log('====================================');
+    // let [quantityCartItem, setQuantityCartItem] = useState(quantity);
+    console.log('====================================');
+    console.log('check size cartitem  :', size);
+    console.log('====================================');
+
     const image = {
         uri: String(imagelink_square ? imagelink_square : ''),
     };
@@ -125,7 +128,7 @@ const CartItem = (props) => {
                                     },
                                 ]}
                             >
-                                M
+                                {size}
                             </Text>
                         </View>
                         <Text style={styles.SizeCurrency}>
@@ -136,9 +139,9 @@ const CartItem = (props) => {
                     <View style={styles.CartItemSingleQuantityContainer}>
                         <TouchableOpacity
                             style={styles.CartItemIcon}
-                            // onPress={() => {
-                            //     decrementCartItemQuantityHandler(id, prices[0].size);
-                            // }}
+                            onPress={() => {
+                                decrementCartItemQuantityHandler(productId, quantity, size, name);
+                            }}
                         >
                             <CustomIcon name="minus" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
                         </TouchableOpacity>
@@ -147,9 +150,9 @@ const CartItem = (props) => {
                         </View>
                         <TouchableOpacity
                             style={styles.CartItemIcon}
-                            // onPress={() => {
-                            //     incrementCartItemQuantityHandler(id, prices[0].size);
-                            // }}
+                            onPress={() => {
+                                incrementCartItemQuantityHandler(productId, quantity, size, name);
+                            }}
                         >
                             <CustomIcon name="add" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
                         </TouchableOpacity>
