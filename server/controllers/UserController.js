@@ -126,9 +126,17 @@ class UserController {
                 msg: "User not found",
             });
         }
+        const favorites = user.favorite;
+
+        const products = await Product.find({
+            _id: {
+                $in: favorites,
+            }
+        })
+
         return res.status(200).json({
-            errCode:0,
-            favorite: user.favorite,
+            errCode: 0,
+            favorite: products,
         })
     }
 }
