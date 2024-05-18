@@ -8,7 +8,8 @@ class CartController {
     //POST /cart/addToCart
     async addToCart(req, res) {
         try {
-            const userId = req.session.User;
+            // const userId = req.session.User;
+            const userId = "6613d5018c360f7f06ef7a53";
             if (!userId) {
                 return res.status(401).json({
                     msg: "Login first",
@@ -17,6 +18,7 @@ class CartController {
             const productId = req.body.productId;
             const size = req.body.size;
             const quantity = req.body.quantity;
+            console.log(productId);
             const product = await Product.findOne({_id: productId});
             if (!product) {
                 return res.status(404).json({
@@ -24,22 +26,39 @@ class CartController {
                 });
             }
             const existingCart = await Cart.findOne({user_id: userId});
+
             if (existingCart) {
-                await Cart.updateOne(
-                    {user_id: userId},
-                    {
-                        $addToSet: {
-                            products: {
-                                product_id: productId,
-                                quantity: quantity,
-                                size: size,
+
+                const existingProduct = existingCart.products.find((product) =>
+                    product.product_id == productId &&
+                    product.size == size,
+                )
+                console.log(existingProduct);
+
+                if (existingProduct) {
+                    existingProduct.quantity += Number(quantity);
+                    await existingCart.save();
+                    return res.status(200).json({
+                        msg: "Product quantity updated in the cart",
+                    });
+                } else {
+                    await Cart.updateOne(
+                        {user_id: userId},
+                        {
+                            $push: {
+                                products: {
+                                    product_id: productId,
+                                    size: size,
+                                    quantity: quantity
+                                }
                             }
                         },
-                    },
-                );
-                return res.status(200).json({
-                    msg: "Product added to the cart",
-                });
+                        {upsert: true}
+                    );
+                    return res.status(200).json({
+                        msg: "Product added to the cart",
+                    })
+                }
             } else {
                 await Cart.create({
                     user_id: userId,
@@ -60,7 +79,8 @@ class CartController {
 
     //GET /cart/myCart
     async getMyCart(req, res) {
-        return res.json(await getCart(req.session.User));
+        // return res.json(await getCart(req.session.User));
+        return res.json(await getCart("6613d5018c360f7f06ef7a53"));
     }
 }
 
@@ -88,7 +108,11 @@ async function getCart(userId) {
                     user_id: 1,
                     product: {
                         product_id: "$products.product_id",
-                        quantity: "$products.quantity",
+                        name: "$product_info.name",
+                        imagelink_square: "$product_info.imagelink_square",
+                        special_ingredient: "$product_info.special_ingredient",
+                        roasted: "$product_info.roasted",
+                        type: "$product_info.type",
                         size: {
                             $filter: {
                                 input: "$product_info.prices",
@@ -98,6 +122,7 @@ async function getCart(userId) {
                                 },
                             },
                         },
+                        quantity: "$products.quantity",
                     },
                 },
             },

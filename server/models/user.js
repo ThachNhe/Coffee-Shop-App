@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {ObjectId} = require("mongodb");
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -14,7 +15,10 @@ const UserSchema = new Schema({
         type: String,
     },
     address: {
-        type: String,
+        type: [String],
+    },
+    favorite: {
+        type: [ObjectId],
     },
     name: {
         type: String,

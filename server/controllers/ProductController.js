@@ -54,26 +54,45 @@ class ProductController {
 
     //GET /products
     async getAllProducts(req, res) {
-        return res.status(200).json(await queryAllProducts());
+        let products = await queryAllProducts();
+        products = products.map((obj, index) => {
+            return {
+                ...obj,
+                index: index + 1,
+            }
+        })
+        return res.status(200).json(products);
     }
 
     //GET /products/coffee
     async getAllCoffees(req, res) {
         const products = await queryAllProducts();
-        const coffees = products.filter((product) => product.type === "coffee" || product.type === "Coffee");
+        let coffees = products.filter((product) => product.type === "coffee" || product.type === "Coffee");
+        coffees = coffees.map((obj, index) => {
+            return {
+                ...obj,
+                index: index + 1,
+            }
+        })
         return res.status(200).json(coffees);
     }
 
     //GET /products/bean
-        async getAllBeans(req, res) {
-            const products = await queryAllProducts();
-            const beans = products.filter((product) => product.type === "bean" || product.type === "Bean");
-            return res.status(200).json(beans);
-        }
+    async getAllBeans(req, res) {
+        const products = await queryAllProducts();
+        let beans = products.filter((product) => product.type === "bean" || product.type === "Bean");
+        beans = beans.map((obj, index) => {
+            return {
+                ...obj,
+                index: index + 1,
+            }
+        })
+        return res.status(200).json(beans);
+    }
 }
 
 function queryAllProducts() {
-    return Product.aggregate([
+    const products = Product.aggregate([
         {
             $lookup: {
                 from: "reviews",
@@ -98,13 +117,15 @@ function queryAllProducts() {
                     $size: '$reviews',
                 },
                 roasted: 1,
-                image_square: 1,
-                image_portrait: 1,
+                imagelink_square: 1,
+                imagelink_portrait: 1,
                 ingredients: 1,
+                prices: 1,
                 special_ingredient: 1,
             }
         }
     ]);
+    return products;
 }
 
 module.exports = new ProductController();

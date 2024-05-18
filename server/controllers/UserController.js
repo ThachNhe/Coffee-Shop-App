@@ -1,5 +1,7 @@
 const User = require("../models/user");
+const Product = require("../models/product");
 const bcrypt = require("bcrypt");
+const {ObjectId} = require("mongodb");
 
 
 class UserController {
@@ -75,6 +77,145 @@ class UserController {
         }
         return res.status(200).json(user);
     }
+
+    //POST /users/:userId/addToFavorite
+    async addToFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+
+        const productId = req.body.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "Product not found",
+            });
+        }
+
+        const isfFavorite = user.favorite.find(id => id == productId);
+        if (!isfFavorite) {
+            user.favorite.push(productId);
+            await user.save();
+        }
+
+        return res.status(200).json({
+            errorCode: 0,
+            msg: "Add to favorite successfully",
+        });
+    }
+
+    //GET /users/:userId/myFavorite
+    async getMyFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+        const favorites = user.favorite;
+
+        const products = await Product.find({
+            _id: {
+                $in: favorites,
+            }
+        })
+
+        return res.status(200).json({
+            errCode: 0,
+            favorite: products,
+        })
+    }
+
+    //POST /users/:userId/deleteFromFavorite
+    async deleteFromFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+        const favorites = user.favorite;
+
+        const productId = req.body.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "Product not found",
+            });
+        }
+
+        const isfFavorite = favorites.find(id => id == productId);
+        if (!isfFavorite) {
+            return res.status(403).json({
+                errCode: 1,
+                msg: "Product is not in favorite list",
+            });
+        }
+
+        favorites.splice(favorites.indexOf(productId));
+        await user.save();
+        return res.status(200).json({
+            errCode: 0,
+            msg: "Delete from favorite list successfully",
+        });
+
+    }
+
+    //GET /users/:userId/products/:productId
+    async checkIfIsFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+        const favorites = user.favorite;
+
+        const productId = req.params.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "Product not found",
+            });
+        }
+
+        return res.status(200).json({
+            errCode: 0,
+            isFavorite: favorites.includes(productId),
+        })
+    }
+}
+
+function isFavorite(favorites, productId) {
+    return favorites.find(id => id == productId);
 }
 
 module.exports = new UserController();
