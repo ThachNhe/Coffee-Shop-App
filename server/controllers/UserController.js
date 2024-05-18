@@ -114,7 +114,7 @@ class UserController {
         });
     }
 
-    //GET POST /users/:userId/myFavorite
+    //GET /users/:userId/myFavorite
     async getMyFavorite(req, res) {
         const userId = req.params.userId;
         const user = await User.findOne({
@@ -139,6 +139,53 @@ class UserController {
             favorite: products,
         })
     }
+
+    //POST /users/:userId/deleteFromFavorite
+    async deleteFromFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+        const favorites = user.favorite;
+
+        const productId = req.body.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "Product not found",
+            });
+        }
+
+        const isfFavorite = favorites.find(id => id == productId);
+        if (!isfFavorite) {
+            return res.status(403).json({
+                errCode: 1,
+                msg: "Product is not in favorite list",
+            });
+        }
+
+        favorites.splice(favorites.indexOf(productId));
+        await user.save();
+        return res.status(200).json({
+            errCode: 0,
+            msg: "Delete from favorite list successfully",
+        });
+
+    }
+
+}
+
+function isFavorite(favorites, productId) {
+    return favorites.find(id => id == productId);
 }
 
 module.exports = new UserController();
