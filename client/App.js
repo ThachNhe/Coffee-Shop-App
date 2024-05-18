@@ -14,6 +14,7 @@ import CanceledSCreen from './src/screen/CanceledSCreen';
 import { Provider as StoreProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import store from './src/redux/store';
+import QrCodeScreen from './src/screen/QrCodeScreen';
 const Stack = createNativeStackNavigator();
 export default function App() {
     return (
@@ -60,6 +61,11 @@ export default function App() {
                         <Stack.Screen
                             name="Canceled"
                             component={CanceledSCreen}
+                            options={{ animation: 'slide_from_bottom' }}
+                        ></Stack.Screen>
+                        <Stack.Screen
+                            name="QRCode"
+                            component={QrCodeScreen}
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
                     </Stack.Navigator>

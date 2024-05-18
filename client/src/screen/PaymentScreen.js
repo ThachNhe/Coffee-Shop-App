@@ -9,10 +9,9 @@ import CustomIcon from '../components/CustomIcon';
 import useStore from '../store/store';
 import PopUpAnimation from '../components/PopUpAnimation';
 import { useFonts } from 'expo-font';
-import OrderHistoryCard from '../components/OrderHistoryCard';
-import OrderItemCard from '../components/OrderItemCard';
 import ItemPayment from '../components/ItemPayment';
 import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../redux/actions/index';
 const PaymentList = [
     {
         name: 'Wallet',
@@ -35,14 +34,7 @@ const PaymentList = [
     //     isIcon: false,
     // },
 ];
-//  <OrderHistoryCard
-//      key={1}
-//      navigationHandler={navigationHandler}
-//      CartList={CartList}
-//      CartListPrice={CartPrice}
-//      OrderDate={OrderDate}
-//      type={'ORDER_SCREEN'}
-//  />;
+
 const PaymentScreen = ({ navigation, route }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -55,24 +47,27 @@ const PaymentScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    const calculateCartPrice = useStore((state) => state.calculateCartPrice);
-    const addToOrderHistoryListFromCart = useStore((state) => state.addToOrderHistoryListFromCart);
-
     const [paymentMode, setPaymentMode] = useState('Credit Card');
     const [showAnimation, setShowAnimation] = useState(false);
-
-    const buttonPressHandler = () => {
-        setShowAnimation(true);
-        addToOrderHistoryListFromCart();
-        // calculateCartPrice();
-        setTimeout(() => {
-            setShowAnimation(false);
-            navigation.navigate('History');
-        }, 2000);
-    };
     const CartList = useSelector((state) => state.CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const OrderDate = useSelector((state) => state.orderDateNow);
+    const dispatch = useDispatch();
+    const PaymentInfo = useSelector((state) => state.PaymentInfo);
+    const buttonPressHandler = ({ amount, description, returnUrl, cancelUrl }) => {
+        // setShowAnimation(true);
+        // addToOrderHistoryListFromCart();
+        // setTimeout(() => {
+        //     setShowAnimation(false);
+        //     navigation.navigate('History');
+        // }, 2000);
+        dispatch(actions.createLinkPaymentAction({ amount, description, returnUrl, cancelUrl }));
+
+        if (PaymentInfo.qrCode) {
+            navigation.navigate('QRCode');
+        }
+    };
+
     navigationHandler = () => {};
     return (
         <View style={styles.ScreenContainer}>
@@ -119,7 +114,7 @@ const PaymentScreen = ({ navigation, route }) => {
                     {/* <Text style={styles.AddressTitle}>Money</Text> */}
                     <View style={styles.FeeContainer}>
                         <Text style={styles.FeeTitle}>Subtotal</Text>
-                        <Text style={styles.FeeValue}>$1000</Text>
+                        <Text style={styles.FeeValue}>${CartPrice}</Text>
                     </View>
                     <View style={styles.FeeContainer}>
                         <Text style={styles.FeeTitle}>Shipping fee</Text>
@@ -214,6 +209,10 @@ const PaymentScreen = ({ navigation, route }) => {
                 buttonTitle={`Pay with ${paymentMode}`}
                 price={{ price: route.params.amount, currency: '$' }}
                 buttonPressHandler={buttonPressHandler}
+                amount={CartPrice}
+                description={'Test'}
+                returnUrl={'https://www.google.com.vn'}
+                cancelUrl={'https://www.facebook.com'}
             />
         </View>
     );

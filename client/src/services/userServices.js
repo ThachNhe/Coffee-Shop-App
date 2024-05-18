@@ -9,5 +9,7 @@ const CoffeeCardAddToCartService = (body) => {
 const getCartListService = () => {
     return axios.get('/cart/myCart');
 };
-
-export { getCoffeeList, CoffeeCardAddToCartService, getCartListService };
+const createLinkPaymentService = (body) => {
+    return axios.post('/create-payment-link', body);
+};
+export { getCoffeeList, CoffeeCardAddToCartService, getCartListService, createLinkPaymentService };

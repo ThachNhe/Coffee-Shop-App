@@ -8,6 +8,7 @@ const initialState = {
     CartList: [],
     CartPrice: 0,
     orderDateNow: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
+    PaymentInfo: '',
 };
 
 function rootReducer(state = initialState, action) {
@@ -19,6 +20,9 @@ function rootReducer(state = initialState, action) {
         case actionTypes.GET_CART_LIST:
             state.CartList = action.payload.products;
             state.CartPrice = action.payload.cost;
+            return { ...state };
+        case actionTypes.CREATE_LINK_PAYMENT:
+            state.PaymentInfo = action.payload;
             return { ...state };
         default:
             return state;

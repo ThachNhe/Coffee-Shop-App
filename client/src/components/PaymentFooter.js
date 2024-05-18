@@ -3,7 +3,7 @@ import React from 'react';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import { useFonts } from 'expo-font';
 
-const PaymentFooter = ({ price, buttonPressHandler, buttonTitle }) => {
+const PaymentFooter = ({ price, buttonPressHandler, buttonTitle, amount, description, returnUrl, cancelUrl }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -15,7 +15,7 @@ const PaymentFooter = ({ price, buttonPressHandler, buttonTitle }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    
+
     return (
         <View style={styles.PriceFooter}>
             <View style={styles.PriceContainer}>
@@ -24,7 +24,10 @@ const PaymentFooter = ({ price, buttonPressHandler, buttonTitle }) => {
                     {price.currency} <Text style={styles.Price}>{price.price}</Text>
                 </Text>
             </View>
-            <TouchableOpacity style={styles.PayButton} onPress={() => buttonPressHandler()}>
+            <TouchableOpacity
+                style={styles.PayButton}
+                onPress={() => buttonPressHandler({ amount, description, returnUrl, cancelUrl })}
+            >
                 <Text style={styles.ButtonText}>{buttonTitle}</Text>
             </TouchableOpacity>
         </View>
@@ -45,12 +48,12 @@ const styles = StyleSheet.create({
         width: 100,
     },
     PriceTitle: {
-        fontFamily: "poppins_medium",
+        fontFamily: 'poppins_medium',
         fontSize: FontSize.size_14,
         color: Colors.secondaryLightGreyHex,
     },
     PriceText: {
-        fontFamily: "poppins_semibold",
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_24,
         color: Colors.primaryOrangeHex,
     },
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
         borderRadius: BorderRadius.radius_20,
     },
     ButtonText: {
-        fontFamily: "poppins_semibold",
+        fontFamily: 'poppins_semibold',
         fontSize: FontSize.size_18,
         color: Colors.primaryWhiteHex,
     },

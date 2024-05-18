@@ -30,3 +30,18 @@ export const getCartListAction = () => {
         }
     };
 };
+
+export const createLinkPaymentAction = (body) => {
+    return async (dispatch) => {
+        try {
+            console.log('check body payment : ', body);
+            const res = await services.createLinkPaymentService(body);
+            dispatch({
+                type: actionType.CREATE_LINK_PAYMENT,
+                payload: res,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
