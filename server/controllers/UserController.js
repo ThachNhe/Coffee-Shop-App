@@ -182,6 +182,36 @@ class UserController {
 
     }
 
+    //GET /users/:userId/products/:productId
+    async checkIfIsFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+        const favorites = user.favorite;
+
+        const productId = req.params.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "Product not found",
+            });
+        }
+
+        return res.status(200).json({
+            errCode: 0,
+            isFavorite: favorites.includes(productId),
+        })
+    }
 }
 
 function isFavorite(favorites, productId) {
