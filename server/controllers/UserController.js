@@ -1,5 +1,7 @@
 const User = require("../models/user");
+const Product = require("../models/product");
 const bcrypt = require("bcrypt");
+const {ObjectId} = require("mongodb");
 
 
 class UserController {
@@ -74,6 +76,60 @@ class UserController {
             });
         }
         return res.status(200).json(user);
+    }
+
+    //POST /users/:userId/addToFavorite
+    async addToFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+
+        const productId = req.body.productId;
+        const product = await Product.findOne({
+            _id: productId,
+        });
+        if (!product) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "Product not found",
+            });
+        }
+
+        const isfFavorite = user.favorite.find(id => id == productId);
+        if (!isfFavorite) {
+            user.favorite.push(productId);
+            await user.save();
+        }
+
+        return res.status(200).json({
+            errorCode: 0,
+            msg: "Add to favorite successfully",
+        });
+    }
+
+    //GET POST /users/:userId/myFavorite
+    async getMyFavorite(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findOne({
+            _id: userId,
+        });
+        if (!user) {
+            return res.status(404).json({
+                errCode: 1,
+                msg: "User not found",
+            });
+        }
+        return res.status(200).json({
+            errCode:0,
+            favorite: user.favorite,
+        })
     }
 }
 
