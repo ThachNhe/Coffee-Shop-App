@@ -19,6 +19,7 @@ class UserController {
             });
             // res.redirect("/login");
             return res.status(200).json({
+                errorCode: 0,
                 msg: "OK",
             })
         } catch (err) {
@@ -41,7 +42,10 @@ class UserController {
             }
             req.session.User = user._id.toString();
             console.log(req.session);
-            return res.status(200).json(user);
+            return res.status(200).json({
+                errorCode: 0,
+                user,
+            });
         } catch (error) {
             res.status(500).json({error: error.message});
         }
@@ -51,7 +55,10 @@ class UserController {
     //GET /users
     async getAllUsers(req, res) {
         const users = await User.find();
-        return res.status(200).json(users);
+        return res.status(200).json({
+            errorCode: 0,
+            users,
+        });
     }
 
     //GET /logout
@@ -75,7 +82,10 @@ class UserController {
                 msg: "User not found",
             });
         }
-        return res.status(200).json(user);
+        return res.status(200).json({
+            errorCode: 0,
+            user
+        });
     }
 
     //POST /users/:userId/addToFavorite
