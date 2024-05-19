@@ -28,6 +28,7 @@ class ProductController {
                 roasted: roasted,
             });
             return res.status(200).json({
+                errorCode: 0,
                 msg: "OK",
             })
         } catch (e) {
@@ -43,12 +44,13 @@ class ProductController {
         });
         if (!product) {
             return res.status(404).json({
-                message: "Product not found",
+                errorCode: 1,
+                msg: "Product not found",
             });
         }
         return res.status(200).json({
             product,
-            message: "Query successfully",
+            errorCode: 0,
         })
     }
 
@@ -61,7 +63,10 @@ class ProductController {
                 index: index + 1,
             }
         })
-        return res.status(200).json(products);
+        return res.status(200).json({
+            errorCode: 0,
+            products
+        });
     }
 
     //GET /products/coffee
@@ -74,7 +79,10 @@ class ProductController {
                 index: index + 1,
             }
         })
-        return res.status(200).json(coffees);
+        return res.status(200).json({
+            errorCode: 0,
+            coffees
+        });
     }
 
     //GET /products/bean
@@ -87,7 +95,10 @@ class ProductController {
                 index: index + 1,
             }
         })
-        return res.status(200).json(beans);
+        return res.status(200).json({
+            errorCode: 0,
+            beans
+        });
     }
 }
 
