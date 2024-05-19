@@ -86,7 +86,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -97,7 +97,7 @@ class UserController {
         });
         if (!product) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product not found",
             });
         }
@@ -122,7 +122,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -135,7 +135,7 @@ class UserController {
         })
 
         return res.status(200).json({
-            errCode: 0,
+            errorCode: 0,
             favorite: products,
         })
     }
@@ -148,7 +148,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -160,7 +160,7 @@ class UserController {
         });
         if (!product) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product not found",
             });
         }
@@ -168,7 +168,7 @@ class UserController {
         const isfFavorite = favorites.find(id => id == productId);
         if (!isfFavorite) {
             return res.status(403).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product is not in favorite list",
             });
         }
@@ -176,7 +176,7 @@ class UserController {
         favorites.splice(favorites.indexOf(productId));
         await user.save();
         return res.status(200).json({
-            errCode: 0,
+            errorCode: 0,
             msg: "Delete from favorite list successfully",
         });
 
@@ -190,7 +190,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -202,7 +202,7 @@ class UserController {
         });
         if (!product) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product not found",
             });
         }
