@@ -10,7 +10,6 @@ import * as services from '../services/index';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../redux/actions/index';
 const CartScreen = ({ navigation, route }) => {
-    // const CartList = useStore((state) => state.CartList);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(actions.getCartListAction());
@@ -23,7 +22,7 @@ const CartScreen = ({ navigation, route }) => {
     const buttonPressHandler = () => {
         navigation.push('Payment', { amount: CartPrice });
     };
-
+    console.log('check cartlist[0] : ', CartList[0]);
     const incrementCartItemQuantityHandler = async (productId, quantity = 1, size, name) => {
         try {
             let data = { productId, quantity: 1, size };
@@ -77,6 +76,8 @@ const CartScreen = ({ navigation, route }) => {
                                             <CartItem
                                                 productId={data.product_id}
                                                 size={data.size.size}
+                                                price={data.size.price}
+                                                currency={data.size.currency}
                                                 quantity={data.quantity}
                                                 name={data.name}
                                                 imagelink_square={data.imagelink_square}

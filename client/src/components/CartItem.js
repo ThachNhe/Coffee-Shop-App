@@ -29,11 +29,9 @@ const CartItem = (props) => {
         incrementCartItemQuantityHandler,
         productId,
         decrementCartItemQuantityHandler,
+        price,
+        currency,
     } = props;
-    // let [quantityCartItem, setQuantityCartItem] = useState(quantity);
-    console.log('====================================');
-    console.log('check size cartitem  :', size);
-    console.log('====================================');
 
     const image = {
         uri: String(imagelink_square ? imagelink_square : ''),
@@ -132,8 +130,8 @@ const CartItem = (props) => {
                             </Text>
                         </View>
                         <Text style={styles.SizeCurrency}>
-                            {size.currency}
-                            <Text style={styles.SizePrice}> {size.price}</Text>
+                            {currency}
+                            <Text style={styles.SizePrice}> {price}</Text>
                         </Text>
                     </View>
                     <View style={styles.CartItemSingleQuantityContainer}>
@@ -239,7 +237,9 @@ const styles = StyleSheet.create({
         color: Colors.primaryOrangeHex,
     },
     SizePrice: {
+        fontFamily: 'poppins_medium',
         color: Colors.primaryWhiteHex,
+        fontSize: FontSize.size_16,
     },
     CartItemIcon: {
         backgroundColor: Colors.primaryOrangeHex,

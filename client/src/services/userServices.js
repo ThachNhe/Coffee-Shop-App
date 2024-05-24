@@ -1,8 +1,10 @@
 import axios from '../axios';
+const userLoginService = (body) => {
+    return axios.post('/login', body);
+};
 const getCoffeeList = () => {
     return axios.get('/products/coffee');
 };
-
 const AddCoffeeToCartService = (body) => {
     return axios.post('/cart/addToCart', body);
 };
@@ -37,4 +39,5 @@ export {
     addItemToFavourService,
     deleteItemToFavourService,
     isItemFavourService,
+    userLoginService,
 };

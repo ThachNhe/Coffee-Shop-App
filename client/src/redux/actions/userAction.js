@@ -89,3 +89,30 @@ export const clearPaymentInfo = () => {
         }
     };
 };
+
+export const userLoginAction = (body) => {
+    return async (dispatch) => {
+        try {
+            let res = await services.userLoginService(body);
+            console.log('check action login : ', res);
+            dispatch({
+                type: actionType.USER_LOGIN,
+                payload: res,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
+export const userLogoutAction = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({
+                type: actionType.USER_LOGOUT,
+                payload: '',
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};

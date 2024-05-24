@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, StatusBar } from 'react-native';
@@ -15,15 +15,27 @@ import { Provider as StoreProvider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import store from './src/redux/store';
 import QrCodeScreen from './src/screen/QrCodeScreen';
+import LoginScreen from './src/screen/LoginScreen';
+import { useSelector } from 'react-redux';
+
 const Stack = createNativeStackNavigator();
-let userInfo = '';
-export default function App() {
+const App = () => {
+    const [isLogin, setIsLogin] = useState(false);
+    // const userInfo = useSelector((state) => state.userInfo);
+    // useEffect(() => {
+    //     if (userInfo && userInfo.errCode === 0) {
+    //         setIsLogin(true);
+    //     }
+    // }, [userInfo]);
     return (
         <StoreProvider store={store}>
             <PaperProvider>
                 <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" />
+
                 <NavigationContainer>
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
+                        {/* {userInfo && userInfo.errorCode === 0 && isLogin && (
+                            <> */}
                         <Stack.Screen
                             name="Tab"
                             component={TabNavigator}
@@ -69,11 +81,19 @@ export default function App() {
                             component={QrCodeScreen}
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
+                        {/* </> */}
+                        {/* )} */}
+                        <Stack.Screen
+                            name="Login"
+                            component={LoginScreen}
+                            options={{ animation: 'slide_from_bottom' }}
+                        ></Stack.Screen>
                     </Stack.Navigator>
                 </NavigationContainer>
             </PaperProvider>
         </StoreProvider>
     );
-}
+};
 
 const styles = StyleSheet.create({});
+export default App;

@@ -1,11 +1,9 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
-// import { StatusBar } from 'expo-status-bar';
 import HeaderBar from '../components/HeaderBar';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import { Colors, Spacing } from '../theme/theme';
 import { StyleSheet } from 'react-native';
-import useStore from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import FavouriteItemCard from '../components/FavouriteItemCard';
 import { useSelector, useDispatch } from 'react-redux';
@@ -43,7 +41,7 @@ const FavouritesScreen = ({ navigation }) => {
                         ) : (
                             <View style={styles.ListItemContainer}>
                                 {FavouritesList &&
-                                    FavouritesList.map((data) => (
+                                    FavouritesList.map((data, index) => (
                                         <TouchableOpacity
                                             onPress={() => {
                                                 navigation.push('Details', {
@@ -52,7 +50,7 @@ const FavouritesScreen = ({ navigation }) => {
                                                     type: data.type,
                                                 });
                                             }}
-                                            key={data.id}
+                                            key={index}
                                         >
                                             <FavouriteItemCard
                                                 id={data._id}

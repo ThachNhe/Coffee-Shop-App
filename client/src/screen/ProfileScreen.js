@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Colors, FontFamily, FontSize, Spacing, BorderRadius } from '../theme/theme';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../redux/actions/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const ProfileScreen = ({ navigation, route }) => {
+    const dispatch = useDispatch();
     const buttonPressHandler = () => {
         navigation.push('Address');
     };
@@ -21,6 +24,10 @@ const ProfileScreen = ({ navigation, route }) => {
     };
     const pressHandlerRedirectCanceledScreen = () => {
         navigation.navigate('Canceled');
+    };
+    const handlerLogout = () => {
+        dispatch(actions.userLogoutAction());
+        navigation.navigate('Login');
     };
     return (
         <View style={styles.screenContainer}>
@@ -128,7 +135,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={styles.LogoutContainer}>
-                    <TouchableOpacity style={styles.PayButton}>
+                    <TouchableOpacity style={styles.PayButton} onPress={() => handlerLogout()}>
                         <Text style={styles.ButtonText}>Logout</Text>
                     </TouchableOpacity>
                 </View>

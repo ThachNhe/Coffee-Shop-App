@@ -7,5 +7,7 @@ const actionTypes = Object.freeze({
     GET_FAVOURITE_LIST: 'GET_FAVOURITE_LIST',
     IS_ITEM_FAVOUR: 'IS_ITEM_FAVOUR',
     CLEAR_PAYMENT_INFO: 'CLEAR_PAYMENT_INFO',
+    USER_LOGIN: 'USER_LOGIN',
+    USER_LOGOUT: 'USER_LOGOUT',
 });
 export default actionTypes;

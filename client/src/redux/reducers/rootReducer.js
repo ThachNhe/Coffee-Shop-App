@@ -11,6 +11,7 @@ const initialState = {
     PaymentInfo: '',
     FavourList: [],
     isItemFavour: false,
+    userInfo: '',
 };
 
 function rootReducer(state = initialState, action) {
@@ -21,9 +22,7 @@ function rootReducer(state = initialState, action) {
         case actionTypes.GET_CART_LIST:
             state.CartList = action.payload.products;
             state.CartPrice = action.payload.cost;
-            console.log('====================================');
-            console.log('redux cartList  :', state.CartList);
-            console.log('====================================');
+
             return { ...state };
         case actionTypes.CREATE_LINK_PAYMENT:
             state.PaymentInfo = action.payload;
@@ -37,6 +36,12 @@ function rootReducer(state = initialState, action) {
         case actionTypes.IS_ITEM_FAVOUR:
             state.isItemFavour = action.payload;
             return { ...state };
+        case actionTypes.USER_LOGIN:
+            state.userInfo = action.payload;
+            return { ...state, isLogin: true };
+        case actionTypes.USER_LOGOUT:
+            state.userInfo = action.payload;
+            return { ...state, isLogin: false };
         default:
             return state;
     }
