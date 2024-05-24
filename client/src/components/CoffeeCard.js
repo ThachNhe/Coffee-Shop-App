@@ -21,10 +21,10 @@ const CoffeeCard = ({
     price,
     buttonPressHandler,
 }) => {
-    console.log('check props proID  :', productId);
+    // console.log('check props proID  :', productId);
 
-    console.log('check props quantity  :', quantity);
-    console.log('check props size  :', size);
+    // console.log('check props quantity  :', quantity);
+    // console.log('check props size  :', size);
 
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),

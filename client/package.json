@@ -25,6 +25,7 @@
     "immer": "^10.0.4",
     "lodash.remove": "^4.7.0",
     "lottie-react-native": "^6.7.0",
+    "payos-checkout": "^1.0.7",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-asset": "^2.1.1",

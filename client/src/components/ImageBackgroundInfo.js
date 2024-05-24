@@ -15,6 +15,7 @@ const ImageBackgroundInfo = ({
     average_rating,
     ratings_count,
     roasted,
+    productId,
     BackHandler,
     ToggleFavourite,
 }) => {
@@ -35,7 +36,7 @@ const ImageBackgroundInfo = ({
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                ToggleFavourite(favourite, type, id);
+                                ToggleFavourite(productId, favourite);
                             }}
                         >
                             <GradientBGIcon
@@ -49,7 +50,7 @@ const ImageBackgroundInfo = ({
                     <View style={styles.ImageHeaderBarContainerWithoutBack}>
                         <TouchableOpacity
                             onPress={() => {
-                                ToggleFavourite(favourite, type, id);
+                                ToggleFavourite(productId, favourite);
                             }}
                         >
                             <GradientBGIcon

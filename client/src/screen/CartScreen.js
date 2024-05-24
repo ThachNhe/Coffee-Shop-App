@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StatusBar, StyleSheet, Text, View, TouchableOpacity, ToastAndroid } from 'react-native';
-import useStore from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { Colors, Spacing } from '../theme/theme';
 import HeaderBar from '../components/HeaderBar';
@@ -17,9 +16,8 @@ const CartScreen = ({ navigation, route }) => {
         dispatch(actions.getCartListAction());
     }, [dispatch]);
     const CartList = useSelector((state) => state.CartList);
+    console.log('check cartScreen : ', CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
-
-    const calculateCartPrice = useStore((state) => state.calculateCartPrice);
     const tabBarHeight = useBottomTabBarHeight();
 
     const buttonPressHandler = () => {
@@ -30,7 +28,7 @@ const CartScreen = ({ navigation, route }) => {
         try {
             let data = { productId, quantity: 1, size };
             console.log('check req  :', data);
-            let response = await services.CoffeeCardAddToCartService(data);
+            let response = await services.AddCoffeeToCartService(data);
             if (response) {
                 dispatch(actions.getCartListAction());
                 //ToastAndroid.showWithGravity(`${name} is remove from Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
@@ -44,7 +42,7 @@ const CartScreen = ({ navigation, route }) => {
         try {
             let data = { productId, quantity: -1, size };
             console.log('check req  :', data);
-            let response = await services.CoffeeCardAddToCartService(data);
+            let response = await services.AddCoffeeToCartService(data);
             if (response) {
                 dispatch(actions.getCartListAction());
                 //ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);

@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation }) => {
         dispatch(actions.getCoffeeListAction());
     }, [dispatch]);
     const CoffeeList = useSelector((state) => state.CoffeeList);
-    // console.log('check CoffeeList homeScreen : ', CoffeeList.CoffeeList);
+    console.log('check CoffeeList homeScreen : ', CoffeeList.CoffeeList);
 
     const getCoffeeList = (category, data) => {
         if (category === 'All') {
@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation }) => {
         try {
             let data = { productId, quantity, size, name };
             console.log('check req  :', data);
-            let response = await services.CoffeeCardAddToCartService(data);
+            let response = await services.AddCoffeeToCartService(data);
             if (response) {
                 ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
                 dispatch(actions.getCartListAction());
@@ -257,7 +257,7 @@ const HomeScreen = ({ navigation }) => {
                                 });
                             }}
                         >
-                            {/* <CoffeeCard
+                            <CoffeeCard
                                 name={item.name}
                                 id={item.id}
                                 index={item.index}
@@ -266,9 +266,9 @@ const HomeScreen = ({ navigation }) => {
                                 imagelink_square={item.imagelink_square}
                                 special_ingredient={item.special_ingredient}
                                 average_rating={item.average_rating}
-                                price={5}
-                                buttonPressHandler={CoffeCardAddToCart}
-                            /> */}
+                                price={{ price: 6 }}
+                                // buttonPressHandler={CoffeCardAddToCart}
+                            />
                         </TouchableOpacity>
                     )}
                 />

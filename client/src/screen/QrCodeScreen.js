@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import GradientBGIcon from '../components/GradientBGIcon';
-import PaymentMethod from '../components/PaymentMethod';
-import PaymentFooter from '../components/PaymentFooter';
-import { LinearGradient } from 'expo-linear-gradient';
-import CustomIcon from '../components/CustomIcon';
-import useStore from '../store/store';
 import PopUpAnimation from '../components/PopUpAnimation';
 import { useFonts } from 'expo-font';
-import { Canvas, Path } from 'react-native-canvas';
 import QRCode from 'react-native-qrcode-svg';
 import { useSelector, useDispatch } from 'react-redux';
-
+import * as services from '../services/index';
+import * as actions from '../redux/actions/index';
 const QrCodeScreen = ({ navigation, route }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -25,11 +20,46 @@ const QrCodeScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    const dispatch = useDispatch();
     const [showAnimation, setShowAnimation] = useState(false);
+    const [statusPayment, setStatusPayment] = useState('');
     const PaymentInfo = useSelector((state) => state.PaymentInfo);
 
-    console.log('check paymentInfo :', PaymentInfo);
-    navigationHandler = () => {};
+    useEffect(() => {
+        // Hàm gọi API
+        const fetchData = async () => {
+            try {
+                let paymentStatus = await services.getStatusPaymentService(PaymentInfo.orderCode);
+                setStatusPayment(paymentStatus.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                console.log('check paymentInfo :', PaymentInfo.orderCode);
+                let paymentStatus = await services.getStatusPaymentService(PaymentInfo.orderCode);
+                console.log('check payment info OKOKOKO  :', paymentStatus);
+                setStatusPayment(paymentStatus.data);
+                if (statusPayment && statusPayment.status === 'PAID') {
+                    navigation.navigate('Cart');
+                    dispatch(actions.clearPaymentInfo());
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        const intervalId = setInterval(fetchData, 3000);
+
+        return () => {
+            // dispatch(actions.clearPaymentInfo());
+            clearInterval(intervalId);
+        };
+    }, [statusPayment]);
     return (
         <View style={styles.ScreenContainer}>
             {showAnimation ? (
@@ -49,25 +79,12 @@ const QrCodeScreen = ({ navigation, route }) => {
                 <View style={styles.EmptyView} />
             </View>
             <View style={styles.QRCodeContainer}>
+                <Text style={styles.testText}>{PaymentInfo.orderCode}</Text>
                 {PaymentInfo && PaymentInfo.qrCode && (
                     <View style={styles.QRCodeBox}>
                         <QRCode value={PaymentInfo.qrCode} size={200} />
                     </View>
                 )}
-
-                {/* <Canvas
-                    context={{
-                        size: 100,
-                        value: 'value',
-                        bgColor: 'white',
-                        fgColor: 'black',
-                        cells: qr('value').modules,
-                    }}
-                    render={renderCanvas}
-                    // onLoad={this.props.onLoad}
-                    // onLoadEnd={this.props.onLoadEnd}
-                    style={{ height: 100, width: 100 }}
-                /> */}
             </View>
         </View>
     );
@@ -81,6 +98,11 @@ const styles = StyleSheet.create({
     },
     LottieAnimation: {
         flex: 1,
+    },
+    testText: {
+        fontFamily: 'poppins_semibold',
+        fontSize: FontSize.size_20,
+        color: Colors.primaryBlackHex,
     },
     HeaderContainer: {
         paddingHorizontal: Spacing.space_24,

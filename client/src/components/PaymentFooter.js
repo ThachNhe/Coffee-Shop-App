@@ -15,7 +15,7 @@ const PaymentFooter = ({ price, buttonPressHandler, buttonTitle, amount, descrip
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-
+    // let amountTotal = amount * 100;
     return (
         <View style={styles.PriceFooter}>
             <View style={styles.PriceContainer}>

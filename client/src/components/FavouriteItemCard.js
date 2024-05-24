@@ -8,6 +8,7 @@ const FavouriteItemCard = ({
     id,
     imagelink_portrait,
     name,
+    productId,
     type,
     average_rating,
     special_ingredient,
@@ -47,6 +48,7 @@ const FavouriteItemCard = ({
                 ratings_count={ratings_count}
                 roasted={roasted}
                 ToggleFavourite={ToggleFavouriteItem}
+                productId={productId}
             />
             <LinearGradient
                 start={{ x: 0, y: 0 }}

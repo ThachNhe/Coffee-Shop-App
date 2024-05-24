@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import GradientBGIcon from '../components/GradientBGIcon';
@@ -6,7 +6,6 @@ import PaymentMethod from '../components/PaymentMethod';
 import PaymentFooter from '../components/PaymentFooter';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
-import useStore from '../store/store';
 import PopUpAnimation from '../components/PopUpAnimation';
 import { useFonts } from 'expo-font';
 import ItemPayment from '../components/ItemPayment';
@@ -54,18 +53,17 @@ const PaymentScreen = ({ navigation, route }) => {
     const OrderDate = useSelector((state) => state.orderDateNow);
     const dispatch = useDispatch();
     const PaymentInfo = useSelector((state) => state.PaymentInfo);
-    const buttonPressHandler = ({ amount, description, returnUrl, cancelUrl }) => {
-        // setShowAnimation(true);
-        // addToOrderHistoryListFromCart();
-        // setTimeout(() => {
-        //     setShowAnimation(false);
-        //     navigation.navigate('History');
-        // }, 2000);
-        dispatch(actions.createLinkPaymentAction({ amount, description, returnUrl, cancelUrl }));
-
+    useEffect(() => {
         if (PaymentInfo.qrCode) {
             navigation.navigate('QRCode');
         }
+    }, [PaymentInfo]);
+    // console.log('payment info : ', PaymentInfo);
+    const buttonPressHandler = ({ amount, description, returnUrl, cancelUrl }) => {
+        dispatch(actions.createLinkPaymentAction({ amount, description, returnUrl, cancelUrl }));
+        // if (PaymentInfo.qrCode) {
+        //     navigation.navigate('QRCode');
+        // }
     };
 
     navigationHandler = () => {};
@@ -209,7 +207,7 @@ const PaymentScreen = ({ navigation, route }) => {
                 buttonTitle={`Pay with ${paymentMode}`}
                 price={{ price: route.params.amount, currency: '$' }}
                 buttonPressHandler={buttonPressHandler}
-                amount={CartPrice}
+                amount={CartPrice * 10}
                 description={'Test'}
                 returnUrl={'https://www.google.com.vn'}
                 cancelUrl={'https://www.facebook.com'}

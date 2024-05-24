@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect } from 'react';
+// import { StatusBar } from 'expo-status-bar';
 import HeaderBar from '../components/HeaderBar';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import { Colors, Spacing } from '../theme/theme';
@@ -8,15 +8,28 @@ import { StyleSheet } from 'react-native';
 import useStore from '../store/store';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import FavouriteItemCard from '../components/FavouriteItemCard';
-
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../redux/actions/index';
+import * as services from '../services/index';
 const FavouritesScreen = ({ navigation }) => {
-    const FavouritesList = useStore((state) => state.FavouritesList);
-    // console.log('FavouriteList : ', FavouritesList);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(actions.getFavouriteListAction());
+    }, [dispatch]);
+    const FavouritesList = useSelector((state) => state.FavourList.favorite);
     const tabBarHeight = useBottomTabBarHeight();
-    const addToFavouriteList = useStore((state) => state.addToFavouriteList);
-    const deleteFromFavouriteList = useStore((state) => state.deleteFromFavouriteList);
-    const ToggleFavourite = (favourite, type, id) => {
-        favourite ? deleteFromFavouriteList(type, id) : addToFavouriteList(type, id);
+
+    const ToggleFavourite = async (productId, favorite) => {
+        let data = { productId: productId };
+        try {
+            let res = await services.deleteItemToFavourService(data);
+            console.log('check res : ', res);
+            if (res && res.errorCode === 0) {
+                dispatch(actions.getFavouriteListAction());
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <View style={styles.ScreenContainer}>
@@ -25,37 +38,39 @@ const FavouritesScreen = ({ navigation }) => {
                     <View style={styles.ItemContainer}>
                         <HeaderBar title="Favourites" />
 
-                        {FavouritesList.length == 0 ? (
+                        {FavouritesList && FavouritesList.length == 0 ? (
                             <EmptyListAnimation title={'No Favourites'} />
                         ) : (
                             <View style={styles.ListItemContainer}>
-                                {FavouritesList.map((data) => (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            navigation.push('Details', {
-                                                index: data.index,
-                                                id: data.id,
-                                                type: data.type,
-                                            });
-                                        }}
-                                        key={data.id}
-                                    >
-                                        <FavouriteItemCard
-                                            id={data.id}
-                                            imagelink_portrait={data.imagelink_portrait}
-                                            name={data.name}
-                                            special_ingredient={data.special_ingredient}
-                                            type={data.type}
-                                            ingredients={data.ingredients}
-                                            average_rating={data.average_rating}
-                                            ratings_count={data.ratings_count}
-                                            roasted={data.roasted}
-                                            description={data.description}
-                                            favourite={data.favourite}
-                                            ToggleFavouriteItem={ToggleFavourite}
-                                        />
-                                    </TouchableOpacity>
-                                ))}
+                                {FavouritesList &&
+                                    FavouritesList.map((data) => (
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                navigation.push('Details', {
+                                                    index: data.index,
+                                                    id: data._id,
+                                                    type: data.type,
+                                                });
+                                            }}
+                                            key={data.id}
+                                        >
+                                            <FavouriteItemCard
+                                                id={data._id}
+                                                imagelink_portrait={data.imagelink_portrait}
+                                                name={data.name}
+                                                special_ingredient={data.special_ingredient}
+                                                type={data.type}
+                                                ingredients={data.ingredients}
+                                                average_rating={data.average_rating}
+                                                ratings_count={0}
+                                                roasted={data.roasted}
+                                                description={data.description}
+                                                favourite={true}
+                                                productId={data._id}
+                                                ToggleFavouriteItem={ToggleFavourite}
+                                            />
+                                        </TouchableOpacity>
+                                    ))}
                             </View>
                         )}
                     </View>

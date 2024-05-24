@@ -16,6 +16,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import store from './src/redux/store';
 import QrCodeScreen from './src/screen/QrCodeScreen';
 const Stack = createNativeStackNavigator();
+let userInfo = '';
 export default function App() {
     return (
         <StoreProvider store={store}>

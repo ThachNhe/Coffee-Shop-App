@@ -1,6 +1,5 @@
 import { View, Text, ScrollView, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import useStore from '../store/store';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import { TouchableOpacity } from 'react-native';
 import PaymentFooter from '../components/PaymentFooter';
@@ -8,6 +7,7 @@ import { useFonts } from 'expo-font';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import { useSelector, useDispatch } from 'react-redux';
 import * as services from '../services/index';
+import * as actions from '../redux/actions/index';
 const DetailsScreen = ({ navigation, route }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -20,40 +20,54 @@ const DetailsScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    console.log('route.params', route.params);
-    const CoffeeList = useSelector((state) => state.CoffeeList);
+    useEffect(() => {
+        dispatch(actions.isItemFavourAction(route.params.id));
+    }, [dispatch]);
+    const dispatch = useDispatch();
 
+    const CoffeeList = useSelector((state) => state.CoffeeList);
+    const isFavourite = useSelector((state) => state.isItemFavour.isFavorite);
+    console.log('isFavourite : ', isFavourite);
     const itemOfIndex = CoffeeList.find((coffee) => coffee._id === route.params.id);
-    console.log('itemOfIndex.imagelink_portraitOKO : ', itemOfIndex.imagelink_portrait);
-    const addToFavouriteList = useStore((state) => state.addToFavouriteList);
-    const deleteFromFavouriteList = useStore((state) => state.deleteFromFavouriteList);
-    const addToCart = useStore((state) => state.addToCart);
-    const calculateCartPrice = useStore((state) => state.calculateCartPrice);
-    // const [price, setPrice] = useState(itemOfIndex.prices[0]);
-    const [price, setPrice] = useState({ price: 5 });
+    const [price, setPrice] = useState(itemOfIndex.prices[0]);
     const [fullDesc, setFullDesc] = useState(false);
 
-    const ToggleFavourite = (favourite, type, id) => {
-        favourite ? deleteFromFavouriteList(type, id) : addToFavouriteList(type, id);
+    const ToggleFavourite = async (productId, favourite) => {
+        let data = { productId: productId };
+        console.log('check body love  :', data);
+        console.log('check favour  :', favourite);
+        try {
+            let res = '';
+            if (favourite === false) {
+                res = await services.addItemToFavourService(data);
+                dispatch(actions.isItemFavourAction(route.params.id));
+            } else {
+                res = await services.deleteItemToFavourService(data);
+                dispatch(actions.isItemFavourAction(route.params.id));
+            }
+            console.log('check res : ', res);
+            if (res && res.errorCode === 0) {
+                dispatch(actions.getFavouriteListAction());
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const backHandler = () => {
         navigation.pop();
     };
 
-    const addToCartHandler = ({ id, index, name, roasted, imagelink_square, special_ingredient, type, price }) => {
-        // addToCart({
-        //     id,
-        //     index,
-        //     name,
-        //     roasted,
-        //     imagelink_square,
-        //     special_ingredient,
-        //     type,
-        //     prices: [{ ...price, quantity: 1 }],
-        // });
-        // calculateCartPrice();
-        // navigation.navigate('Cart');
+    const addToCartHandler = async (data) => {
+        // let data = { productId, quantity, size };
+        try {
+            let res = await services.AddCoffeeToCartService(data);
+            dispatch(actions.getCartListAction());
+            console.log('res.msg : ', res);
+        } catch (e) {
+            console.log(e);
+        }
+        console.log('check req : ', data);
     };
     return (
         <View style={styles.screenContainer}>
@@ -63,7 +77,7 @@ const DetailsScreen = ({ navigation, route }) => {
                     imagelink_portrait={itemOfIndex.imagelink_portrait}
                     type={itemOfIndex.type}
                     id={itemOfIndex.id}
-                    favourite={itemOfIndex.favourite}
+                    favourite={isFavourite}
                     name={itemOfIndex.name}
                     special_ingredient={itemOfIndex.special_ingredient}
                     ingredients={itemOfIndex.ingredients}
@@ -71,6 +85,7 @@ const DetailsScreen = ({ navigation, route }) => {
                     ratings_count={itemOfIndex.ratings_count}
                     roasted={itemOfIndex.roasted}
                     BackHandler={backHandler}
+                    productId={itemOfIndex._id}
                     ToggleFavourite={ToggleFavourite}
                 />
 
@@ -139,14 +154,9 @@ const DetailsScreen = ({ navigation, route }) => {
                     buttonTitle="Add to Cart"
                     buttonPressHandler={() => {
                         addToCartHandler({
-                            id: itemOfIndex.id,
-                            index: itemOfIndex.index,
-                            name: itemOfIndex.name,
-                            roasted: itemOfIndex.roasted,
-                            imagelink_square: itemOfIndex.imagelink_square,
-                            special_ingredient: itemOfIndex.special_ingredient,
-                            type: itemOfIndex.type,
-                            price: price,
+                            productId: itemOfIndex._id,
+                            quantity: 1,
+                            size: price.size,
                         });
                     }}
                 />
