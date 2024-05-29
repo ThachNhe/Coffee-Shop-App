@@ -8,14 +8,15 @@ class UserController {
     //POST /register
     async register(req, res) {
         try {
-            const {email, password, phone, address, name} = req.body;
+            const {email, password, phone, address, name, role} = req.body;
             const hashedPassword = await bcrypt.hash(password, 10);
             await User.create({
                 email,
                 password: hashedPassword,
                 phone,
                 address,
-                name
+                name,
+                role,
             });
             // res.redirect("/login");
             return res.status(200).json({
