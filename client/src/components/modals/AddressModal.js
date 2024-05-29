@@ -1,152 +1,166 @@
-import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity, TextInput } from 'react-native';
-import { Colors, BorderRadius, Spacing, FontSize } from '../../theme/theme';
-const AddressModal = ({ modalVisible, pressHandler }) => {
-    let [fullName, setFullName] = useState('');
-    let [phone, setPhone] = useState(0);
-    let [address, setAddress] = useState('');
-    return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={false}
-            onRequestClose={() => {
-                pressHandler(!modalVisible);
-            }}
-        >
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Add Address</Text>
-                    <View style={styles.inputContainerComponent}>
-                        <View>
-                            <Text style={styles.textInputLabel}>Full Name</Text>
-                            <TextInput
-                                placeholder="Find Your Coffee ..."
-                                value={'Đinh văn Thạch'}
-                                onChangeText={(text) => {
-                                    fullName(text);
-                                }}
-                                placeholderTextColor={Colors.primaryLightGreyHex}
-                                style={styles.textInputContainer}
-                            ></TextInput>
-                        </View>
-                        <View>
-                            <Text style={styles.textInputLabel}>Your phone</Text>
-                            <TextInput
-                                placeholder="your phone ..."
-                                value={'089834598345'}
-                                onChangeText={(text) => {
-                                    fullName(text);
-                                }}
-                                placeholderTextColor={Colors.primaryLightGreyHex}
-                                style={styles.textInputContainer}
-                            ></TextInput>
-                        </View>
-                        <View>
-                            <Text style={styles.textInputLabel}>Your address</Text>
-                            <TextInput
-                                placeholder="Find Your Coffee ..."
-                                value={'Kí túc xã ngoại ngữ, số 2 phạm văn đồng,cầu giấy, HN'}
-                                onChangeText={(text) => {
-                                    fullName(text);
-                                }}
-                                placeholderTextColor={Colors.primaryLightGreyHex}
-                                style={styles.textInputContainer}
-                            ></TextInput>
-                        </View>
-                        <TouchableOpacity
-                            style={styles.DownloadButton}
-                            // onPress={() => {
-                            //     buttonPressHandler();
-                            // }}
-                        >
-                            <Text style={styles.ButtonText}>Add</Text>
-                        </TouchableOpacity>
-                    </View>
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
+import Modal from 'react-native-modal';
+import { Tab, TabView } from 'react-native-elements';
+import { Colors, Spacing } from '../../theme/theme';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../redux/actions/index';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const AddressModal = ({ ProvincesList, DistrictList, WardList, isModalVisible, toggleModal }) => {
+    const dispatch = useDispatch();
+
+    const [selectedTab, setSelectedTab] = useState(0);
+    const [province, setProvince] = useState('');
+    const [district, setDistrict] = useState('');
+    const [ward, setWard] = useState('');
+    useEffect(() => {
+        // console.log('userOKOKOOOo');
+        if (province && province.ProvinceID) {
+            dispatch(actions.getDistrictAction(province.ProvinceID));
+        }
+        if (district && district.DistrictID) {
+            dispatch(actions.getWardAction(district.DistrictID));
+        }
+        if (province && district && ward) {
+            let data = { province: province.ProvinceName, district: district.DistrictName, ward: ward.WardName };
+            dispatch(actions.pushAddressToFormAction(data));
+            closeModal();
+        }
+    }, [province, district, ward]);
+
+    const handleProvinceSelect = (item) => {
+        setSelectedTab(1);
+        setProvince(item);
+    };
+
+    const handleDistrictSelect = (item) => {
+        setSelectedTab(2);
+        setDistrict(item);
+    };
+
+    const renderItem = ({ item }) => (
+        <>
+            <TouchableOpacity onPress={() => handleProvinceSelect(item)}>
+                <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', color: 'white' }}>
+                    <Text style={{ color: 'white' }}>{item.ProvinceName}</Text>
                 </View>
-            </View>
-        </Modal>
+            </TouchableOpacity>
+        </>
+    );
+    const renderItemDistrict = ({ item }) => (
+        <>
+            <TouchableOpacity onPress={() => handleDistrictSelect(item)}>
+                <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', color: 'white' }}>
+                    <Text style={{ color: 'white' }}>{item.DistrictName}</Text>
+                </View>
+            </TouchableOpacity>
+        </>
+    );
+    const renderItemWard = ({ item }) => (
+        <>
+            <TouchableOpacity onPress={() => setWard(item)}>
+                <View style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc', color: 'white' }}>
+                    <Text style={{ color: 'white' }}>{item.WardName}</Text>
+                </View>
+            </TouchableOpacity>
+        </>
+    );
+    closeModal = () => {
+        setProvince('');
+        setDistrict('');
+        setWard('');
+        toggleModal();
+        dispatch(actions.clearAddressAction());
+        setSelectedTab(0);
+    };
+    console.log('check province :', province);
+    console.log('check district :', district);
+    console.log('check ward :', province);
+    return (
+        <View contentContainerStyle={styles.container}>
+            <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+                <TouchableOpacity
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                    onPress={() => closeModal()}
+                >
+                    <Icon name="minus" size={24} color={Colors.primaryOrangeHex} />
+                </TouchableOpacity>
+                <Tab value={selectedTab} onChange={setSelectedTab}>
+                    <Tab.Item title="Province" titleStyle={styles.TitleStyle} containerStyle={styles.ContainerStyle} />
+                    <Tab.Item title="District" titleStyle={styles.TitleStyle} containerStyle={styles.ContainerStyle} />
+                    <Tab.Item title="Ward" titleStyle={styles.TitleStyle} containerStyle={styles.ContainerStyle} />
+                </Tab>
+                <View style={styles.modalContent}>
+                    <TabView
+                        value={selectedTab}
+                        onChange={setSelectedTab}
+                        // containerStyle={{ flex: 1, backgroundColor: 'red' }}
+                        style={{ flex: 1 }}
+                    >
+                        <TabView.Item style={styles.tabView}>
+                            <FlatList
+                                data={ProvincesList}
+                                keyExtractor={(item) => item.ProvinceID.toString()}
+                                renderItem={renderItem}
+                                showsHorizontalScrollIndicator={false}
+                            />
+                        </TabView.Item>
+                        <TabView.Item style={styles.tabView}>
+                            <FlatList
+                                data={DistrictList}
+                                keyExtractor={(item) => item.DistrictID.toString()}
+                                renderItem={renderItemDistrict}
+                            />
+                        </TabView.Item>
+                        <TabView.Item style={styles.tabView}>
+                            <FlatList
+                                data={WardList}
+                                keyExtractor={(item) => item.WardName.toString()}
+                                renderItem={renderItemWard}
+                            />
+                        </TabView.Item>
+                    </TabView>
+                </View>
+            </Modal>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    centeredView: {
+    container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
+        // backgroundColor: Colors.primaryDarkGreyHex,
+    },
 
-        backgroundColor: 'rgba(53, 51, 52, 0.05)',
-    },
-    DownloadButton: {
-        margin: Spacing.space_20,
-        backgroundColor: Colors.primaryOrangeHex,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Spacing.space_24 * 2,
-        borderRadius: BorderRadius.radius_20,
-        width: Spacing.space_36 * 6,
-    },
-    ButtonText: {
-        fontFamily: 'poppins_semibold',
-        fontSize: FontSize.size_18,
-        color: Colors.primaryWhiteHex,
-    },
-    inputContainerComponent: {
-        flexDirection: 'column',
-        // margin: Spacing.space_20,
-        borderRadius: BorderRadius.radius_20,
-        alignItems: 'center',
-        gap: Spacing.space_10,
-    },
-    textInputContainer: {
-        height: Spacing.space_20 * 3,
-        width: Spacing.space_36 * 8,
-        fontFamily: 'poppins_medium',
-        fontSize: FontSize.size_14,
-        color: Colors.primaryWhiteHex,
+    ContainerStyle: {
         backgroundColor: Colors.primaryDarkGreyHex,
-        borderRadius: Spacing.space_10,
-        paddingHorizontal: Spacing.space_10,
     },
-    modalView: {
-        width: Spacing.space_36 * 10,
-        backgroundColor: Colors.primaryGreyHex,
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
     },
-    button: {
-        borderRadius: 20,
+    modalContent: {
+        // backgroundColor: 'red',
+        flex: 1,
+    },
+    TitleStyle: {
+        color: Colors.textInputColor,
+        fontSize: Spacing.space_12,
+    },
+    tabView: {
+        flex: 1,
+        width: '80%',
+        // height: 200,
+    },
+    item: {
         padding: 10,
-        elevation: 2,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        fontFamily: 'poppins_semibold',
-        fontSize: FontSize.size_18,
+        fontSize: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
         color: Colors.primaryWhiteHex,
-        marginBottom: Spacing.space_10,
-    },
-    textInputLabel: {
-        fontFamily: 'poppins_semibold',
-        fontSize: FontSize.size_14,
-        color: Colors.primaryDarkGreyHex,
-        marginBottom: Spacing.space_10,
     },
 });
 

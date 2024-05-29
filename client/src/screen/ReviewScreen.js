@@ -79,31 +79,6 @@ const ReviewScreen = ({ navigation, route }) => {
                                         </View>
                                     );
                                 })}
-
-                            {/* <View style={styles.progressDetail}>
-                                <Text style={styles.numberOfStart}>2</Text>
-                                <View style={styles.progressBar}>
-                                    <Progress.Bar progress={0.3} width={200} />
-                                </View>
-                            </View>
-                            <View style={styles.progressDetail}>
-                                <Text style={styles.numberOfStart}>3</Text>
-                                <View style={styles.progressBar}>
-                                    <Progress.Bar progress={0.3} width={200} />
-                                </View>
-                            </View>
-                            <View style={styles.progressDetail}>
-                                <Text style={styles.numberOfStart}>4</Text>
-                                <View style={styles.progressBar}>
-                                    <Progress.Bar progress={0.3} width={200} />
-                                </View>
-                            </View>
-                            <View style={styles.progressDetail}>
-                                <Text style={styles.numberOfStart}>5</Text>
-                                <View style={styles.progressBar}>
-                                    <Progress.Bar progress={0.3} width={250} />
-                                </View>
-                            </View> */}
                         </View>
                     </View>
                     <ScrollView>

@@ -18,6 +18,7 @@ import QrCodeScreen from './src/screen/QrCodeScreen';
 import LoginScreen from './src/screen/LoginScreen';
 import { useSelector } from 'react-redux';
 import ReviewScreen from './src/screen/ReviewScreen';
+import AddAddressScreen from './src/screen/AddAddressScreen';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -35,8 +36,6 @@ const App = () => {
 
                 <NavigationContainer>
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
-                        {/* {userInfo && userInfo.errorCode === 0 && isLogin && (
-                            <> */}
                         <Stack.Screen
                             name="Tab"
                             component={TabNavigator}
@@ -82,8 +81,7 @@ const App = () => {
                             component={QrCodeScreen}
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
-                        {/* </> */}
-                        {/* )} */}
+
                         <Stack.Screen
                             name="Login"
                             component={LoginScreen}
@@ -92,6 +90,11 @@ const App = () => {
                         <Stack.Screen
                             name="Review"
                             component={ReviewScreen}
+                            options={{ animation: 'slide_from_bottom' }}
+                        ></Stack.Screen>
+                        <Stack.Screen
+                            name="AddAddress"
+                            component={AddAddressScreen}
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
                     </Stack.Navigator>

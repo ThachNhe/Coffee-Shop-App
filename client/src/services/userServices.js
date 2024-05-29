@@ -32,6 +32,9 @@ const isItemFavourService = (productId) => {
 const getBeanList = () => {
     return axios.get('/products/bean');
 };
+// const getProvinces = () => {
+//     return axios.get('/products/bean');
+// };
 export {
     getCoffeeList,
     AddCoffeeToCartService,

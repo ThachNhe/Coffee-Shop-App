@@ -6,12 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AddressModal from '../components/modals/AddressModal';
 const AddressScreen = ({ navigation, route }) => {
     const [isOpenModalAddress, setIsOpenModalAddress] = useState(false);
-    handleOpenModalAddAddress = () => {
-        setIsOpenModalAddress();
+    const handleOpenModalAddAddress = () => {
+        console.log('OKOKOKO');
+        navigation.navigate('AddAddress');
     };
     return (
         <View style={styles.ScreenContainer}>
-            <AddressModal modalVisible={isOpenModalAddress} />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 <View style={styles.HeaderContainer}>
                     <TouchableOpacity
@@ -46,11 +46,11 @@ const AddressScreen = ({ navigation, route }) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.addAddressContainer} onPress={() => handleOpenModalAddAddress()}>
-                    <TouchableOpacity style={styles.iconContainer}>
+                <TouchableOpacity style={styles.addAddressContainer} onPress={() => handleOpenModalAddAddress()}>
+                    <View style={styles.iconContainer}>
                         <Icon name="plus" size={25} style={styles.icon} />
-                    </TouchableOpacity>
-                </View>
+                    </View>
+                </TouchableOpacity>
             </ScrollView>
         </View>
     );

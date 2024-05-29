@@ -31,6 +31,7 @@ export const Colors = {
     primaryWhiteHex: '#FFFFFF',
     primaryBlackRGBA: 'rgba(12,15,20,0.5)',
     secondaryBlackRGBA: 'rgba(0,0,0,0.7)',
+    textInputColor: '#EEEEEE',
 };
 
 export const FontFamily = {
@@ -65,4 +66,8 @@ export const BorderRadius = {
     radius_15: 15,
     radius_20: 20,
     radius_25: 25,
+};
+
+export const TOKEN = {
+    token: 'cbf20bc6-98c5-11ee-96dc-de6f804954c9',
 };

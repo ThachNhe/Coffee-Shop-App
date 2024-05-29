@@ -7,12 +7,16 @@ const initialState = {
     CoffeeList: [],
     BeanList: [],
     CartList: [],
+    ProvincesList: [],
+    DistrictList: [],
+    WardList: [],
     CartPrice: 0,
     orderDateNow: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
     PaymentInfo: '',
     FavourList: [],
     isItemFavour: false,
     userInfo: '',
+    formAddress: '',
 };
 
 function rootReducer(state = initialState, action) {
@@ -46,6 +50,22 @@ function rootReducer(state = initialState, action) {
         case actionTypes.USER_LOGOUT:
             state.userInfo = action.payload;
             return { ...state, isLogin: false };
+        case actionTypes.GET_PROVINCE_LIST:
+            state.ProvincesList = action.payload.data;
+            return { ...state };
+        case actionTypes.GET_DISTRICT_LIST:
+            state.DistrictList = action.payload.data;
+            return { ...state };
+        case actionTypes.GET_WARD_LIST:
+            state.WardList = action.payload.data;
+            return { ...state };
+        case actionTypes.CLEAR_ADDRESS:
+            state.DistrictList = action.payload;
+            state.WardList = action.payload;
+            return { ...state };
+        case actionTypes.PUSH_ADDRESS:
+            state.formAddress = action.payload;
+            return { ...state };
         default:
             return state;
     }
