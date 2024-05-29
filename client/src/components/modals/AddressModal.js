@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View, TouchableOpacity, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Colors, BorderRadius, Spacing, FontSize } from '../../theme/theme';
 const AddressModal = ({ modalVisible, pressHandler }) => {
     let [fullName, setFullName] = useState('');

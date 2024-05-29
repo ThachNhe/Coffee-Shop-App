@@ -29,6 +29,9 @@ const deleteItemToFavourService = (body) => {
 const isItemFavourService = (productId) => {
     return axios.get(`/users/6613d5018c360f7f06ef7a53/products/${productId}`);
 };
+const getBeanList = () => {
+    return axios.get('/products/bean');
+};
 export {
     getCoffeeList,
     AddCoffeeToCartService,
@@ -40,4 +43,5 @@ export {
     deleteItemToFavourService,
     isItemFavourService,
     userLoginService,
+    getBeanList,
 };

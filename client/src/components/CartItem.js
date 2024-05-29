@@ -18,7 +18,6 @@ const CartItem = (props) => {
     });
 
     const {
-        id,
         name,
         imagelink_square,
         special_ingredient,

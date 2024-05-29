@@ -125,12 +125,13 @@ const styles = StyleSheet.create({
         marginTop: Spacing.space_15,
     },
     cardPriceCurrency: {
-        fontFamily: 'poppins_semibold',
+        fontFamily: 'poppins_medium',
         color: Colors.primaryOrangeHex,
         fontSize: FontSize.size_18,
     },
     cardPrice: {
         color: Colors.primaryWhiteHex,
+        fontFamily: ' poppins_medium',
     },
 });
 

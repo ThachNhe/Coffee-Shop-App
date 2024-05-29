@@ -78,6 +78,10 @@ const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDat
 const styles = StyleSheet.create({
     CardContainer: {
         gap: Spacing.space_10,
+        borderRadius: BorderRadius.radius_10 * 2,
+        borderWidth: 1,
+        borderColor: Colors.primaryLightGreyHex,
+        padding: Spacing.space_20,
     },
     ButtonText: {
         fontFamily: 'poppins_semibold',

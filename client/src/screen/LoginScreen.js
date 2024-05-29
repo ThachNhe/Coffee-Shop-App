@@ -1,5 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Alert, Button, Image, Pressable, SafeAreaView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import {
+    Alert,
+    Button,
+    Image,
+    Pressable,
+    SafeAreaView,
+    StyleSheet,
+    Switch,
+    Text,
+    TextInput,
+    View,
+    ToastAndroid,
+} from 'react-native';
 import { Colors, Spacing } from '../theme/theme';
 import * as actions from '../redux/actions/index';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         if (userInfo && userInfo.errorCode === 0) {
             setIncorrectInput(true);
-            Alert.alert('Login Successfuly!', 'see you in my instagram if you have questions : must_ait6');
+            ToastAndroid.showWithGravity(`Login success!`, ToastAndroid.SHORT, ToastAndroid.CENTER);
             navigation.navigate('Home');
         }
         if (userInfo && userInfo.errorCode !== 0) {

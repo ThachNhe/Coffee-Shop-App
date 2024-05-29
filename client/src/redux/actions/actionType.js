@@ -9,5 +9,6 @@ const actionTypes = Object.freeze({
     CLEAR_PAYMENT_INFO: 'CLEAR_PAYMENT_INFO',
     USER_LOGIN: 'USER_LOGIN',
     USER_LOGOUT: 'USER_LOGOUT',
+    GET_BEAN_LIST: 'GET_BEAN_LIST',
 });
 export default actionTypes;

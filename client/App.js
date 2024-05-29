@@ -17,6 +17,7 @@ import store from './src/redux/store';
 import QrCodeScreen from './src/screen/QrCodeScreen';
 import LoginScreen from './src/screen/LoginScreen';
 import { useSelector } from 'react-redux';
+import ReviewScreen from './src/screen/ReviewScreen';
 
 const Stack = createNativeStackNavigator();
 const App = () => {
@@ -86,6 +87,11 @@ const App = () => {
                         <Stack.Screen
                             name="Login"
                             component={LoginScreen}
+                            options={{ animation: 'slide_from_bottom' }}
+                        ></Stack.Screen>
+                        <Stack.Screen
+                            name="Review"
+                            component={ReviewScreen}
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
                     </Stack.Navigator>

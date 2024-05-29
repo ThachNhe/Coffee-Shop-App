@@ -20,12 +20,15 @@ const OrderHistoryScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    const OrderHistory = [];
-    const OrderHistoryList = useStore((state) => state.OrderHistoryList);
+    // const OrderHistory = [];
+    // const OrderHistoryList = useStore((state) => state.OrderHistoryList);
     const [showAnimation, setShowAnimation] = useState(false);
     const CartList = useSelector((state) => state.CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
+    console.log('====================================');
+    console.log('check orderdate : ', OrderDate);
+    console.log('====================================');
     const navigationHandler = ({ index, id, type }) => {
         navigation.push('Details', {
             index,

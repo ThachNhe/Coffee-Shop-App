@@ -17,7 +17,19 @@ export const getCoffeeListAction = () => {
         }
     };
 };
-
+export const getBeanListAction = () => {
+    return async (dispatch) => {
+        try {
+            const beanList = await services.getBeanList();
+            dispatch({
+                type: actionType.GET_BEAN_LIST,
+                payload: beanList.beans,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
 export const getCartListAction = () => {
     return async (dispatch) => {
         try {

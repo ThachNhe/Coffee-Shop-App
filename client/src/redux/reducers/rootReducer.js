@@ -5,6 +5,7 @@ import actionTypes from '../actions/actionType';
 
 const initialState = {
     CoffeeList: [],
+    BeanList: [],
     CartList: [],
     CartPrice: 0,
     orderDateNow: new Date().toDateString() + ' ' + new Date().toLocaleTimeString(),
@@ -18,6 +19,9 @@ function rootReducer(state = initialState, action) {
     switch (action.type) {
         case actionTypes.GET_COFFEE_LIST:
             state.CoffeeList = action.payload;
+            return { ...state };
+        case actionTypes.GET_BEAN_LIST:
+            state.BeanList = action.payload;
             return { ...state };
         case actionTypes.GET_CART_LIST:
             state.CartList = action.payload.products;

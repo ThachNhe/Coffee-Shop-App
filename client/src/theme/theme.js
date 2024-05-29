@@ -1,6 +1,9 @@
 export const Spacing = {
+    space_1: 1,
     space_2: 2,
     space_4: 4,
+    space_5: 5,
+    space_6: 6,
     space_8: 8,
     space_10: 10,
     space_12: 12,

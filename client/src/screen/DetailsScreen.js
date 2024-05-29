@@ -1,8 +1,8 @@
-import { View, Text, ScrollView, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableWithoutFeedback, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
-import { TouchableOpacity } from 'react-native';
 import PaymentFooter from '../components/PaymentFooter';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import { useSelector, useDispatch } from 'react-redux';
@@ -69,6 +69,9 @@ const DetailsScreen = ({ navigation, route }) => {
         }
         console.log('check req : ', data);
     };
+    const redirectToReviewScreen = () => {
+        navigation.navigate('Review');
+    };
     return (
         <View style={styles.screenContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewFlex}>
@@ -110,6 +113,11 @@ const DetailsScreen = ({ navigation, route }) => {
                             </Text>
                         </TouchableWithoutFeedback>
                     )}
+                    <TouchableOpacity style={styles.reviewContainer} onPress={() => redirectToReviewScreen()}>
+                        <Text style={styles.titleReview}>reviews(5)</Text>
+                        <Icon name="angle-right" size={30} color="#000" style={styles.angleIcon} />
+                    </TouchableOpacity>
+
                     <Text style={styles.infoTitle}>Size</Text>
                     <View style={styles.sizeOuterContainer}>
                         {itemOfIndex &&
@@ -149,6 +157,7 @@ const DetailsScreen = ({ navigation, route }) => {
                             ))}
                     </View>
                 </View>
+
                 <PaymentFooter
                     price={price}
                     buttonTitle="Add to Cart"
@@ -170,6 +179,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.primaryBlackHex,
     },
+    reviewContainer: {
+        height: Spacing.space_20 * 4,
+        backgroundColor: Colors.primaryDarkGreyHex,
+        borderRadius: Spacing.space_10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: Spacing.space_10,
+    },
+
+    titleReview: {
+        color: Colors.primaryWhiteHex,
+        fontSize: FontSize.size_16,
+        fontFamily: 'poppins_medium',
+    },
+    angleIcon: {
+        color: Colors.primaryOrangeHex,
+    },
+
     scrollViewFlex: {
         flexGrow: 1,
         justifyContent: 'space-between',
