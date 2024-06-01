@@ -13,7 +13,8 @@ class PaymentController {
         // const userId = req.session.User;
         const userId = "6613d5018c360f7f06ef7a53";
         if (!userId) {
-            return res.status(403).json({
+            return res.status(401).json({
+                errorCode:1,
                 msg: "Login first",
             })
         }

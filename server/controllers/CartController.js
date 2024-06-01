@@ -22,6 +22,7 @@ class CartController {
             const product = await Product.findOne({_id: productId});
             if (!product) {
                 return res.status(404).json({
+                    errorCode: 1,
                     msg: "Product not found",
                 });
             }
@@ -33,12 +34,12 @@ class CartController {
                     product.product_id == productId &&
                     product.size == size,
                 )
-                console.log(existingProduct);
 
                 if (existingProduct) {
                     existingProduct.quantity += Number(quantity);
                     await existingCart.save();
                     return res.status(200).json({
+                        errorCode: 0,
                         msg: "Product quantity updated in the cart",
                     });
                 } else {
@@ -56,6 +57,7 @@ class CartController {
                         {upsert: true}
                     );
                     return res.status(200).json({
+                        errorCode: 0,
                         msg: "Product added to the cart",
                     })
                 }
@@ -69,6 +71,7 @@ class CartController {
                     }],
                 });
                 return res.status(200).json({
+                    errorCode: 0,
                     msg: "New cart created and product added",
                 });
             }
@@ -80,7 +83,11 @@ class CartController {
     //GET /cart/myCart
     async getMyCart(req, res) {
         // return res.json(await getCart(req.session.User));
-        return res.json(await getCart("6613d5018c360f7f06ef7a53"));
+        const cart = await getCart("6613d5018c360f7f06ef7a53");
+        return res.json({
+            errorCode: 0,
+            cart,
+        });
     }
 }
 

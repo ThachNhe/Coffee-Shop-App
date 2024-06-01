@@ -1,29 +1,27 @@
 const User = require("../models/user");
 const Product = require("../models/product");
 const bcrypt = require("bcrypt");
-const {ObjectId} = require("mongodb");
 
 
 class UserController {
     //POST /register
     async register(req, res) {
         try {
-            const {email, password, phone, address, name} = req.body;
+            const {email, password, phone, name, role} = req.body;
             const hashedPassword = await bcrypt.hash(password, 10);
             await User.create({
                 email,
                 password: hashedPassword,
                 phone,
-                address,
-                name
+                name,
+                role,
             });
-            // res.redirect("/login");
             return res.status(200).json({
+                errorCode: 0,
                 msg: "OK",
             })
         } catch (err) {
             console.error(err);
-            // res.redirect("/register");
         }
     }
 
@@ -41,7 +39,10 @@ class UserController {
             }
             req.session.User = user._id.toString();
             console.log(req.session);
-            return res.status(200).json(user);
+            return res.status(200).json({
+                errorCode: 0,
+                user,
+            });
         } catch (error) {
             res.status(500).json({error: error.message});
         }
@@ -51,7 +52,10 @@ class UserController {
     //GET /users
     async getAllUsers(req, res) {
         const users = await User.find();
-        return res.status(200).json(users);
+        return res.status(200).json({
+            errorCode: 0,
+            users,
+        });
     }
 
     //GET /logout
@@ -75,7 +79,10 @@ class UserController {
                 msg: "User not found",
             });
         }
-        return res.status(200).json(user);
+        return res.status(200).json({
+            errorCode: 0,
+            user
+        });
     }
 
     //POST /users/:userId/addToFavorite
@@ -86,7 +93,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -97,7 +104,7 @@ class UserController {
         });
         if (!product) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product not found",
             });
         }
@@ -122,7 +129,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -135,7 +142,7 @@ class UserController {
         })
 
         return res.status(200).json({
-            errCode: 0,
+            errorCode: 0,
             favorite: products,
         })
     }
@@ -148,7 +155,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -160,7 +167,7 @@ class UserController {
         });
         if (!product) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product not found",
             });
         }
@@ -168,7 +175,7 @@ class UserController {
         const isfFavorite = favorites.find(id => id == productId);
         if (!isfFavorite) {
             return res.status(403).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product is not in favorite list",
             });
         }
@@ -176,7 +183,7 @@ class UserController {
         favorites.splice(favorites.indexOf(productId));
         await user.save();
         return res.status(200).json({
-            errCode: 0,
+            errorCode: 0,
             msg: "Delete from favorite list successfully",
         });
 
@@ -190,7 +197,7 @@ class UserController {
         });
         if (!user) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "User not found",
             });
         }
@@ -202,7 +209,7 @@ class UserController {
         });
         if (!product) {
             return res.status(404).json({
-                errCode: 1,
+                errorCode: 1,
                 msg: "Product not found",
             });
         }
@@ -212,6 +219,99 @@ class UserController {
             isFavorite: favorites.includes(productId),
         })
     }
+
+    //GET /users/:userId/addresses
+    async getAddress(req, res) {
+        const userId = req.params.userId;
+
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    errorCode: 1,
+                    message: "User not found",
+                });
+            }
+
+            return res.status(200).json({
+                errorCode: 0,
+                address: user.addresses,
+            })
+        } catch (e) {
+            console.log(e);
+            res.status(500).json({
+                errorCode: -1,
+                message: "Interval server error",
+            })
+        }
+    }
+
+    //POST /users/:userId/addresses
+    async addAddress(req, res) {
+        const userId = req.params.userId;
+        const {province, district, ward, details} = req.body;
+
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    errorCode: 1,
+                    message: "User not found",
+                });
+            }
+
+            user.addresses.push({province, district, ward, isDefault: false});
+            await user.save();
+
+            return res.status(200).json({
+                errorCode: 0,
+                message: "Address added successfully",
+            });
+        } catch (e) {
+            console.log(e);
+            res.status(500).json({
+                errorCode: -1,
+                message: "Interval server error",
+            })
+        }
+    }
+
+    //PUT /users/:userId/addresses/:addressId/default
+    async setDefaultAddress(req, res) {
+        const userId = req.params.userId;
+        const addressId = req.params.addressId;
+
+        try {
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(404).json({
+                    errorCode: 1,
+                    message: "User not found",
+                });
+            }
+
+            const address = user.addresses.find(address => address._id.toString() === addressId);
+            if (!address) {
+                return res.status(404).json({message: 'Address not found'});
+            }
+
+            user.addresses.forEach(address => address.isDefault = false);
+            address.isDefault = true;
+            await user.save();
+
+            return res.status(200).json({
+                errorCode: 0,
+                message: "Address set as default successfully",
+            })
+        } catch (e) {
+            console.log(e);
+            res.status(500).json({
+                errorCode: -1,
+                message: "Interval server error",
+            })
+        }
+    }
+
 }
 
 function isFavorite(favorites, productId) {
