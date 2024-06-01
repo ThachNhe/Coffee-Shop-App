@@ -54,7 +54,10 @@ const ProfileScreen = ({ navigation, route }) => {
                     <View>
                         <Text style={styles.orderHistoryText}>Order History</Text>
                         <View style={styles.orderHistoryContainer}>
-                            <TouchableOpacity style={styles.orderItem}>
+                            <TouchableOpacity
+                                style={styles.orderItem}
+                                onPress={() => navigation.navigate('AddProduct')}
+                            >
                                 <View>
                                     <Text style={styles.descriptionText}>Confirmation</Text>
                                 </View>

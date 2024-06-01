@@ -106,7 +106,7 @@ export const userLoginAction = (body) => {
     return async (dispatch) => {
         try {
             let res = await services.userLoginService(body);
-            console.log('check action login : ', res);
+            // console.log('check action login : ', res);
             dispatch({
                 type: actionType.USER_LOGIN,
                 payload: res,

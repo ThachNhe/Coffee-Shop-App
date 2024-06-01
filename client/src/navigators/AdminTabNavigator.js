@@ -12,7 +12,7 @@ import CustomIcon from '../components/CustomIcon';
 import ProfileScreen from '../screen/ProfileScreen';
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const AdminTabNavigator = () => {
     return (
         <Tab.Navigator
             screenOptions={{
@@ -36,19 +36,7 @@ const TabNavigator = () => {
                     ),
                 }}
             ></Tab.Screen>
-            <Tab.Screen
-                name="Cart"
-                component={CartScreen}
-                options={{
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <CustomIcon
-                            name="cart"
-                            size={25}
-                            color={focused ? Colors.primaryOrangeHex : Colors.primaryLightGreyHex}
-                        />
-                    ),
-                }}
-            ></Tab.Screen>
+
             <Tab.Screen
                 name="Favourite"
                 component={FavouritesScreen}
@@ -98,4 +86,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TabNavigator;
+export default AdminTabNavigator;

@@ -30,6 +30,7 @@
     "react-native": "0.73.4",
     "react-native-asset": "^2.1.1",
     "react-native-canvas": "^0.1.39",
+    "react-native-element-dropdown": "^2.12.0",
     "react-native-elements": "^3.4.3",
     "react-native-icomoon": "^0.1.1",
     "react-native-linear-gradient": "^2.8.3",

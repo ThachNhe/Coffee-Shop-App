@@ -26,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
     const [correctInput, setIncorrectInput] = useState(true);
     const userInfo = useSelector((state) => state.userInfo);
     const dispatch = useDispatch();
-    console.log('check correctInput', correctInput);
+    // console.log('check userInfo', userInfo);
     useEffect(() => {
         if (userInfo && userInfo.errorCode === 0) {
             setIncorrectInput(true);
@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
         try {
             let body = { email: username, password: password };
             dispatch(actions.userLoginAction(body));
-            console.log('check userInfo  :', userInfo);
+            // console.log('check userInfo  :', userInfo);
         } catch (error) {
             console.log(error);
         }

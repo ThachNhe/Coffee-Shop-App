@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, StatusBar } from 'react-native';
-import TabNavigator from './src/navigators/TabNavigator';
+import UserTabNavigator from './src/navigators/UserTabNavigator';
 import DetailsScreen from './src/screen/DetailsScreen';
 import PaymentScreen from './src/screen/PaymentScreen';
 import { Colors } from './src/theme/theme';
@@ -19,7 +19,7 @@ import LoginScreen from './src/screen/LoginScreen';
 import { useSelector } from 'react-redux';
 import ReviewScreen from './src/screen/ReviewScreen';
 import AddAddressScreen from './src/screen/AddAddressScreen';
-
+import AppNavigation from './src/navigators/AppNavigation';
 const Stack = createNativeStackNavigator();
 const App = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -33,12 +33,12 @@ const App = () => {
         <StoreProvider store={store}>
             <PaperProvider>
                 <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" />
-
-                <NavigationContainer>
+                <AppNavigation />
+                {/* <NavigationContainer>
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
                         <Stack.Screen
                             name="Tab"
-                            component={TabNavigator}
+                            component={UserTabNavigator}
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
                         <Stack.Screen
@@ -98,7 +98,7 @@ const App = () => {
                             options={{ animation: 'slide_from_bottom' }}
                         ></Stack.Screen>
                     </Stack.Navigator>
-                </NavigationContainer>
+                </NavigationContainer> */}
             </PaperProvider>
         </StoreProvider>
     );
