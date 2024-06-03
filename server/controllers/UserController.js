@@ -249,7 +249,7 @@ class UserController {
     //POST /users/:userId/addresses
     async addAddress(req, res) {
         const userId = req.params.userId;
-        const {province, district, ward, details} = req.body;
+        const {province, district, ward, details, userName, phone} = req.body;
 
         try {
             const user = await User.findById(userId);
@@ -260,7 +260,15 @@ class UserController {
                 });
             }
 
-            user.addresses.push({province, district, ward, details, isDefault: false});
+            user.addresses.push({
+                province: province,
+                district: district,
+                ward: ward,
+                details: details,
+                user_name: userName,
+                phone: phone,
+                isDefault: false
+            });
             await user.save();
 
             return res.status(200).json({
