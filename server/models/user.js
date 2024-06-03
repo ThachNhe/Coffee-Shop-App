@@ -15,6 +15,8 @@ const UserSchema = new Schema({
         type: String,
     },
     addresses: [{
+        user_name: String,
+        phone: String,
         province: String,
         district: String,
         ward: String,
