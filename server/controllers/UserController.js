@@ -260,7 +260,7 @@ class UserController {
                 });
             }
 
-            user.addresses.push({province, district, ward, isDefault: false});
+            user.addresses.push({province, district, ward, details, isDefault: false});
             await user.save();
 
             return res.status(200).json({
