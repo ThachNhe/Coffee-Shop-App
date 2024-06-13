@@ -60,10 +60,11 @@ export const createLinkPaymentAction = (body) => {
     };
 };
 
-export const getFavouriteListAction = () => {
+export const getFavouriteListAction = (userId) => {
     return async (dispatch) => {
         try {
-            const itemFavourite = await services.getFavouriteItemService();
+            console.log('ACTION: ', userId);
+            const itemFavourite = await services.getFavouriteItemService(userId);
 
             dispatch({
                 type: actionType.GET_FAVOURITE_LIST,
@@ -74,11 +75,12 @@ export const getFavouriteListAction = () => {
         }
     };
 };
-export const isItemFavourAction = (productId) => {
+export const isItemFavourAction = (userId, productId) => {
     return async (dispatch) => {
         try {
-            const isItemFour = await services.isItemFavourService(productId);
-            console.log('check isItemFour: ', isItemFour);
+            console.log('check isItemFour userId: ', userId, productId);
+            const isItemFour = await services.isItemFavourService(userId, productId);
+
             dispatch({
                 type: actionType.IS_ITEM_FAVOUR,
                 payload: isItemFour,
@@ -202,6 +204,21 @@ export const pushAddressToFormAction = (data) => {
             dispatch({
                 type: actionType.PUSH_ADDRESS,
                 payload: data,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
+
+export const getAddressListAction = (id) => {
+    return async (dispatch) => {
+        try {
+            let res = await services.getUserAddressByIdServices(id);
+
+            dispatch({
+                type: actionType.GET_ADDRESS_LIST,
+                payload: res,
             });
         } catch (error) {
             console.error(error);

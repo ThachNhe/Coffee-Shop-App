@@ -1,14 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import GradientBGIcon from '../components/GradientBGIcon';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AddressModal from '../components/modals/AddressModal';
+import * as actions from '../redux/actions/index';
+
+import { useSelector, useDispatch } from 'react-redux';
+import * as services from '../services/index';
 const AddressScreen = ({ navigation, route }) => {
-    const [isOpenModalAddress, setIsOpenModalAddress] = useState(false);
+    const [AddressList, setAddressList] = useState('');
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
+    const AddressListRedux = useSelector((state) => state.AddressList);
+    console.log('check addressList : ', AddressList);
+    useEffect(() => {
+        dispatch(actions.getAddressListAction(userInfo.user?._id));
+    }, [dispatch]);
+
+    useEffect(() => {
+        setAddressList(AddressListRedux.address);
+    }, [AddressListRedux]);
     const handleOpenModalAddAddress = () => {
-        console.log('OKOKOKO');
         navigation.navigate('AddAddress');
+    };
+    const handlerUpdateDefaultAddress = async (isDefault, addressId) => {
+        let res = !isDefault && (await services.updateDefaultAddressService(userInfo.user?._id, addressId));
+        if (res && res.errorCode === 0) {
+            dispatch(actions.getAddressListAction(userInfo.user?._id));
+        }
     };
     return (
         <View style={styles.ScreenContainer}>
@@ -25,32 +44,38 @@ const AddressScreen = ({ navigation, route }) => {
                     <View style={styles.EmptyView} />
                 </View>
                 <View style={styles.addressContainer}>
-                    <TouchableOpacity style={styles.addressBox}>
-                        <View style={styles.checkBoxAndNameContainer}>
-                            <Text style={styles.userName}>Đinh Văn Thạch</Text>
-                            <Icon name="check-circle" size={30} style={styles.checkBoxStyle} />
-                        </View>
-                        <Text style={styles.userPhone}>0846236478</Text>
-                        <Text style={styles.userAddress}>
-                            Kí túc xã Ngoại Ngữ, số 2 Phạm Văn Đồng, Dịch Vọng Hậu, Cầu Giấy, Hà Nội
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.addressBox}>
-                        <View style={styles.checkBoxAndNameContainer}>
-                            <Text style={styles.userName}>Đinh Văn Thạch</Text>
-                            <Icon name="check-circle" size={30} style={styles.iconHistoryStyle} />
-                        </View>
-                        <Text style={styles.userPhone}>0846236478</Text>
-                        <Text style={styles.userAddress}>
-                            Kí túc xã Ngoại Ngữ, số 2 Phạm Văn Đồng, Dịch Vọng Hậu, Cầu Giấy, Hà Nội
-                        </Text>
+                    {AddressList &&
+                        AddressList.length > 0 &&
+                        AddressList.map((item, index) => {
+                            return (
+                                <TouchableOpacity
+                                    style={styles.addressBox}
+                                    onPress={() => handlerUpdateDefaultAddress(item.isDefault, item._id)}
+                                >
+                                    <View style={styles.checkBoxAndNameContainer}>
+                                        <Text style={styles.userName}>{userInfo.user?.name}</Text>
+                                        <Icon
+                                            name="check-circle"
+                                            size={30}
+                                            style={{
+                                                color:
+                                                    item.isDefault === true
+                                                        ? Colors.primaryOrangeHex
+                                                        : Colors.secondaryGreyHex,
+                                            }}
+                                        />
+                                    </View>
+                                    <Text style={styles.userPhone}>{userInfo.user?.phone}</Text>
+                                    <Text style={styles.userAddress}>{item.details}</Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                </View>
+                <View style={styles.addAddressContainer}>
+                    <TouchableOpacity style={styles.iconContainer} onPress={() => handleOpenModalAddAddress()}>
+                        <Icon name="plus" size={25} style={styles.icon} />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.addAddressContainer} onPress={() => handleOpenModalAddAddress()}>
-                    <View style={styles.iconContainer}>
-                        <Icon name="plus" size={25} style={styles.icon} />
-                    </View>
-                </TouchableOpacity>
             </ScrollView>
         </View>
     );
@@ -112,9 +137,9 @@ const styles = StyleSheet.create({
         padding: Spacing.space_15,
         backgroundColor: Colors.primaryDarkGreyHex,
     },
-    checkBoxStyle: {
-        color: Colors.primaryOrangeHex,
-    },
+    // checkBoxStyle: {
+    //     color: Colors.primaryOrangeHex,
+    // },
     addAddressContainer: {
         flex: 1,
         justifyContent: 'flex-end',

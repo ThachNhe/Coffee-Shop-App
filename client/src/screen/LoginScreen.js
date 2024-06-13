@@ -26,12 +26,18 @@ const LoginScreen = ({ navigation }) => {
     const [correctInput, setIncorrectInput] = useState(true);
     const userInfo = useSelector((state) => state.userInfo);
     const dispatch = useDispatch();
-    // console.log('check userInfo', userInfo);
     useEffect(() => {
         if (userInfo && userInfo.errorCode === 0) {
             setIncorrectInput(true);
             ToastAndroid.showWithGravity(`Login success!`, ToastAndroid.SHORT, ToastAndroid.CENTER);
-            navigation.navigate('Home');
+            console.log('====================================');
+            console.log('check login userINfo  :', userInfo);
+            console.log('====================================');
+            if (userInfo.user?.role === 'admin') {
+                navigation.navigate('AdminHome');
+            } else {
+                navigation.navigate('UserHome');
+            }
         }
         if (userInfo && userInfo.errorCode !== 0) {
             setIncorrectInput(false);
@@ -40,8 +46,9 @@ const LoginScreen = ({ navigation }) => {
     const handlerLogin = async () => {
         try {
             let body = { email: username, password: password };
+            console.log('BODY  :', body);
             dispatch(actions.userLoginAction(body));
-            // console.log('check userInfo  :', userInfo);
+            console.log('check userInfo  :', userInfo);
         } catch (error) {
             console.log(error);
         }

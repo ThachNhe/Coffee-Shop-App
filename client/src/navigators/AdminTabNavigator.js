@@ -3,13 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Colors } from '../theme/theme';
 import { BlurView } from 'expo-blur';
-// import { BlurView } from '@react-native-community/blur';
 import HomeScreen from '../screen/HomeScreen';
 import FavouritesScreen from '../screen/FavouritesScreen';
 import CartScreen from '../screen/CartScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from '../components/CustomIcon';
 import ProfileScreen from '../screen/ProfileScreen';
+import AdminHomeScreen from '../screen/admin/AdminHomeScreen';
 const Tab = createBottomTabNavigator();
 
 const AdminTabNavigator = () => {
@@ -24,8 +24,8 @@ const AdminTabNavigator = () => {
             }}
         >
             <Tab.Screen
-                name="Home"
-                component={HomeScreen}
+                name="AdminHome"
+                component={AdminHomeScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => (
                         <CustomIcon
@@ -36,6 +36,19 @@ const AdminTabNavigator = () => {
                     ),
                 }}
             ></Tab.Screen>
+            {/* <Tab.Screen
+                name="Statistic"
+                component={FavouritesScreen}
+                options={{
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <CustomIcon
+                            name="like"
+                            size={25}
+                            color={focused ? Colors.primaryOrangeHex : Colors.primaryLightGreyHex}
+                        />
+                    ),
+                }}
+            ></Tab.Screen> */}
 
             <Tab.Screen
                 name="Favourite"

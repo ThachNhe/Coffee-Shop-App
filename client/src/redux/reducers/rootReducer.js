@@ -17,6 +17,7 @@ const initialState = {
     isItemFavour: false,
     userInfo: '',
     formAddress: '',
+    AddressList: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -50,6 +51,7 @@ function rootReducer(state = initialState, action) {
         case actionTypes.USER_LOGOUT:
             state.userInfo = action.payload;
             return { ...state, isLogin: false };
+        /// conduct fill out address form
         case actionTypes.GET_PROVINCE_LIST:
             state.ProvincesList = action.payload.data;
             return { ...state };
@@ -65,6 +67,10 @@ function rootReducer(state = initialState, action) {
             return { ...state };
         case actionTypes.PUSH_ADDRESS:
             state.formAddress = action.payload;
+            return { ...state };
+        // ====================================
+        case actionTypes.GET_ADDRESS_LIST:
+            state.AddressList = action.payload;
             return { ...state };
         default:
             return state;

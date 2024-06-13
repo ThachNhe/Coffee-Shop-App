@@ -74,9 +74,9 @@ const AddressModal = ({ ProvincesList, DistrictList, WardList, isModalVisible, t
         dispatch(actions.clearAddressAction());
         setSelectedTab(0);
     };
-    console.log('check province :', province);
-    console.log('check district :', district);
-    console.log('check ward :', province);
+    // console.log('check province :', province);
+    // console.log('check district :', district);
+    // console.log('check ward :', province);
     return (
         <View contentContainerStyle={styles.container}>
             <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>

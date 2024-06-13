@@ -15,7 +15,7 @@ const CartScreen = ({ navigation, route }) => {
         dispatch(actions.getCartListAction());
     }, [dispatch]);
     const CartList = useSelector((state) => state.CartList);
-    console.log('check cartScreen : ', CartList);
+    // console.log('check cartScreen : ', CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const tabBarHeight = useBottomTabBarHeight();
 

@@ -34,6 +34,21 @@ const App = () => {
             <PaperProvider>
                 <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" />
                 <AppNavigation />
+                {/* <GooglePlacesAutocomplete
+                    placeholder="Search"
+                    onPress={(data, details = null) => {
+                        // 'details' is provided when fetchDetails = true
+                        console.log(data, details);
+                    }}
+                    fetchDetails={true}
+                    query={{
+                        key: 'ycmQvDOcmy51XgAotb5jyoJWW3IyhNqCjMxj7Lia',
+                        language: 'en',
+                    }}
+                /> */}
+
+                {/* <AutocompleteComponent /> */}
+
                 {/* <NavigationContainer>
                     <Stack.Navigator screenOptions={{ headerShown: false }}>
                         <Stack.Screen

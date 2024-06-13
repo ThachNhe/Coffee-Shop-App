@@ -7,7 +7,6 @@ const ImageBackgroundInfo = ({
     EnableBackHandler,
     imagelink_portrait,
     type,
-    id,
     favourite,
     name,
     special_ingredient,
@@ -18,6 +17,7 @@ const ImageBackgroundInfo = ({
     productId,
     BackHandler,
     ToggleFavourite,
+    role,
 }) => {
     const image = {
         uri: String(imagelink_portrait),
@@ -34,31 +34,35 @@ const ImageBackgroundInfo = ({
                         >
                             <GradientBGIcon name="left" color={Colors.primaryLightGreyHex} size={FontSize.size_16} />
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                ToggleFavourite(productId, favourite);
-                            }}
-                        >
-                            <GradientBGIcon
-                                name="like"
-                                color={favourite ? Colors.primaryRedHex : Colors.primaryLightGreyHex}
-                                size={FontSize.size_16}
-                            />
-                        </TouchableOpacity>
+                        {role !== 'admin' && (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    ToggleFavourite(productId, favourite);
+                                }}
+                            >
+                                <GradientBGIcon
+                                    name="like"
+                                    color={favourite ? Colors.primaryRedHex : Colors.primaryLightGreyHex}
+                                    size={FontSize.size_16}
+                                />
+                            </TouchableOpacity>
+                        )}
                     </View>
                 ) : (
                     <View style={styles.ImageHeaderBarContainerWithoutBack}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                ToggleFavourite(productId, favourite);
-                            }}
-                        >
-                            <GradientBGIcon
-                                name="like"
-                                color={favourite ? Colors.primaryRedHex : Colors.primaryLightGreyHex}
-                                size={FontSize.size_16}
-                            />
-                        </TouchableOpacity>
+                        {role !== 'admin' && (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    ToggleFavourite(productId, favourite);
+                                }}
+                            >
+                                <GradientBGIcon
+                                    name="like"
+                                    color={favourite ? Colors.primaryRedHex : Colors.primaryLightGreyHex}
+                                    size={FontSize.size_16}
+                                />
+                            </TouchableOpacity>
+                        )}
                     </View>
                 )}
 

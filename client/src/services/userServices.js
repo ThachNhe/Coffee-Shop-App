@@ -14,27 +14,35 @@ const getCartListService = () => {
 const createLinkPaymentService = (body) => {
     return axios.post('/create-payment-link', body);
 };
-const getFavouriteItemService = () => {
-    return axios.get('/users/6613d5018c360f7f06ef7a53/myFavorite');
+const getFavouriteItemService = (userId) => {
+    // console.log('service favour  ID:', userId);
+    return axios.get(`/users/${userId}/myFavorite`);
 };
 const getStatusPaymentService = (paymentId) => {
     return axios.get(`/payment/${paymentId}`);
 };
-const addItemToFavourService = (body) => {
-    return axios.post('/users/6613d5018c360f7f06ef7a53/addToFavorite', body);
+const addItemToFavourService = (userId, body) => {
+    return axios.post(`/users/${userId}/addToFavorite`, body);
 };
-const deleteItemToFavourService = (body) => {
-    return axios.post('/users/6613d5018c360f7f06ef7a53/deleteFromFavorite', body);
+const deleteItemToFavourService = (userId, body) => {
+    console.log('delete favour ', userId, body);
+    return axios.post(`/users/${userId}/deleteFromFavorite`, body);
 };
-const isItemFavourService = (productId) => {
-    return axios.get(`/users/6613d5018c360f7f06ef7a53/products/${productId}`);
+const isItemFavourService = (userId, productId) => {
+    return axios.get(`/users/${userId}/products/${productId}`);
 };
 const getBeanList = () => {
     return axios.get('/products/bean');
 };
-// const getProvinces = () => {
-//     return axios.get('/products/bean');
-// };
+const getUserAddressByIdServices = (userId) => {
+    return axios.get(`/users/${userId}/addresses`);
+};
+const updateDefaultAddressService = (userId, addressId) => {
+    return axios.put(`/users/${userId}/addresses/${addressId}/default`);
+};
+const addAddressService = (userId, addressBody) => {
+    return axios.post(`/users/${userId}/addresses`, { body: addressBody });
+};
 export {
     getCoffeeList,
     AddCoffeeToCartService,
@@ -47,4 +55,7 @@ export {
     isItemFavourService,
     userLoginService,
     getBeanList,
+    getUserAddressByIdServices,
+    updateDefaultAddressService,
+    addAddressService,
 };

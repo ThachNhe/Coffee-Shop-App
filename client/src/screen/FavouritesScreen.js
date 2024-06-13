@@ -11,8 +11,9 @@ import * as actions from '../redux/actions/index';
 import * as services from '../services/index';
 const FavouritesScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
     useEffect(() => {
-        dispatch(actions.getFavouriteListAction());
+        dispatch(actions.getFavouriteListAction(userInfo.user?._id));
     }, [dispatch]);
     const FavouritesList = useSelector((state) => state.FavourList.favorite);
     const tabBarHeight = useBottomTabBarHeight();
@@ -20,10 +21,10 @@ const FavouritesScreen = ({ navigation }) => {
     const ToggleFavourite = async (productId, favorite) => {
         let data = { productId: productId };
         try {
-            let res = await services.deleteItemToFavourService(data);
+            let res = await services.deleteItemToFavourService(userInfo.user?._id, data);
             console.log('check res : ', res);
             if (res && res.errorCode === 0) {
-                dispatch(actions.getFavouriteListAction());
+                dispatch(actions.getFavouriteListAction(userInfo.user?._id));
             }
         } catch (error) {
             console.log(error);

@@ -20,6 +20,7 @@ const CoffeeCard = ({
     average_rating,
     price,
     buttonPressHandler,
+    role,
 }) => {
     // console.log('check props proID  :', productId);
 
@@ -60,18 +61,20 @@ const CoffeeCard = ({
                 <Text style={styles.cardPriceCurrency}>
                     $<Text style={styles.cardPrice}>{price.price}</Text>
                 </Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        buttonPressHandler(productId, quantity, size, name);
-                    }}
-                >
-                    <BGIcon
-                        color={Colors.primaryWhiteHex}
-                        name="add"
-                        BGColor={Colors.primaryOrangeHex}
-                        size={FontSize.size_10}
-                    />
-                </TouchableOpacity>
+                {role !== 'admin' && (
+                    <TouchableOpacity
+                        onPress={() => {
+                            buttonPressHandler(productId, quantity, size, name);
+                        }}
+                    >
+                        <BGIcon
+                            color={Colors.primaryWhiteHex}
+                            name="add"
+                            BGColor={Colors.primaryOrangeHex}
+                            size={FontSize.size_10}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
         </LinearGradient>
     );

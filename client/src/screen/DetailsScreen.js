@@ -20,18 +20,20 @@ const DetailsScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    const userInfo = useSelector((state) => state.userInfo);
+
+    // console.log('====================================');
+    // console.log('USER: ', userInfo);
+    // console.log('====================================');
     useEffect(() => {
-        dispatch(actions.isItemFavourAction(route.params.id));
+        dispatch(actions.isItemFavourAction(userInfo.user?._id, route.params.id));
     }, [dispatch]);
     const dispatch = useDispatch();
-
     const CoffeeList = useSelector((state) => state.CoffeeList);
     const isFavourite = useSelector((state) => state.isItemFavour.isFavorite);
-    console.log('isFavourite : ', isFavourite);
     const itemOfIndex = CoffeeList.find((coffee) => coffee._id === route.params.id);
     const [price, setPrice] = useState(itemOfIndex.prices[0]);
     const [fullDesc, setFullDesc] = useState(false);
-
     const ToggleFavourite = async (productId, favourite) => {
         let data = { productId: productId };
         console.log('check body love  :', data);
@@ -39,15 +41,15 @@ const DetailsScreen = ({ navigation, route }) => {
         try {
             let res = '';
             if (favourite === false) {
-                res = await services.addItemToFavourService(data);
-                dispatch(actions.isItemFavourAction(route.params.id));
+                res = await services.addItemToFavourService(userInfo.user?._id, data);
+                dispatch(actions.isItemFavourAction(userInfo.user?._id, route.params.id));
             } else {
-                res = await services.deleteItemToFavourService(data);
-                dispatch(actions.isItemFavourAction(route.params.id));
+                res = await services.deleteItemToFavourService(userInfo.user?._id, data);
+                dispatch(actions.isItemFavourAction(userInfo.user?._id, route.params.id));
             }
             console.log('check res : ', res);
             if (res && res.errorCode === 0) {
-                dispatch(actions.getFavouriteListAction());
+                dispatch(actions.getFavouriteListAction(userInfo.user?._id));
             }
         } catch (error) {
             console.log(error);
@@ -76,6 +78,7 @@ const DetailsScreen = ({ navigation, route }) => {
         <View style={styles.screenContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollViewFlex}>
                 <ImageBackgroundInfo
+                    role={userInfo.user?.role}
                     EnableBackHandler={true}
                     imagelink_portrait={itemOfIndex.imagelink_portrait}
                     type={itemOfIndex.type}
@@ -157,18 +160,19 @@ const DetailsScreen = ({ navigation, route }) => {
                             ))}
                     </View>
                 </View>
-
-                <PaymentFooter
-                    price={price}
-                    buttonTitle="Add to Cart"
-                    buttonPressHandler={() => {
-                        addToCartHandler({
-                            productId: itemOfIndex._id,
-                            quantity: 1,
-                            size: price.size,
-                        });
-                    }}
-                />
+                {userInfo && userInfo.user && userInfo.user.role !== 'admin' && (
+                    <PaymentFooter
+                        price={price}
+                        buttonTitle="Add to Cart"
+                        buttonPressHandler={() => {
+                            addToCartHandler({
+                                productId: itemOfIndex._id,
+                                quantity: 1,
+                                size: price.size,
+                            });
+                        }}
+                    />
+                )}
             </ScrollView>
         </View>
     );
