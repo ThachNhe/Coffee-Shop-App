@@ -17,6 +17,7 @@ import AddProduct from '../screen/admin/AddProduct';
 import { useSelector, useDispatch } from 'react-redux';
 import UserTabNavigator from './UserTabNavigator';
 import AdminTabNavigator from './AdminTabNavigator';
+import CompletedOrderScreen from '../screen/CompletedOrderScreen';
 const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -97,6 +98,11 @@ const AppNavigation = () => {
                 <Stack.Screen
                     name="AddProduct"
                     component={AddProduct}
+                    options={{ animation: 'slide_from_bottom' }}
+                ></Stack.Screen>
+                <Stack.Screen
+                    name="completedOrder"
+                    component={CompletedOrderScreen}
                     options={{ animation: 'slide_from_bottom' }}
                 ></Stack.Screen>
             </Stack.Navigator>

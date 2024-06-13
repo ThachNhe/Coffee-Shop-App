@@ -39,7 +39,7 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                     </Text>
                 </View>
             </View>
-            {prices ? (
+            {/* {prices ? (
                 prices.map((data, index) => (
                     <View key={index.toString()} style={styles.CardTableRow}>
                         <View style={styles.CardTableRow}>
@@ -75,7 +75,39 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                 ))
             ) : (
                 <></>
-            )}
+            )} */}
+            <View key={'index.toString()'} style={styles.CardTableRow}>
+                <View style={styles.CardTableRow}>
+                    <View style={styles.SizeBoxLeft}>
+                        <Text
+                            style={[
+                                styles.SizeText,
+                                {
+                                    fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
+                                },
+                            ]}
+                        >
+                            M
+                        </Text>
+                    </View>
+                    <View style={styles.PriceBoxRight}>
+                        <Text style={styles.PriceCurrency}>
+                            ${/* <Text style={styles.Price}> {data.price}</Text> */}
+                            <Text style={styles.Price}> 5</Text>
+                        </Text>
+                    </View>
+                </View>
+
+                <View style={styles.CardTableRow}>
+                    <Text style={styles.CardQuantityPriceText}>
+                        {/* X <Text style={styles.Price}>{data.quantity}</Text> */}X{' '}
+                        <Text style={styles.Price}>10</Text>
+                    </Text>
+                    <Text style={styles.CardQuantityPriceText}>
+                        {/* $ {(data.quantity * data.price).toFixed(2).toString()} */}$ {(10).toFixed(2).toString()}
+                    </Text>
+                </View>
+            </View>
         </LinearGradient>
     );
 };

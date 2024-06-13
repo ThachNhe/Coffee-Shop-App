@@ -36,8 +36,8 @@ const DetailsScreen = ({ navigation, route }) => {
     const [fullDesc, setFullDesc] = useState(false);
     const ToggleFavourite = async (productId, favourite) => {
         let data = { productId: productId };
-        console.log('check body love  :', data);
-        console.log('check favour  :', favourite);
+        // console.log('check body love  :', data);
+        // console.log('check favour  :', favourite);
         try {
             let res = '';
             if (favourite === false) {
@@ -72,7 +72,7 @@ const DetailsScreen = ({ navigation, route }) => {
         console.log('check req : ', data);
     };
     const redirectToReviewScreen = () => {
-        navigation.navigate('Review');
+        navigation.push('Review', { productId: route.params.id });
     };
     return (
         <View style={styles.screenContainer}>

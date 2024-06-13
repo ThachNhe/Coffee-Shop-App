@@ -43,6 +43,9 @@ const updateDefaultAddressService = (userId, addressId) => {
 const addAddressService = (userId, addressBody) => {
     return axios.post(`/users/${userId}/addresses`, { body: addressBody });
 };
+const getReviewByProductIdService = (productId) => {
+    return axios.get(`/reviews/product/${productId}`);
+};
 export {
     getCoffeeList,
     AddCoffeeToCartService,
@@ -58,4 +61,5 @@ export {
     getUserAddressByIdServices,
     updateDefaultAddressService,
     addAddressService,
+    getReviewByProductIdService,
 };

@@ -4,7 +4,14 @@ import { Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import OrderItemCard from './OrderItemCard';
 import { useFonts } from 'expo-font';
 import { BorderRadius } from '../theme/theme';
-const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDate, type }) => {
+const OrderHistoryCard = ({
+    navigationHandler,
+    CartList,
+    CartListPrice,
+    OrderDate,
+    type,
+    onReviewPressReviewModal,
+}) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -63,12 +70,22 @@ const OrderHistoryCard = ({ navigationHandler, CartList, CartListPrice, OrderDat
             </View>
             {type === 'ORDER_SCREEN' && (
                 <TouchableOpacity
-                    style={styles.DownloadButton}
+                    style={[styles.DownloadButton, { backgroundColor: Colors.primaryRedHex }]}
                     onPress={() => {
                         buttonPressHandler();
                     }}
                 >
                     <Text style={styles.ButtonText}>Cancel Order</Text>
+                </TouchableOpacity>
+            )}
+            {type === 'COMPLETE_SCREEN' && (
+                <TouchableOpacity
+                    style={[styles.DownloadButton, { backgroundColor: Colors.primaryOrangeHex }]}
+                    onPress={() => {
+                        onReviewPressReviewModal();
+                    }}
+                >
+                    <Text style={styles.ButtonText}>Review</Text>
                 </TouchableOpacity>
             )}
         </View>
@@ -90,7 +107,7 @@ const styles = StyleSheet.create({
     },
     DownloadButton: {
         margin: Spacing.space_20,
-        backgroundColor: Colors.primaryRedHex,
+        // backgroundColor: Colors.primaryRedHex,
         alignItems: 'center',
         justifyContent: 'center',
         height: Spacing.space_24 * 2,

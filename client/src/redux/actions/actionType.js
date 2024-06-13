@@ -16,5 +16,6 @@ const actionTypes = Object.freeze({
     CLEAR_ADDRESS: 'CLEAR_ADDRESS',
     PUSH_ADDRESS: 'PUSH_ADDRESS',
     GET_ADDRESS_LIST: 'GET_ADDRESS_LIST',
+    GET_REVIEW_BY_PRODUCT_ID: 'GET_REVIEW_BY_PRODUCT_ID',
 });
 export default actionTypes;

@@ -18,6 +18,7 @@ const initialState = {
     userInfo: '',
     formAddress: '',
     AddressList: [],
+    ReviewListByProduct: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -71,6 +72,9 @@ function rootReducer(state = initialState, action) {
         // ====================================
         case actionTypes.GET_ADDRESS_LIST:
             state.AddressList = action.payload;
+            return { ...state };
+        case actionTypes.GET_REVIEW_BY_PRODUCT_ID:
+            state.ReviewListByProduct = action.payload;
             return { ...state };
         default:
             return state;

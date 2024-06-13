@@ -225,3 +225,19 @@ export const getAddressListAction = (id) => {
         }
     };
 };
+
+export const getReviewByProductIdAction = (productId) => {
+    return async (dispatch) => {
+        try {
+            console.log('check productId OKOKOOK: ', productId);
+            if (productId === undefined) return console.log('productId is undefined');
+            let res = await services.getReviewByProductIdService(productId);
+            dispatch({
+                type: actionType.GET_REVIEW_BY_PRODUCT_ID,
+                payload: res,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};

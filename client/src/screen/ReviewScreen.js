@@ -1,10 +1,9 @@
-import { View, Text, ScrollView, TouchableWithoutFeedback, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import { useFonts } from 'expo-font';
 import GradientBGIcon from '../components/GradientBGIcon';
-import RatingBar from '../components/RatingBar ';
 import * as Progress from 'react-native-progress';
 import { useSelector, useDispatch } from 'react-redux';
 import * as services from '../services/index';
@@ -21,14 +20,25 @@ const ReviewScreen = ({ navigation, route }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    useEffect(() => {}, [dispatch]);
+    useEffect(() => {
+        dispatch(actions.getReviewByProductIdAction(route.params.productId));
+    }, [dispatch]);
+
+    const [reviewList, setReviewList] = useState([]);
+    // const [progressBar, setProgressBar] = useState([]);
+    const [ratingCounts, setRatingCounts] = useState([]);
+    const ReviewListByProduct = useSelector((state) => state.ReviewListByProduct);
+    useEffect(() => {
+        setReviewList(ReviewListByProduct.reviews);
+        console.log('check review list : ', ReviewListByProduct);
+    }, [ReviewListByProduct]);
     const dispatch = useDispatch();
     const progressBar = [
         { process: 0.3, with: 250 },
+        { process: 0.4, with: 250 },
         { process: 0.3, with: 250 },
-        { process: 0.3, with: 250 },
-        { process: 0.3, with: 250 },
-        { process: 0.3, with: 250 },
+        { process: 0.1, with: 250 },
+        { process: 0.7, with: 250 },
     ];
     return (
         <View style={styles.ScreenContainer}>
@@ -82,18 +92,25 @@ const ReviewScreen = ({ navigation, route }) => {
                         </View>
                     </View>
                     <ScrollView>
-                        <View style={styles.ReviewDetail}>
-                            <Text style={styles.ReviewerName}>Nguyen Haang Duy</Text>
-                            <AirbnbRating
-                                count={5}
-                                isDisabled={true}
-                                showRating={false}
-                                defaultRating={3}
-                                selectedColor={Colors.primaryOrangeHex}
-                                size={13}
-                            />
-                            <Text style={styles.ReviewerComment}>The product is goood!</Text>
-                        </View>
+                        {reviewList &&
+                            reviewList.length > 0 &&
+                            reviewList &&
+                            reviewList.map((review, index) => {
+                                return (
+                                    <View style={styles.ReviewDetail}>
+                                        <Text style={styles.ReviewerName}>Nguyen Haang Duy</Text>
+                                        <AirbnbRating
+                                            count={5}
+                                            isDisabled={true}
+                                            showRating={false}
+                                            defaultRating={review.rating}
+                                            selectedColor={Colors.primaryOrangeHex}
+                                            size={13}
+                                        />
+                                        <Text style={styles.ReviewerComment}>{review.comment}</Text>
+                                    </View>
+                                );
+                            })}
                     </ScrollView>
                 </View>
             </View>

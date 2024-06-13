@@ -17,7 +17,7 @@ const ProfileScreen = ({ navigation, route }) => {
         navigation.navigate('History');
     };
     const pressHandlerRedirectCompletedScreen = () => {
-        navigation.navigate('History');
+        navigation.navigate('completedOrder');
     };
     const pressHandlerRedirectDeliveringScreen = () => {
         navigation.navigate('Delivering');
