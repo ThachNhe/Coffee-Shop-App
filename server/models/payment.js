@@ -14,6 +14,10 @@ const PaymentSchema = new Schema({
             quantity: Number,
         }
     ],
+    status: {
+        type: String,
+        default: "pending",
+    },
     total_price: Number,
 });
 

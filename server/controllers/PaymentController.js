@@ -12,8 +12,7 @@ const payOs = new PayOS(
 class PaymentController {
     //POST /create-payment-link
     async createPaymentLink(req, res) {
-        // const userId = req.session.User;
-        const userId = "6613d5018c360f7f06ef7a53";
+        const userId = req.session.User;
         if (!userId) {
             return res.status(401).json({
                 errorCode: 1,
@@ -36,15 +35,6 @@ class PaymentController {
                 order_id: paymentLinkRes.orderCode,
                 products: products,
             });
-
-
-            try {
-                await order.save();
-                res.status(201).json({message: 'Đơn hàng đã được tạo'});
-            } catch (e) {
-                console.error(e);
-                res.status(500).json({message: 'Lỗi tạo đơn hàng'});
-            }
 
 
             return res.status(200).json({
@@ -121,7 +111,7 @@ class PaymentController {
         }
     }
 
-    //GET /payment/:userId
+    //GET /payment/users/:userId
     async getPaymentOfUser(req, res) {
         const userId = req.params.userId;
         const user = await User.findById(userId);
@@ -151,8 +141,11 @@ class PaymentController {
                 $unwind: "$product_info",
             }, {
                 $project: {
-                    _id: 1,
+                    _id:1,
                     user_id: 1,
+                    status: 1,
+                    total_price: 1,
+                    order_id: 1,
                     product: {
                         product_id: "$products.product_id",
                         name: "$product_info.name",
@@ -180,6 +173,59 @@ class PaymentController {
                 }
             }
         ])
+
+        return res.status(200).json({
+            errorCode: 0,
+            payments,
+        })
+    }
+
+
+    //PUT /payment/:paymentId/processing
+    async setPaymentToProcessing(req, res) {
+        const paymentId = req.params.paymentId;
+        const payment = await Payment.findById(paymentId);
+        if (!payment) {
+            return res.status(404).json({
+                errorCode: -1,
+                message: "Payment not found",
+            })
+        }
+
+        payment.status = "processing";
+        await payment.save();
+
+        return res.status(200).json({
+            error: 0,
+            message: "Update payment status to processing",
+        })
+    }
+
+    //PUT /payment/:paymentId/completed
+    async setPaymentToCompleted(req, res) {
+        const paymentId = req.params.paymentId;
+        const payment = await Payment.findById(paymentId);
+        if (!payment) {
+            return res.status(404).json({
+                errorCode: -1,
+                message: "Payment not found",
+            })
+        }
+
+        payment.status = "completed";
+        await payment.save();
+
+        return res.status(200).json({
+            error: 0,
+            message: "Update payment status to processing",
+        })
+    }
+
+    //GET /payment
+    async getAllPayments(req, res) {
+        return res.status(200).json(
+            await Payment.find()
+        )
     }
 }
 
