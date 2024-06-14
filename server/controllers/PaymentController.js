@@ -1,5 +1,7 @@
 const PayOS = require("@payos/node");
-const Payment = require("../models/payment")
+const Payment = require("../models/payment");
+const User = require("../models/user");
+const {ObjectId} = require("mongodb");
 
 const payOs = new PayOS(
     "0f5eabbd-c66e-4a00-9d2d-06c4eae6ce45",
@@ -14,11 +16,11 @@ class PaymentController {
         const userId = "6613d5018c360f7f06ef7a53";
         if (!userId) {
             return res.status(401).json({
-                errorCode:1,
+                errorCode: 1,
                 msg: "Login first",
             })
         }
-        const {amount, description, cancelUrl, returnUrl} = req.body;
+        const {amount, description, cancelUrl, returnUrl, products} = req.body;
         const order = {
             orderCode: Number(String(new Date().getTime()).slice(-6)),
             amount: Number(amount),
@@ -32,7 +34,19 @@ class PaymentController {
             await Payment.create({
                 user_id: userId,
                 order_id: paymentLinkRes.orderCode,
+                products: products,
             });
+
+
+            try {
+                await order.save();
+                res.status(201).json({message: 'Đơn hàng đã được tạo'});
+            } catch (e) {
+                console.error(e);
+                res.status(500).json({message: 'Lỗi tạo đơn hàng'});
+            }
+
+
             return res.status(200).json({
                 bin: paymentLinkRes.bin,
                 checkoutUrl: paymentLinkRes.checkoutUrl,
@@ -107,7 +121,66 @@ class PaymentController {
         }
     }
 
-    cd
+    //GET /payment/:userId
+    async getPaymentOfUser(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                errorCode: -1,
+                message: "User not found",
+            });
+        }
+
+        const payments = await Payment.aggregate([
+            {
+                $match:
+                    {
+                        user_id: new ObjectId(userId),
+                    },
+            }, {
+                $unwind: "$products",
+            }, {
+                $lookup: {
+                    from: "products",
+                    localField: "products.product_id",
+                    foreignField: "_id",
+                    as: "product_info",
+                },
+            }, {
+                $unwind: "$product_info",
+            }, {
+                $project: {
+                    _id: 1,
+                    user_id: 1,
+                    product: {
+                        product_id: "$products.product_id",
+                        name: "$product_info.name",
+                        imagelink_square: "$product_info.imagelink_square",
+                        special_ingredient: "$product_info.special_ingredient",
+                        roasted: "$product_info.roasted",
+                        type: "$product_info.type",
+                        size: {
+                            $filter: {
+                                input: "$product_info.prices",
+                                as: "price",
+                                cond: {
+                                    $eq: ["$$price.size", "$products.size"],
+                                },
+                            },
+                        },
+                        quantity: "$products.quantity",
+                    },
+                },
+            }, {
+                $group: {
+                    _id: "$_id",
+                    user_id: {$first: "$user_id"},
+                    products: {$push: "$product"},
+                }
+            }
+        ])
+    }
 }
 
 module.exports = new PaymentController();

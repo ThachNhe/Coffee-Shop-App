@@ -7,6 +7,14 @@ const PaymentSchema = new Schema({
         ref: "User",
     },
     order_id: Number,
+    products: [
+        {
+            product_id: Schema.Types.ObjectId,
+            size: String,
+            quantity: Number,
+        }
+    ],
+    total_price: Number,
 });
 
 module.exports = new mongoose.model("Payment", PaymentSchema);

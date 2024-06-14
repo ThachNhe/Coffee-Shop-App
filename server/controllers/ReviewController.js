@@ -4,10 +4,10 @@ const User = require("../models/user");
 
 class ReviewController {
 
-    //POST /reviews/:productId/create
+    //POST /reviews/:productId/users/:userId/create
     async createReview(req, res) {
         const productId = req.params.productId;
-        const userId = req.session._id;
+        const userId = req.params.userId;
         const rating = req.body.rating;
         const comment = req.body.comment;
         try {
@@ -37,7 +37,7 @@ class ReviewController {
         }
         const reviews = await Review.find({
             product_id: productId,
-        });
+        }).populate("user_id");
         return res.status(200).json({
             errorCode: 0,
             reviews

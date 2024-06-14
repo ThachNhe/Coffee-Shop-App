@@ -5,16 +5,18 @@ const {ObjectId} = require("mongodb");
 
 class CartController {
 
-    //POST /cart/addToCart
+    //POST /carts/:userId/addToCart
     async addToCart(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                errorCode: -1,
+                message: "User not found",
+            })
+        }
+
         try {
-            // const userId = req.session.User;
-            const userId = "6613d5018c360f7f06ef7a53";
-            if (!userId) {
-                return res.status(401).json({
-                    msg: "Login first",
-                });
-            }
             const productId = req.body.productId;
             const size = req.body.size;
             const quantity = req.body.quantity;
@@ -80,10 +82,17 @@ class CartController {
         }
     }
 
-    //GET /cart/myCart
-    async getMyCart(req, res) {
-        // return res.json(await getCart(req.session.User));
-        const cart = await getCart("6613d5018c360f7f06ef7a53");
+    //GET /carts/:userId
+    async getCartByUserId(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                errorCode: -1,
+                message: "User not found",
+            })
+        }
+        const cart = await getCart(userId);
         return res.json({
             errorCode: 0,
             cart,

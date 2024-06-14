@@ -27,8 +27,7 @@ const ProductSchema = new Schema({
             type: String,
             default: "$",
         },
-    },
-    ],
+    }],
     roasted: String,
 });
 
