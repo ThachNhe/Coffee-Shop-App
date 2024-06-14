@@ -10,7 +10,9 @@ const ProductSchema = new Schema({
     },
 
     imagelink_square: {
-        type: String,
+        filename: String,
+        contentType: String,
+        imageBase64: String,
     },
     imagelink_portrait: String,
     type: {

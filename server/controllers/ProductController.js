@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const multer = require("multer");
 
 class ProductController {
 
@@ -7,25 +8,29 @@ class ProductController {
         const {
             name,
             description,
-            imagelink_square,
-            imagelink_portrait,
             type,
             ingredients,
             special_ingredient,
             prices,
             roasted,
         } = req.body;
+
+
         try {
             await Product.create({
                 name: name,
                 description: description,
-                imagelink_square: imagelink_square,
-                imagelink_portrait: imagelink_portrait,
                 type: type,
                 ingredients: ingredients,
                 special_ingredient: special_ingredient,
                 prices: prices,
                 roasted: roasted,
+                imagelink_square: req.file
+                    ? {
+                        filename: req.file.originalname,
+                        contentType: req.file.mimetype,
+                        imageBase64: req.file.buffer.toString('base64'),
+                    } : undefined
             });
             return res.status(200).json({
                 errorCode: 0,
