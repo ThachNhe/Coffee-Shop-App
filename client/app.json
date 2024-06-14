@@ -1,40 +1,52 @@
 {
-    "expo": {
-        "plugins": [
-            [
-                "expo-font",
-                {
-                    "fonts": [
-                        "../assets/fonts/Poppins-SemiBold.ttf",
-                        "../assets/fonts/Poppins-Medium.ttf",
-                        "../assets/fonts/Poppins-Light.ttf"
-                    ]
-                }
-            ]
-        ],
-        "name": "client",
-        "slug": "client",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./assets/icon.png",
-        "userInterfaceStyle": "light",
-        "splash": {
-            "image": "./assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        },
-        "assetBundlePatterns": ["**/*"],
-        "ios": {
-            "supportsTablet": true
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
-            }
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
+  "expo": {
+    
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "13.4"
+          }
         }
+      
+      ],
+      [
+         "@rnmapbox/maps",
+        {
+          "RNMapboxMapsVersion": "10.16.2",
+          "RNMapboxMapsDownloadToken": "ycmQvDOcmy51XgAotb5jyoJWW3IyhNqCjMxj7Lia"
+        }
+      ]
+    ],
+    "name": "client",
+    "slug": "client",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+   
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     }
+  }
 }

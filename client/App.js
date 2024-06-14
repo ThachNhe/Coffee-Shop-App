@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux';
 import ReviewScreen from './src/screen/ReviewScreen';
 import AddAddressScreen from './src/screen/AddAddressScreen';
 import AppNavigation from './src/navigators/AppNavigation';
+import AutoCompleteScreen from './src/screen/AutoCompleteScreen';
 const Stack = createNativeStackNavigator();
 const App = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -33,6 +34,7 @@ const App = () => {
         <StoreProvider store={store}>
             <PaperProvider>
                 <StatusBar backgroundColor={Colors.primaryBlackHex} barStyle="white" />
+                {/* <AutoCompleteScreen /> */}
                 <AppNavigation />
                 {/* <GooglePlacesAutocomplete
                     placeholder="Search"

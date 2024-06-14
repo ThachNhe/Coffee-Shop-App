@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import CustomIcon from '../components/CustomIcon';
 import ProfileScreen from '../screen/ProfileScreen';
 import AdminHomeScreen from '../screen/admin/AdminHomeScreen';
+import AdminProfileScreen from '../screen/admin/AdminProfileScreen';
 const Tab = createBottomTabNavigator();
 
 const AdminTabNavigator = () => {
@@ -36,7 +37,7 @@ const AdminTabNavigator = () => {
                     ),
                 }}
             ></Tab.Screen>
-            {/* <Tab.Screen
+            <Tab.Screen
                 name="Statistic"
                 component={FavouritesScreen}
                 options={{
@@ -48,7 +49,7 @@ const AdminTabNavigator = () => {
                         />
                     ),
                 }}
-            ></Tab.Screen> */}
+            ></Tab.Screen>
 
             <Tab.Screen
                 name="Favourite"
@@ -66,7 +67,7 @@ const AdminTabNavigator = () => {
 
             <Tab.Screen
                 name="Profile"
-                component={ProfileScreen}
+                component={AdminProfileScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => (
                         <Icon

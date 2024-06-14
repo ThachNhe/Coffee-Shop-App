@@ -8,7 +8,7 @@ import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
 import Modal from 'react-native-modal';
-import SelectDropdown from 'react-native-select-dropdown';
+import SelectDropdownComponent from '../components/SelectDropdownComponent';
 import { AirbnbRating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,12 +24,6 @@ const CompletedOrderScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    // const emojisWithIcons = [
-    //     { title: 'happy', icon: 'emoticon-happy-outline' },
-    //     { title: 'cool', icon: 'emoticon-cool-outline' },
-    //     { title: 'lol', icon: 'emoticon-lol-outline' },
-    //     { title: 'sad', icon: 'emoticon-sad-outline' },
-    // ];
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -108,43 +102,8 @@ const CompletedOrderScreen = ({ navigation }) => {
                     >
                         Product Name
                     </Text>
-                    <SelectDropdown
-                        data={newCoffeeTypes}
-                        onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index);
-                        }}
-                        renderButton={(selectedItem, isOpened) => {
-                            return (
-                                <View style={styles.dropdownButtonStyle}>
-                                    {selectedItem && (
-                                        <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
-                                    )}
-                                    <Text style={styles.dropdownButtonTxtStyle}>
-                                        {(selectedItem && selectedItem.title) || 'Select your product'}
-                                    </Text>
-                                    <Icon
-                                        name={isOpened ? 'chevron-up' : 'chevron-down'}
-                                        style={styles.dropdownButtonArrowStyle}
-                                    />
-                                </View>
-                            );
-                        }}
-                        renderItem={(item, index, isSelected) => {
-                            return (
-                                <View
-                                    style={{
-                                        ...styles.dropdownItemStyle,
-                                        ...(isSelected && { backgroundColor: '#D2D9DF' }),
-                                    }}
-                                >
-                                    <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
-                                    <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                                </View>
-                            );
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        dropdownStyle={styles.dropdownMenuStyle}
-                    />
+                    <SelectDropdownComponent data={newCoffeeTypes} />
+
                     <Input
                         placeholder="Review"
                         // leftIcon={<Icon name="star" size={24} color={Colors.primaryOrangeHex} />}

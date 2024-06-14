@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spacing } from '../../theme/theme';
-import { TextInput } from 'react-native-paper';
 import GradientBGIcon from '../../components/GradientBGIcon';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
-import { Dropdown } from 'react-native-element-dropdown';
-
+import * as DocumentPicker from 'expo-document-picker';
 import { useSelector, useDispatch } from 'react-redux';
+import SelectDropdown from '../../components/SelectDropdownComponent';
 import * as actions from '../../redux/actions/index';
 const data = [
-    { label: 'Coffee', value: 'Coffee' },
-    { label: 'Bean', value: 'Bean' },
+    { icon: 'emoticon-happy-outline', title: 'Coffee' },
+    { icon: 'emoticon-happy-outline', title: 'Bean' },
 ];
 const AddProduct = ({ navigation, route }) => {
     const dispatch = useDispatch();
@@ -27,6 +26,15 @@ const AddProduct = ({ navigation, route }) => {
             </View>
         );
     };
+    const [document, setDocument] = useState(null);
+    console.log('check du lieu', document);
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({});
+        console.log(result);
+        if (!result.cancelled) {
+            setDocument(result);
+        }
+    };
     return (
         <View style={styles.ScreenContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
@@ -34,7 +42,7 @@ const AddProduct = ({ navigation, route }) => {
                     <TouchableOpacity
                         onPress={() => {
                             navigation.pop();
-                            setAddress('');
+                            // setAddress('');
                         }}
                     >
                         <GradientBGIcon name="left" color={Colors.primaryLightGreyHex} size={FontSize.size_16} />
@@ -43,6 +51,8 @@ const AddProduct = ({ navigation, route }) => {
                     <View style={styles.EmptyView} />
                 </View>
                 <View style={styles.TextInputContainer}>
+                    <SelectDropdown data={data}></SelectDropdown>
+
                     <Input
                         placeholder="Product Name"
                         leftIcon={<Icon name="user" size={24} color={Colors.primaryOrangeHex} />}
@@ -99,30 +109,27 @@ const AddProduct = ({ navigation, route }) => {
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
                     />
-                    <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        iconStyle={styles.iconStyle}
-                        data={data}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder="Product Type"
-                        value={value}
-                        onChange={(item) => {
-                            setValue(item.value);
-                        }}
-                        renderLeftIcon={() => (
-                            <Icon
-                                name="product-hunt"
-                                size={24}
-                                color={Colors.primaryOrangeHex}
-                                onPress={() => openModal()}
-                            />
-                        )}
-                        renderItem={renderItem}
-                    />
+
+                    <TouchableOpacity
+                        onPress={pickDocument}
+                        style={[
+                            styles.buttonChooseImg,
+                            {
+                                backgroundColor: !document ? Colors.primaryBlackHex : Colors.secondaryGreyHex,
+                            },
+                        ]}
+                    >
+                        <Text style={styles.ButtonStyle}>Choose File</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        // onPress={pickDocument}
+                        style={[
+                            styles.buttonChooseImg,
+                            { backgroundColor: Colors.primaryOrangeHex, marginTop: Spacing.space_20 },
+                        ]}
+                    >
+                        <Text style={styles.ButtonStyle}>Add New Product</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>
@@ -157,6 +164,10 @@ const styles = StyleSheet.create({
     },
     TextInputContainer: {
         marginHorizontal: Spacing.space_10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        gap: Spacing.space_5,
     },
     inputContainer: {
         width: '100%',
@@ -175,21 +186,7 @@ const styles = StyleSheet.create({
         color: Colors.textInputColor, // Căn giữa văn bản
         paddingLeft: Spacing.space_10,
     },
-    dropdown: {
-        margin: 16,
-        height: 60,
-        backgroundColor: Colors.primaryGreyHex,
-        borderRadius: 12,
-        padding: 12,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 2,
-    },
+
     icon: {
         marginRight: 5,
     },
@@ -217,6 +214,17 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
     },
+    buttonChooseImg: {
+        borderWidth: 1,
+        borderColor: Colors.secondaryLightGreyHex,
+        borderRadius: 10,
+        paddingHorizontal: Spacing.space_10,
+        alignItems: 'center',
+        height: 50,
+        width: '95%',
+        justifyContent: 'center',
+    },
+    ButtonStyle: { color: Colors.textInputColor, fontWeight: '700', fontSize: FontSize.size_16 },
 });
 
 export default AddProduct;
