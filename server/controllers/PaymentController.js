@@ -228,6 +228,7 @@ class PaymentController {
             await Payment.find()
         )
     }
+
 }
 
 module.exports = new PaymentController();

@@ -98,6 +98,38 @@ class CartController {
             cart,
         });
     }
+
+    //DELETE /carts/:userId
+    async deleteCartOfUser(req, res) {
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                errorCode: -1,
+                message: "User not found",
+            })
+        }
+
+        try {
+            const deletedCart = await Cart.findOneAndDelete({
+                user_id: userId,
+            });
+
+            if (!deletedCart) {
+                return res.status(404).json({
+                    errorCode: -1,
+                    message: "Cart not found",
+                });
+            }
+            return res.status(200).json({
+                errorCode: 0,
+                message: "Delete cart successfully",
+            })
+        } catch (error) {
+            console.error('Error deleting cart:', error);
+            res.status(500).json({message: 'Server error'});
+        }
+    }
 }
 
 async function getCart(userId) {
