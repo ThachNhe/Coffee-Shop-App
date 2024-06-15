@@ -8,7 +8,7 @@ import PaymentScreen from './src/screen/PaymentScreen';
 import { Colors } from './src/theme/theme';
 import ProfileScreen from './src/screen/ProfileScreen';
 import AddressScreen from './src/screen/AddressScreen';
-import OrderHistoryScreen from './src/screen/OrderHistoryScreen';
+import OrderHistoryScreen from './src/screen/UserPendingOrder';
 import DeliveringScreen from './src/screen/DeliveringScreen';
 import CanceledSCreen from './src/screen/CanceledSCreen';
 import { Provider as StoreProvider } from 'react-redux';

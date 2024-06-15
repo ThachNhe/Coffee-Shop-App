@@ -7,14 +7,16 @@ import * as actions from '../redux/actions/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
 const ProfileScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
     const buttonPressHandler = () => {
         navigation.push('Address');
     };
+
     const buttonPressRedirectCartScreen = () => {
         navigation.navigate('Cart');
     };
-    const buttonPressRedirectOrderHistoryScreen = () => {
-        navigation.navigate('History');
+    const buttonPressRedirectUserPendingOrder = () => {
+        navigation.navigate('UserPendingOrder');
     };
     const pressHandlerRedirectCompletedScreen = () => {
         navigation.navigate('completedOrder');
@@ -38,8 +40,8 @@ const ProfileScreen = ({ navigation, route }) => {
                         <Image source={require('../assets/app_images/me.jpg')} style={styles.image} />
                     </View>
                     <View style={styles.personalInfo}>
-                        <Text style={styles.fullNameText}>Đinh Văn Thạch</Text>
-                        <Text style={styles.gmailText}>thachdinh110902@gmail.com</Text>
+                        <Text style={styles.fullNameText}>{userInfo.user?.name}</Text>
+                        <Text style={styles.gmailText}>{userInfo.user?.email}</Text>
                     </View>
                 </View>
             </View>
@@ -56,17 +58,19 @@ const ProfileScreen = ({ navigation, route }) => {
                         <View style={styles.orderHistoryContainer}>
                             <TouchableOpacity
                                 style={styles.orderItem}
-                                onPress={() => navigation.navigate('AddProduct')}
+                                onPress={() => navigation.navigate('UserPendingOrder')}
                             >
+                                <Icon name="shopping-cart" size={30} style={styles.iconHistoryStyle} />
+
                                 <View>
-                                    <Text style={styles.descriptionText}>Confirmation</Text>
+                                    <Text style={styles.descriptionText}>My orders</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.orderItem}
                                 onPress={() => pressHandlerRedirectDeliveringScreen()}
                             >
-                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                                <Icon name="motorcycle" size={30} style={styles.iconHistoryStyle} />
 
                                 <View>
                                     <Text style={styles.descriptionText}>Delivering</Text>
@@ -76,7 +80,7 @@ const ProfileScreen = ({ navigation, route }) => {
                                 style={styles.orderItem}
                                 onPress={() => pressHandlerRedirectCompletedScreen()}
                             >
-                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                                <Icon name="check" size={30} style={styles.iconHistoryStyle} />
 
                                 <View>
                                     <Text style={styles.descriptionText}>Completed</Text>
@@ -86,7 +90,7 @@ const ProfileScreen = ({ navigation, route }) => {
                                 style={styles.orderItem}
                                 onPress={() => pressHandlerRedirectCanceledScreen()}
                             >
-                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                                <Icon name="times" size={30} style={styles.iconHistoryStyle} />
                                 <View>
                                     <Text style={styles.descriptionText}>Canceled</Text>
                                 </View>
@@ -123,7 +127,7 @@ const ProfileScreen = ({ navigation, route }) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.accountSettingItemContainer}
-                                onPress={() => buttonPressRedirectOrderHistoryScreen()}
+                                onPress={() => buttonPressRedirectUserPendingOrder()}
                             >
                                 <View style={styles.accountSettingItem}>
                                     <Icon name="list-alt" size={25} style={styles.iconSettingAccountStyle} />
@@ -230,9 +234,7 @@ const styles = StyleSheet.create({
         gap: Spacing.space_20,
     },
     orderItem: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignContent: 'center',
+        alignItems: 'center',
     },
     accountSettingItemContainer: {
         flexDirection: 'row',

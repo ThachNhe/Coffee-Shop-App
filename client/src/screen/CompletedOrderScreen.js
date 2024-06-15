@@ -1,4 +1,4 @@
-import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View, ToastAndroid } from 'react-native';
 import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
@@ -7,11 +7,13 @@ import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
-import Modal from 'react-native-modal';
-import SelectDropdownComponent from '../components/SelectDropdownComponent';
-import { AirbnbRating } from 'react-native-ratings';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as services from '../services/index';
+import Modal from 'react-native-modal';
+import SelectDropdown from 'react-native-select-dropdown';
+import { AirbnbRating } from 'react-native-ratings';
 import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../redux/actions/index';
 const CompletedOrderScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -24,6 +26,7 @@ const CompletedOrderScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
+    const dispatch = useDispatch();
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -31,16 +34,18 @@ const CompletedOrderScreen = ({ navigation }) => {
         setModalVisible(!isModalVisible);
     };
     const [showAnimation, setShowAnimation] = useState(false);
+    const [rating, setRating] = useState();
+    const [reviewProduct, setReviewProduct] = useState();
     const CartList = useSelector((state) => state.CartList);
+    const userInfo = useSelector((state) => state.userInfo);
     const CartPrice = useSelector((state) => state.CartPrice);
-    const [Review, setReview] = useState('');
+    const [ReviewText, setReviewText] = useState('');
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
-    console.log('====================================');
-    console.log('check CartList : ', CartList);
-    console.log('====================================');
+
     const newCoffeeTypes = CartList.map((coffeeType) => ({
         icon: 'emoticon-happy-outline',
         title: coffeeType.name,
+        product_id: coffeeType.product_id,
     }));
     const navigationHandler = ({ index, id, type }) => {
         navigation.push('Details', {
@@ -49,14 +54,30 @@ const CompletedOrderScreen = ({ navigation }) => {
             type,
         });
     };
-
-    const buttonPressHandler = () => {
-        setShowAnimation(true);
-        setTimeout(() => {
-            setShowAnimation(false);
-        }, 2000);
+    const selectProductToReview = (selectedItem, index) => {
+        console.log(selectedItem, index);
+        setReviewProduct(selectedItem);
     };
-
+    const handlerSubmitReview = async () => {
+        let data = { rating: rating, comment: ReviewText };
+        let productId = reviewProduct.product_id;
+        let userId = userInfo.user?._id;
+        console.log('check review  :', data);
+        try {
+            let res = await services.postReviewService(productId, userId, data);
+            console.log('check res review  :', res);
+            if (res && res.errorCode === 0) {
+                dispatch(actions.getReviewByProductIdAction(productId));
+                ToastAndroid.showWithGravity(`Success Review!`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+                setRating(0);
+                setReviewProduct('');
+                setReviewText('');
+                setModalVisible(false);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
     return (
         <View style={styles.ScreenContainer}>
             {showAnimation ? (
@@ -102,7 +123,43 @@ const CompletedOrderScreen = ({ navigation }) => {
                     >
                         Product Name
                     </Text>
-                    <SelectDropdownComponent data={newCoffeeTypes} />
+                    <View>
+                        <SelectDropdown
+                            data={newCoffeeTypes}
+                            onSelect={(selectedItem, index) => selectProductToReview(selectedItem, index)}
+                            renderButton={(selectedItem, isOpened) => {
+                                return (
+                                    <View style={styles.dropdownButtonStyle}>
+                                        {selectedItem && (
+                                            <Icon name={selectedItem.icon} style={styles.dropdownButtonIconStyle} />
+                                        )}
+                                        <Text style={styles.dropdownButtonTxtStyle}>
+                                            {(selectedItem && selectedItem.title) || 'Select your product'}
+                                        </Text>
+                                        <Icon
+                                            name={isOpened ? 'chevron-up' : 'chevron-down'}
+                                            style={styles.dropdownButtonArrowStyle}
+                                        />
+                                    </View>
+                                );
+                            }}
+                            renderItem={(item, index, isSelected) => {
+                                return (
+                                    <View
+                                        style={{
+                                            ...styles.dropdownItemStyle,
+                                            ...(isSelected && { backgroundColor: '#D2D9DF' }),
+                                        }}
+                                    >
+                                        <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                        <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                    </View>
+                                );
+                            }}
+                            showsVerticalScrollIndicator={false}
+                            dropdownStyle={styles.dropdownMenuStyle}
+                        />
+                    </View>
 
                     <Input
                         placeholder="Review"
@@ -110,7 +167,7 @@ const CompletedOrderScreen = ({ navigation }) => {
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
-                        onChangeText={setReview}
+                        onChangeText={setReviewText}
                     />
                     <View
                         style={{
@@ -129,8 +186,9 @@ const CompletedOrderScreen = ({ navigation }) => {
                             // isDisabled={true}
                             showRating={false}
                             selectedColor={Colors.primaryOrangeHex}
-                            defaultRating={3}
+                            defaultRating={0}
                             size={20}
+                            onFinishRating={(value) => setRating(value)}
                         />
                     </View>
 
@@ -146,7 +204,7 @@ const CompletedOrderScreen = ({ navigation }) => {
                         <TouchableOpacity style={styles.buttonBack} onPress={toggleModal}>
                             <Text style={[styles.ButtonText, { color: Colors.primaryBlackHex }]}>Back</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonSubmitReview} onPress={() => handlerSubmitAddress()}>
+                        <TouchableOpacity style={styles.buttonSubmitReview} onPress={() => handlerSubmitReview()}>
                             <Text style={styles.ButtonText}>Submit</Text>
                         </TouchableOpacity>
                     </View>
@@ -306,6 +364,50 @@ const styles = StyleSheet.create({
     dropdownItemIconStyle: {
         fontSize: 28,
         marginRight: 8,
+    },
+    /// select dropdown
+    dropdownButtonStyle: {
+        width: '95%',
+        height: 50,
+        backgroundColor: '#E9ECEF',
+        borderRadius: 12,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 12,
+        marginBottom: Spacing.space_20,
+        // marginVertical: Spacing.space_10,
+    },
+    dropdownButtonTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownButtonArrowStyle: {
+        fontSize: 28,
+    },
+    dropdownItemStyle: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingHorizontal: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    dropdownItemTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownItemIconStyle: {
+        fontSize: 28,
+        marginRight: 8,
+    },
+    dropdownMenuStyle: {
+        backgroundColor: '#E9ECEF',
+        borderRadius: 8,
     },
 });
 

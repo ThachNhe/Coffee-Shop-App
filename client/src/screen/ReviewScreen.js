@@ -21,16 +21,17 @@ const ReviewScreen = ({ navigation, route }) => {
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
     useEffect(() => {
+        console.log('====================================');
+        console.log('review screen pID: ', route.params.productId);
+        console.log('====================================');
         dispatch(actions.getReviewByProductIdAction(route.params.productId));
     }, [dispatch]);
 
     const [reviewList, setReviewList] = useState([]);
-    // const [progressBar, setProgressBar] = useState([]);
     const [ratingCounts, setRatingCounts] = useState([]);
     const ReviewListByProduct = useSelector((state) => state.ReviewListByProduct);
     useEffect(() => {
         setReviewList(ReviewListByProduct.reviews);
-        console.log('check review list : ', ReviewListByProduct);
     }, [ReviewListByProduct]);
     const dispatch = useDispatch();
     const progressBar = [

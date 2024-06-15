@@ -5,11 +5,11 @@ const userLoginService = (body) => {
 const getCoffeeList = () => {
     return axios.get('/products/coffee');
 };
-const AddCoffeeToCartService = (body) => {
-    return axios.post('/cart/addToCart', body);
+const AddCoffeeToCartService = (userId, body) => {
+    return axios.post(`/carts/${userId}/addToCart`, body);
 };
-const getCartListService = () => {
-    return axios.get('/cart/myCart');
+const getCartListService = (userId) => {
+    return axios.get(`/carts/${userId}`);
 };
 const createLinkPaymentService = (body) => {
     return axios.post('/create-payment-link', body);
@@ -46,6 +46,9 @@ const addAddressService = (userId, addressBody) => {
 const getReviewByProductIdService = (productId) => {
     return axios.get(`/reviews/product/${productId}`);
 };
+const postReviewService = (productId, userId, body) => {
+    return axios.post(`/reviews/${productId}/users/${userId}/create`, { body: body });
+};
 export {
     getCoffeeList,
     AddCoffeeToCartService,
@@ -62,4 +65,5 @@ export {
     updateDefaultAddressService,
     addAddressService,
     getReviewByProductIdService,
+    postReviewService,
 };

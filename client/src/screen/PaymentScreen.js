@@ -74,6 +74,7 @@ const PaymentScreen = ({ navigation, route }) => {
             ) : (
                 <></>
             )}
+            {/* <PopUpAnimation style={styles.LottieAnimation} source={require('../lottie/successful.json')} /> */}
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 <View style={styles.HeaderContainer}>
@@ -109,7 +110,6 @@ const PaymentScreen = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.orderItemContainer}>
-                    {/* <Text style={styles.AddressTitle}>Money</Text> */}
                     <View style={styles.FeeContainer}>
                         <Text style={styles.FeeTitle}>Subtotal</Text>
                         <Text style={styles.FeeValue}>${CartPrice}</Text>
@@ -207,7 +207,7 @@ const PaymentScreen = ({ navigation, route }) => {
                 buttonTitle={`Pay with ${paymentMode}`}
                 price={{ price: route.params.amount, currency: '$' }}
                 buttonPressHandler={buttonPressHandler}
-                amount={CartPrice * 10}
+                amount={CartPrice * 100}
                 description={'Test'}
                 returnUrl={'https://www.google.com.vn'}
                 cancelUrl={'https://www.facebook.com'}

@@ -12,7 +12,7 @@ const AddressScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
     const AddressListRedux = useSelector((state) => state.AddressList);
-    console.log('check addressList : ', AddressList);
+    // console.log('check addressList : ', AddressList);
     useEffect(() => {
         dispatch(actions.getAddressListAction(userInfo.user?._id));
     }, [dispatch]);

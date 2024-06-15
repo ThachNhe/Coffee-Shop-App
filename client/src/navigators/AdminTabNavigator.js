@@ -12,7 +12,7 @@ import ProfileScreen from '../screen/ProfileScreen';
 import AdminHomeScreen from '../screen/admin/AdminHomeScreen';
 import AdminProfileScreen from '../screen/admin/AdminProfileScreen';
 const Tab = createBottomTabNavigator();
-
+import AdminStatisticScreen from '../screen/admin/AdminStatisticScreen';
 const AdminTabNavigator = () => {
     return (
         <Tab.Navigator
@@ -39,11 +39,11 @@ const AdminTabNavigator = () => {
             ></Tab.Screen>
             <Tab.Screen
                 name="Statistic"
-                component={FavouritesScreen}
+                component={AdminStatisticScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => (
-                        <CustomIcon
-                            name="like"
+                        <Icon
+                            name="anchor"
                             size={25}
                             color={focused ? Colors.primaryOrangeHex : Colors.primaryLightGreyHex}
                         />

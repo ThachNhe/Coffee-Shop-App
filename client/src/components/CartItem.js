@@ -33,74 +33,10 @@ const CartItem = (props) => {
     } = props;
 
     const image = {
-        uri: String(imagelink_square ? imagelink_square : ''),
+        uri: imagelink_square ? String(imagelink_square) : 'OKOK',
     };
     return (
         <View>
-            {/* {prices.length != 1 ? (
-                <LinearGradient
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    colors={[Colors.primaryGreyHex, Colors.primaryBlackHex]}
-                    style={styles.CartItemLinearGradient}
-                >
-                    <View style={styles.CartItemRow}>
-                        <Image source={image} style={styles.CartItemImage} />
-                        <View style={styles.CartItemInfo}>
-                            <View>
-                                <Text style={styles.CartItemTitle}>{name}</Text>
-                                <Text style={styles.CartItemSubtitle}>{special_ingredient}</Text>
-                            </View>
-                            <View style={styles.CartItemRoastedContainer}>
-                                <Text style={styles.CartItemRoastedText}>{roasted}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    {prices.map((data, index) => (
-                        <View key={index.toString()} style={styles.CartItemSizeRowContainer}>
-                            <View style={styles.CartItemSizeValueContainer}>
-                                <View style={styles.SizeBox}>
-                                    <Text
-                                        style={[
-                                            styles.SizeText,
-                                            {
-                                                fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
-                                            },
-                                        ]}
-                                    >
-                                        {data.size}
-                                    </Text>
-                                </View>
-                                <Text style={styles.SizeCurrency}>
-                                    {data.currency}
-                                    <Text style={styles.SizePrice}> {data.price}</Text>
-                                </Text>
-                            </View>
-                            <View style={styles.CartItemSizeValueContainer}>
-                                <TouchableOpacity
-                                    style={styles.CartItemIcon}
-                                    onPress={() => {
-                                        decrementCartItemQuantityHandler(id, data.size);
-                                    }}
-                                >
-                                    <CustomIcon name="minus" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
-                                </TouchableOpacity>
-                                <View style={styles.CartItemQuantityContainer}>
-                                    <Text style={styles.CartItemQuantityText}>{data.quantity}</Text>
-                                </View>
-                                <TouchableOpacity
-                                    style={styles.CartItemIcon}
-                                    onPress={() => {
-                                        incrementCartItemQuantityHandler(id, data.size);
-                                    }}
-                                >
-                                    <CustomIcon name="add" color={Colors.primaryWhiteHex} size={FontSize.size_10} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    ))}
-                </LinearGradient>
-            ) : ( */}
             <LinearGradient
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}

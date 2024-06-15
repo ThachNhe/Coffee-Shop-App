@@ -20,8 +20,9 @@ const ImageBackgroundInfo = ({
     role,
 }) => {
     const image = {
-        uri: String(imagelink_portrait),
+        uri: imagelink_portrait ? String(imagelink_portrait) : 'OKOK',
     };
+
     return (
         <View>
             <ImageBackground source={image} style={styles.ItemBackgroundImage}>

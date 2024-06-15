@@ -35,18 +35,23 @@ const QrCodeScreen = ({ navigation, route }) => {
                 console.error(error);
             }
         };
+        setShowAnimation(false);
         fetchData();
     }, []);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('check paymentInfo :', PaymentInfo.orderCode);
                 let paymentStatus = await services.getStatusPaymentService(PaymentInfo.orderCode);
-                console.log('check payment info OKOKOKO  :', paymentStatus);
+                // console.log('check payment info OKOKOKO  :', paymentStatus);
                 setStatusPayment(paymentStatus.data);
                 if (statusPayment && statusPayment.status === 'PAID') {
-                    navigation.navigate('Cart');
+                    setShowAnimation(true);
                     dispatch(actions.clearPaymentInfo());
+                    setTimeout(() => {
+                        setShowAnimation(false);
+                        navigation.navigate('Cart');
+                    }, 2000);
                 }
             } catch (error) {
                 console.error(error);

@@ -16,7 +16,7 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
     const image = {
-        uri: String(imagelink_square),
+        uri: imagelink_square ? String(imagelink_square) : 'OKOK',
     };
     return (
         <LinearGradient
@@ -35,7 +35,7 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                 </View>
                 <View>
                     <Text style={styles.CardCurrency}>
-                        $ <Text style={styles.CardPrice}>{ItemPrice}</Text>
+                        <Text style={styles.CardPrice}> $10.0{ItemPrice}</Text>
                     </Text>
                 </View>
             </View>
@@ -83,7 +83,7 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                             style={[
                                 styles.SizeText,
                                 {
-                                    fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
+                                    fontSize: FontSize.size_12,
                                 },
                             ]}
                         >
@@ -129,13 +129,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     Image: {
-        height: 90,
-        width: 90,
+        height: 80,
+        width: 80,
         borderRadius: BorderRadius.radius_15,
     },
     CardTitle: {
         fontFamily: 'poppins_medium',
-        fontSize: FontSize.size_18,
+        fontSize: FontSize.size_16,
         color: Colors.primaryWhiteHex,
     },
     CardSubtitle: {
@@ -145,11 +145,12 @@ const styles = StyleSheet.create({
     },
     CardCurrency: {
         fontFamily: 'poppins_semibold',
-        fontSize: FontSize.size_20,
+        fontSize: FontSize.size_18,
         color: Colors.primaryOrangeHex,
     },
     CardPrice: {
         color: Colors.primaryWhiteHex,
+        fontSize: FontSize.size_18,
     },
     CardTableRow: {
         flex: 1,
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     },
     SizeBoxLeft: {
         backgroundColor: Colors.primaryBlackHex,
-        height: 45,
+        height: 40,
         flex: 1,
         borderTopLeftRadius: BorderRadius.radius_10,
         borderBottomLeftRadius: BorderRadius.radius_10,
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     },
     PriceBoxRight: {
         backgroundColor: Colors.primaryBlackHex,
-        height: 45,
+        height: 40,
         flex: 1,
         borderTopRightRadius: BorderRadius.radius_10,
         borderBottomRightRadius: BorderRadius.radius_10,
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
     },
     PriceCurrency: {
         fontFamily: 'poppins_semibold',
-        fontSize: FontSize.size_18,
+        fontSize: FontSize.size_16,
         color: Colors.primaryOrangeHex,
     },
     Price: {
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         fontFamily: 'poppins_semibold',
-        fontSize: FontSize.size_18,
+        fontSize: FontSize.size_16,
         color: Colors.primaryOrangeHex,
     },
 });

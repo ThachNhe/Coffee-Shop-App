@@ -37,7 +37,9 @@ const HomeScreen = ({ navigation }) => {
         dispatch(actions.getCoffeeListAction());
     }, [dispatch]);
     const CoffeeList = useSelector((state) => state.CoffeeList);
-    console.log('check CoffeeList homeScreen : ', CoffeeList.CoffeeList);
+    const userInfo = useSelector((state) => state.userInfo);
+
+    // console.log('check CoffeeList homeScreen : ', CoffeeList.CoffeeList);
 
     const getCoffeeList = (category, data) => {
         if (category === 'All') {
@@ -107,10 +109,11 @@ const HomeScreen = ({ navigation }) => {
         try {
             let data = { productId, quantity, size, name };
             console.log('check req  :', data);
-            let response = await services.AddCoffeeToCartService(data);
-            if (response) {
+            let response = await services.AddCoffeeToCartService(userInfo.user?._id, data);
+            console.log('check response : ', response);
+            if (response && response.errorCode === 0) {
                 ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
-                dispatch(actions.getCartListAction());
+                dispatch(actions.getCartListAction(userInfo.user?._id));
             }
         } catch (err) {
             console.log(err);

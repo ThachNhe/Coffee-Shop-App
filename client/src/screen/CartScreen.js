@@ -11,10 +11,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../redux/actions/index';
 const CartScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
     useEffect(() => {
-        dispatch(actions.getCartListAction());
+        dispatch(actions.getCartListAction(userInfo.user?._id));
     }, [dispatch]);
     const CartList = useSelector((state) => state.CartList);
+
     // console.log('check cartScreen : ', CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const tabBarHeight = useBottomTabBarHeight();
@@ -27,9 +29,9 @@ const CartScreen = ({ navigation, route }) => {
         try {
             let data = { productId, quantity: 1, size };
             console.log('check req  :', data);
-            let response = await services.AddCoffeeToCartService(data);
+            let response = await services.AddCoffeeToCartService(userInfo.user?._id, data);
             if (response) {
-                dispatch(actions.getCartListAction());
+                dispatch(actions.getCartListAction(userInfo.user?._id));
                 //ToastAndroid.showWithGravity(`${name} is remove from Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (err) {
@@ -41,9 +43,9 @@ const CartScreen = ({ navigation, route }) => {
         try {
             let data = { productId, quantity: -1, size };
             console.log('check req  :', data);
-            let response = await services.AddCoffeeToCartService(data);
+            let response = await services.AddCoffeeToCartService(userInfo.user?._id, data);
             if (response) {
-                dispatch(actions.getCartListAction());
+                dispatch(actions.getCartListAction(userInfo.user?._id));
                 //ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
             }
         } catch (err) {

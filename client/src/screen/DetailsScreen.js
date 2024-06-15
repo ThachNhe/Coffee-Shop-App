@@ -63,8 +63,8 @@ const DetailsScreen = ({ navigation, route }) => {
     const addToCartHandler = async (data) => {
         // let data = { productId, quantity, size };
         try {
-            let res = await services.AddCoffeeToCartService(data);
-            dispatch(actions.getCartListAction());
+            let res = await services.AddCoffeeToCartService(userInfo.user?._id, data);
+            dispatch(actions.getCartListAction(userInfo.user?._id));
             console.log('res.msg : ', res);
         } catch (e) {
             console.log(e);

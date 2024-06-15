@@ -104,10 +104,10 @@ const AdminHomeScreen = ({ navigation }) => {
         try {
             let data = { productId, quantity, size, name };
             console.log('check req  :', data);
-            let response = await services.AddCoffeeToCartService(data);
+            let response = await services.AddCoffeeToCartService(userInfo.user?._id, data);
             if (response) {
                 ToastAndroid.showWithGravity(`${name} is Added to Cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
-                dispatch(actions.getCartListAction());
+                dispatch(actions.getCartListAction(userInfo.user?._id));
             }
         } catch (err) {
             console.log(err);

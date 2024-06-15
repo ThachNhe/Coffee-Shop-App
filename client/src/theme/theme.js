@@ -71,3 +71,16 @@ export const BorderRadius = {
 export const TOKEN = {
     token: 'cbf20bc6-98c5-11ee-96dc-de6f804954c9',
 };
+
+export const AddressDataset = [
+    { id: '1', name: '114 Mai Hac De Street, Le Dai Hanh Ward, Hai Ba Trung District, Hanoi, Vietnam' },
+    { id: '2', name: '114 Mai Hac De Street, Ha Huy Tap Ward, Vinh City, Nghe An, Vietnam' },
+    { id: '3', name: '114 Xuan Thuy Street, Dich Vong Hau Ward, Cau Giay District, Hanoi, Vietnam' },
+    { id: '4', name: '114 Xuan Thuy Street, Hung Vuong Ward, Phuc Yen, Vinh Phuc, Vietnam' },
+    { id: '5', name: '114 Xuan Thuy Street, Loc Hoa, Nam Dinh City, Nam Dinh, Vietnam' },
+    { id: '6', name: '240 Co Nhue Street, Co Nhue, Bac Tu Liem District, Hanoi, Vietnam' },
+    { id: '7', name: '240 Au Co Street, Quang An, Tay Ho District, Hanoi, Vietnam' },
+    { id: '8', name: 'Phu Quoc' },
+    { id: '9', name: 'Đa Lat' },
+    { id: '10', name: 'Sapa' },
+];

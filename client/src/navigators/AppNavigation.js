@@ -6,7 +6,7 @@ import DetailsScreen from '../screen/DetailsScreen';
 import PaymentScreen from '../screen/PaymentScreen';
 import ProfileScreen from '../screen/ProfileScreen';
 import AddressScreen from '../screen/AddressScreen';
-import OrderHistoryScreen from '../screen/OrderHistoryScreen';
+import UserPendingOrder from '../screen/UserPendingOrder';
 import DeliveringScreen from '../screen/DeliveringScreen';
 import CanceledSCreen from '../screen/CanceledSCreen';
 import QrCodeScreen from '../screen/QrCodeScreen';
@@ -18,6 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import UserTabNavigator from './UserTabNavigator';
 import AdminTabNavigator from './AdminTabNavigator';
 import CompletedOrderScreen from '../screen/CompletedOrderScreen';
+import AdminStatisticUserScreen from '../screen/admin/AdminStatisticUserScreen';
 const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -65,8 +66,8 @@ const AppNavigation = () => {
                     options={{ animation: 'slide_from_bottom' }}
                 ></Stack.Screen>
                 <Stack.Screen
-                    name="History"
-                    component={OrderHistoryScreen}
+                    name="UserPendingOrder"
+                    component={UserPendingOrder}
                     options={{ animation: 'slide_from_bottom' }}
                 ></Stack.Screen>
                 <Stack.Screen
@@ -103,6 +104,11 @@ const AppNavigation = () => {
                 <Stack.Screen
                     name="completedOrder"
                     component={CompletedOrderScreen}
+                    options={{ animation: 'slide_from_bottom' }}
+                ></Stack.Screen>
+                <Stack.Screen
+                    name="StaticUser"
+                    component={AdminStatisticUserScreen}
                     options={{ animation: 'slide_from_bottom' }}
                 ></Stack.Screen>
             </Stack.Navigator>

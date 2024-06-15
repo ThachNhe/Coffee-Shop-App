@@ -67,7 +67,7 @@ const OrderHistoryScreen = ({ navigation }) => {
                                     size={FontSize.size_16}
                                 />
                             </TouchableOpacity>
-                            <Text style={styles.HeaderText}>Order History</Text>
+                            <Text style={styles.HeaderText}>Orders</Text>
                             <View style={styles.EmptyView} />
                         </View>
                         <OrderHistoryCard

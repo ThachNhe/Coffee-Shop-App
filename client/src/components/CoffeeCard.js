@@ -38,10 +38,10 @@ const CoffeeCard = ({
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    const image = {
-        uri: String(imagelink_square),
-    };
 
+    const image = {
+        uri: imagelink_square ? String(imagelink_square) : 'OKOK',
+    };
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}

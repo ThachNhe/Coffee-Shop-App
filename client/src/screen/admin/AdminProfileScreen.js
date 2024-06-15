@@ -11,12 +11,12 @@ const AdminProfileScreen = ({ navigation, route }) => {
         navigation.push('Address');
     };
     const userInfo = useSelector((state) => state.userInfo);
-    const buttonPressRedirectCartScreen = () => {
-        navigation.navigate('Cart');
-    };
-    const buttonPressRedirectOrderHistoryScreen = () => {
-        navigation.navigate('History');
-    };
+    // const buttonPressRedirectCartScreen = () => {
+    //     navigation.navigate('Cart');
+    // };
+    // const buttonPressRedirectOrderHistoryScreen = () => {
+    //     navigation.navigate('History');
+    // };
     const pressHandlerRedirectCompletedScreen = () => {
         navigation.navigate('completedOrder');
         navigation.navigate('CompletedOrder');
@@ -24,8 +24,8 @@ const AdminProfileScreen = ({ navigation, route }) => {
     const pressHandlerRedirectDeliveringScreen = () => {
         navigation.navigate('Delivering');
     };
-    const pressHandlerRedirectCanceledScreen = () => {
-        navigation.navigate('Canceled');
+    const pressHandlerRedirectStaticUser = () => {
+        navigation.navigate('StaticUser');
     };
     const handlerLogout = () => {
         dispatch(actions.userLogoutAction());
@@ -57,31 +57,28 @@ const AdminProfileScreen = ({ navigation, route }) => {
                         <Text style={styles.orderHistoryText}>Order History</Text>
                         <View style={styles.orderHistoryContainer}>
                             <TouchableOpacity
-                                style={styles.orderItem}
+                                style={[styles.orderItem]}
                                 onPress={() => navigation.navigate('AddProduct')}
                             >
-                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                                <Icon name="plus" size={30} style={styles.iconHistoryStyle} />
                                 <View>
-                                    <Text style={styles.descriptionText}>Confirmation</Text>
+                                    <Text style={styles.descriptionText}>New Product</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.orderItem}
                                 onPress={() => pressHandlerRedirectDeliveringScreen()}
                             >
-                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                                <Icon name="thumbs-up" size={30} style={styles.iconHistoryStyle} />
                                 <View>
-                                    <Text style={styles.descriptionText}>Statistic</Text>
+                                    <Text style={styles.descriptionText}>Confirmation</Text>
                                 </View>
                             </TouchableOpacity>
 
-                            <TouchableOpacity
-                                style={styles.orderItem}
-                                onPress={() => pressHandlerRedirectCanceledScreen()}
-                            >
-                                <Icon name="truck" size={30} style={styles.iconHistoryStyle} />
+                            <TouchableOpacity style={styles.orderItem} onPress={() => pressHandlerRedirectStaticUser()}>
+                                <Icon name="user" size={30} style={styles.iconHistoryStyle} />
                                 <View>
-                                    <Text style={styles.descriptionText}>Canceled</Text>
+                                    <Text style={styles.descriptionText}>Users</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -170,7 +167,9 @@ const styles = StyleSheet.create({
         flexDirection: 'colum',
         paddingVertical: Spacing.space_10,
     },
-
+    orderItem: {
+        alignItems: 'center',
+    },
     fullNameText: {
         fontFamily: 'poppins_medium',
         fontSize: FontSize.size_16,
@@ -197,11 +196,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: Spacing.space_20,
         gap: Spacing.space_20,
     },
-    orderItem: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
+
     accountSettingItemContainer: {
         flexDirection: 'row',
         alignItems: 'center',

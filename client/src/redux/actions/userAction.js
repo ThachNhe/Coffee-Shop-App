@@ -30,10 +30,10 @@ export const getBeanListAction = () => {
         }
     };
 };
-export const getCartListAction = () => {
+export const getCartListAction = (userId) => {
     return async (dispatch) => {
         try {
-            const cartList = await services.getCartListService();
+            const cartList = await services.getCartListService(userId);
             console.log('get cart list action  :', cartList.cart);
             dispatch({
                 type: actionType.GET_CART_LIST,

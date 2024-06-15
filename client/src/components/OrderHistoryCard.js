@@ -1,7 +1,8 @@
 import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
+import { Colors, FontSize, Spacing } from '../theme/theme';
 import OrderItemCard from './OrderItemCard';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { BorderRadius } from '../theme/theme';
 const OrderHistoryCard = ({
@@ -23,9 +24,6 @@ const OrderHistoryCard = ({
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    // console.log('====================================');
-    // console.log('Check cartlist in orderhostorycart  :', CartList);
-    // console.log('====================================');
     const prices = [
         { price: 5, size: 'M', quantity: 1, currency: '$' },
         { price: 2, size: 'S', quantity: 3, currency: '$' },
@@ -87,6 +85,21 @@ const OrderHistoryCard = ({
                 >
                     <Text style={styles.ButtonText}>Review</Text>
                 </TouchableOpacity>
+            )}
+            {type === 'DELIVERING_SCREEN' && (
+                <View
+                    style={[
+                        styles.DownloadButton,
+                        { backgroundColor: Colors.secondaryDarkGreyHex, flexDirection: 'row', gap: Spacing.space_20 },
+                    ]}
+                    onPress={() => {
+                        onReviewPressReviewModal();
+                    }}
+                >
+                    <Icon name="motorcycle" size={30} style={{ color: '#008000' }} />
+
+                    <Text style={styles.ButtonText}>In-Transit...</Text>
+                </View>
             )}
         </View>
     );
