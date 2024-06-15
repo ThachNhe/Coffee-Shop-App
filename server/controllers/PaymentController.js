@@ -146,6 +146,7 @@ class PaymentController {
                     user_id: 1,
                     status: 1,
                     order_id: 1,
+                    total_price: 1,
                     product: {
                         product_id: "$products.product_id",
                         name: "$product_info.name",

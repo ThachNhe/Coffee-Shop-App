@@ -13,9 +13,6 @@ const ProductSchema = new Schema({
         type: String,
     },
     imagelink_portrait: String,
-    type: {
-        type: String,
-    },
     ingredients: {
         type: [String],
     },
