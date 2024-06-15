@@ -34,6 +34,7 @@ class PaymentController {
                 user_id: userId,
                 order_id: paymentLinkRes.orderCode,
                 products: products,
+                total_price: Number(amount),
             });
 
 
@@ -171,6 +172,7 @@ class PaymentController {
                     products: {$push: "$product"},
                     status: {$first: "$status"},
                     order_id: {$first: "$order_id"},
+                    total_price: {$first: "$total_price"}
                 }
             }
         ])
