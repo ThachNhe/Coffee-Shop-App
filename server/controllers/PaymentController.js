@@ -141,10 +141,9 @@ class PaymentController {
                 $unwind: "$product_info",
             }, {
                 $project: {
-                    _id:1,
+                    _id: 1,
                     user_id: 1,
                     status: 1,
-                    total_price: 1,
                     order_id: 1,
                     product: {
                         product_id: "$products.product_id",
@@ -170,6 +169,8 @@ class PaymentController {
                     _id: "$_id",
                     user_id: {$first: "$user_id"},
                     products: {$push: "$product"},
+                    status: {$first: "$status"},
+                    order_id: {$first: "$order_id"},
                 }
             }
         ])
