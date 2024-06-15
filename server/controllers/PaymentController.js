@@ -34,7 +34,7 @@ class PaymentController {
                 user_id: userId,
                 order_id: paymentLinkRes.orderCode,
                 products: products,
-                total_price: Number(amount),
+                total_price: Number(amount) / 100,
             });
 
 
