@@ -221,7 +221,7 @@ class PaymentController {
 
         return res.status(200).json({
             error: 0,
-            message: "Update payment status to processing",
+            message: "Update payment status to completed",
         })
     }
 
