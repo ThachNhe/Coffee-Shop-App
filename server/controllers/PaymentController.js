@@ -227,9 +227,60 @@ class PaymentController {
 
     //GET /payment
     async getAllPayments(req, res) {
-        return res.status(200).json(
-            await Payment.find()
-        )
+        const payments = await Payment.aggregate([
+            {
+                $unwind: "$products",
+            }, {
+                $lookup: {
+                    from: "products",
+                    localField: "products.product_id",
+                    foreignField: "_id",
+                    as: "product_info",
+                },
+            }, {
+                $unwind: "$product_info",
+            }, {
+                $project: {
+                    _id: 1,
+                    user_id: 1,
+                    status: 1,
+                    order_id: 1,
+                    total_price: 1,
+                    product: {
+                        product_id: "$products.product_id",
+                        name: "$product_info.name",
+                        imagelink_square: "$product_info.imagelink_square",
+                        special_ingredient: "$product_info.special_ingredient",
+                        roasted: "$product_info.roasted",
+                        type: "$product_info.type",
+                        size: {
+                            $filter: {
+                                input: "$product_info.prices",
+                                as: "price",
+                                cond: {
+                                    $eq: ["$$price.size", "$products.size"],
+                                },
+                            },
+                        },
+                        quantity: "$products.quantity",
+                    },
+                },
+            }, {
+                $group: {
+                    _id: "$_id",
+                    user_id: {$first: "$user_id"},
+                    products: {$push: "$product"},
+                    status: {$first: "$status"},
+                    order_id: {$first: "$order_id"},
+                    total_price: {$first: "$total_price"}
+                }
+            }
+        ]);
+
+        return res.status(200).json({
+            errorCode: 0,
+            payments,
+        })
     }
 
 }
