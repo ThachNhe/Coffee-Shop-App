@@ -50,7 +50,7 @@ const QrCodeScreen = ({ navigation, route }) => {
                     dispatch(actions.clearPaymentInfo());
                     setTimeout(() => {
                         setShowAnimation(false);
-                        navigation.navigate('Cart');
+                        navigation.navigate('UserPendingOrder');
                     }, 2000);
                 }
             } catch (error) {

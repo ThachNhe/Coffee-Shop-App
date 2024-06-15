@@ -53,7 +53,7 @@ const AddressScreen = ({ navigation, route }) => {
                                     onPress={() => handlerUpdateDefaultAddress(item.isDefault, item._id)}
                                 >
                                     <View style={styles.checkBoxAndNameContainer}>
-                                        <Text style={styles.userName}>{userInfo.user?.name}</Text>
+                                        <Text style={styles.userName}>{item.user_name}</Text>
                                         <Icon
                                             name="check-circle"
                                             size={30}
@@ -65,7 +65,7 @@ const AddressScreen = ({ navigation, route }) => {
                                             }}
                                         />
                                     </View>
-                                    <Text style={styles.userPhone}>{userInfo.user?.phone}</Text>
+                                    <Text style={styles.userPhone}>{item.phone}</Text>
                                     <Text style={styles.userAddress}>{item.details}</Text>
                                 </TouchableOpacity>
                             );

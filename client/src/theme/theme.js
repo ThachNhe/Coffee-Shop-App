@@ -71,7 +71,6 @@ export const BorderRadius = {
 export const TOKEN = {
     token: 'cbf20bc6-98c5-11ee-96dc-de6f804954c9',
 };
-
 export const AddressDataset = [
     { id: '1', name: '114 Mai Hac De Street, Le Dai Hanh Ward, Hai Ba Trung District, Hanoi, Vietnam' },
     { id: '2', name: '114 Mai Hac De Street, Ha Huy Tap Ward, Vinh City, Nghe An, Vietnam' },
@@ -80,7 +79,17 @@ export const AddressDataset = [
     { id: '5', name: '114 Xuan Thuy Street, Loc Hoa, Nam Dinh City, Nam Dinh, Vietnam' },
     { id: '6', name: '240 Co Nhue Street, Co Nhue, Bac Tu Liem District, Hanoi, Vietnam' },
     { id: '7', name: '240 Au Co Street, Quang An, Tay Ho District, Hanoi, Vietnam' },
-    { id: '8', name: 'Phu Quoc' },
-    { id: '9', name: 'Đa Lat' },
-    { id: '10', name: 'Sapa' },
+    { id: '8', name: '183 Cao Thang Street, Ward 12, District 10, Ho Chi Minh City, Vietnam' },
+    { id: '9', name: '215 Tran Quoc Hoan Street, Dich Vong Hau Ward, Cau Giay District, Hanoi, Vietnam' },
+    { id: '10', name: '215 Trung Kinh Street, Yen Hoa Ward, Cau Giay District, Hanoi, Vietnam' },
+    { id: '11', name: '215 Quang Trung Street, Tran Hung Ward, Thai Binh Province, Vietnam' },
+    { id: '12', name: '215 Trieu Khuc Street, Tan Trieu Ward, Thanh Tri District, Hanoi, Vietnam' },
+    { id: '13', name: '215 To Hieu Street, Dich Vong Ward, Cau Giay District, Hanoi, Vietnam' },
+    { id: '14', name: '215 Giap Nhat Street, Nhan Chinh Ward, Thanh Xuan District, Hanoi, Vietnam' },
+    { id: '15', name: '215 Nguyen Trai Street, Thanh Xuan Trung Ward, Thanh Xuan District, Hanoi, Vietnam' },
+    { id: '16', name: '320 Khuong Dinh Street, Ha Dinh Ward, Thanh Xuan District, Hanoi, Vietnam' },
+    { id: '17', name: '320 Dinh Cong Street, Dinh Cong Ward, Thanh Xuan District, Hanoi, Vietnam' },
+    { id: '18', name: '320 Linh Nam Street, Linh Nam Ward, Hoang Mai District, Hanoi , Vietnam' },
+    { id: '19', name: '320 Cau Giay Street, Dich Vong Ward, Cau Giay District, Hanoi, Vietnam' },
+    { id: '19', name: '320 Xa Dan Lane, Phuong Lien Ward, Dong Da District, Hanoi, Vietnam' },
 ];

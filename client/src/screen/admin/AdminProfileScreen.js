@@ -11,12 +11,7 @@ const AdminProfileScreen = ({ navigation, route }) => {
         navigation.push('Address');
     };
     const userInfo = useSelector((state) => state.userInfo);
-    // const buttonPressRedirectCartScreen = () => {
-    //     navigation.navigate('Cart');
-    // };
-    // const buttonPressRedirectOrderHistoryScreen = () => {
-    //     navigation.navigate('History');
-    // };
+
     const pressHandlerRedirectCompletedScreen = () => {
         navigation.navigate('completedOrder');
         navigation.navigate('CompletedOrder');
@@ -31,13 +26,16 @@ const AdminProfileScreen = ({ navigation, route }) => {
         dispatch(actions.userLogoutAction());
         navigation.navigate('Login');
     };
+    const pressHandlerRedirectConfirScreen = () => {
+        navigation.navigate('AdminConfirmationOrder');
+    };
     return (
         <View style={styles.screenContainer}>
             <View style={styles.personalInfoContainer}>
                 <Text style={styles.tileAccount}>ACCOUNT</Text>
                 <View style={styles.personalInfoContent}>
                     <View style={styles.imageContainer}>
-                        <Image source={require('../../assets/app_images/me.jpg')} style={styles.image} />
+                        <Image source={require('../../assets/app_images/user.png')} style={styles.image} />
                     </View>
                     <View style={styles.personalInfo}>
                         <Text style={styles.fullNameText}>{userInfo.user?.name}</Text>
@@ -67,7 +65,7 @@ const AdminProfileScreen = ({ navigation, route }) => {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.orderItem}
-                                onPress={() => pressHandlerRedirectDeliveringScreen()}
+                                onPress={() => pressHandlerRedirectConfirScreen()}
                             >
                                 <Icon name="thumbs-up" size={30} style={styles.iconHistoryStyle} />
                                 <View>

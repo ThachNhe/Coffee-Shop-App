@@ -1,6 +1,7 @@
 // import the dependency
 import remove from 'lodash.remove';
 import actionTypes from '../actions/actionType';
+import { isCancel } from 'axios';
 // reducer
 
 const initialState = {
@@ -19,6 +20,9 @@ const initialState = {
     formAddress: '',
     AddressList: [],
     ReviewListByProduct: [],
+    AllPaymentList: [],
+    AdminAllPayment: [],
+    isCancelOrder: false,
 };
 
 function rootReducer(state = initialState, action) {
@@ -75,6 +79,14 @@ function rootReducer(state = initialState, action) {
             return { ...state };
         case actionTypes.GET_REVIEW_BY_PRODUCT_ID:
             state.ReviewListByProduct = action.payload;
+        case actionTypes.GET_ALL_PAYMENT_BY_USER_ID:
+            state.AllPaymentList = action.payload;
+            return { ...state };
+        case actionTypes.GET_ALL_PAYMENT:
+            state.AdminAllPayment = action.payload;
+            return { ...state };
+        case actionTypes.CANCEL_ORDER:
+            state.isCancelOrder = action.payload;
             return { ...state };
         default:
             return state;

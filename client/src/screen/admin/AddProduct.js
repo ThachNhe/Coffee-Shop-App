@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { BorderRadius, Colors, FontSize, Spacing } from '../../theme/theme';
+import { StyleSheet, Text, View, StatusBar, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Colors, FontSize, Spacing } from '../../theme/theme';
 import GradientBGIcon from '../../components/GradientBGIcon';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import * as DocumentPicker from 'expo-document-picker';
-import { useSelector, useDispatch } from 'react-redux';
-import SelectDropdown from '../../components/SelectDropdownComponent';
+import { useDispatch } from 'react-redux';
 import * as actions from '../../redux/actions/index';
+import SelectDropdown from 'react-native-select-dropdown';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as services from '../../services/index';
 const data = [
-    { icon: 'emoticon-happy-outline', title: 'Coffee' },
-    { icon: 'emoticon-happy-outline', title: 'Bean' },
+    { icon: 'package-variant', title: 'Coffee' },
+    { icon: 'package-variant', title: 'Bean' },
 ];
 const AddProduct = ({ navigation, route }) => {
     const dispatch = useDispatch();
+    const [productName, setProductName] = useState('');
+    const [productType, setProductType] = useState('');
+    const [productIngredients, setProductIngredients] = useState('');
+    const [productRoasted, setProductRoasted] = useState('');
+    const [productPrice1, setProductPrice1] = useState('');
+    const [productPrice2, setProductPrice2] = useState('');
+    const [productSize, setProductSize] = useState('');
+    const [productImage, setProductImage] = useState('');
     useEffect(() => {
         dispatch(actions.getProvincesAction());
     }, []);
@@ -27,7 +36,7 @@ const AddProduct = ({ navigation, route }) => {
         );
     };
     const [document, setDocument] = useState(null);
-    console.log('check du lieu', document);
+    // console.log('check du lieu', document);
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
         console.log(result);
@@ -35,6 +44,50 @@ const AddProduct = ({ navigation, route }) => {
             setDocument(result);
         }
     };
+    const selectProductType = (selectedItem, index) => {
+        setProductType(selectedItem.title);
+    };
+    const buttonHandlerAddProduct = async () => {
+        const priceOpt1 = productPrice1.split(', ');
+        const priceOpt2 = productPrice2.split(', ');
+        const imagelink_square =
+            'https://firebasestorage.googleapis.com/v0/b/coffee-a02ad.appspot.com/o/b%E1%BA%A1c%20x%E1%BB%89u%2Fbac-xiu1.webp?alt=media&token=7834c29e-d427-463f-80b5-43b24d816fb1';
+        const imagelink_portrait =
+            'https://firebasestorage.googleapis.com/v0/b/coffee-a02ad.appspot.com/o/b%E1%BA%A1c%20x%E1%BB%89u%2Fbac-xiu1.webp?alt=media&token=7834c29e-d427-463f-80b5-43b24d816fb1';
+        const productData = {
+            name: productName,
+            type: productType,
+            ingredients: productIngredients.split(', '),
+            roasted: productRoasted,
+            price: [
+                { price: priceOpt1[0], size: priceOpt1[1] },
+                { price: priceOpt2[0], size: priceOpt2[1] },
+            ],
+            imagelink_square,
+            imagelink_portrait,
+        };
+        try {
+            let res = await services.postNewProductService(productData);
+            console.log('====================================');
+            console.log('check res add new produt ', res);
+            console.log('====================================');
+            if (res && res.errorCode === 0) {
+                ToastAndroid.showWithGravity(
+                    `Add ${productName} ${productType} success!`,
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                );
+            } else {
+                ToastAndroid.showWithGravity(
+                    `Add ${productName} ${productType} fail!`,
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                );
+            }
+        } catch (error) {}
+        console.log('productData', productData);
+    };
+
     return (
         <View style={styles.ScreenContainer}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
@@ -47,18 +100,59 @@ const AddProduct = ({ navigation, route }) => {
                     >
                         <GradientBGIcon name="left" color={Colors.primaryLightGreyHex} size={FontSize.size_16} />
                     </TouchableOpacity>
-                    <Text style={styles.HeaderText}> Add Address</Text>
+                    <Text style={styles.HeaderText}> Add New Product</Text>
                     <View style={styles.EmptyView} />
                 </View>
                 <View style={styles.TextInputContainer}>
-                    <SelectDropdown data={data}></SelectDropdown>
+                    <View>
+                        <SelectDropdown
+                            data={data}
+                            onSelect={(selectedItem, index) => selectProductType(selectedItem, index)}
+                            renderButton={(selectedItem, isOpened) => {
+                                return (
+                                    <View style={styles.dropdownButtonStyle}>
+                                        {selectedItem && (
+                                            <Icon
+                                                name={selectedItem.icon}
+                                                style={{ color: Colors.primaryOrangeHex }}
+                                                size={20}
+                                            />
+                                        )}
+                                        <Text style={styles.dropdownButtonTxtStyle}>
+                                            {(selectedItem && selectedItem.title) || 'Select your product'}
+                                        </Text>
+                                        <Icon
+                                            name={isOpened ? 'chevron-up' : 'chevron-down'}
+                                            style={styles.dropdownButtonArrowStyle}
+                                        />
+                                    </View>
+                                );
+                            }}
+                            renderItem={(item, index, isSelected) => {
+                                return (
+                                    <View
+                                        style={{
+                                            ...styles.dropdownItemStyle,
+                                            ...(isSelected && { backgroundColor: '#D2D9DF' }),
+                                        }}
+                                    >
+                                        <Icon name={item.icon} style={styles.dropdownItemIconStyle} />
+                                        <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
+                                    </View>
+                                );
+                            }}
+                            showsVerticalScrollIndicator={false}
+                            dropdownStyle={styles.dropdownMenuStyle}
+                        />
+                    </View>
 
                     <Input
                         placeholder="Product Name"
-                        leftIcon={<Icon name="user" size={24} color={Colors.primaryOrangeHex} />}
+                        leftIcon={<Icon name="account" size={24} color={Colors.primaryOrangeHex} />}
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
+                        onChangeText={setProductName}
                     />
                     <Input
                         placeholder="Ingredients"
@@ -66,6 +160,7 @@ const AddProduct = ({ navigation, route }) => {
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
+                        onChangeText={setProductIngredients}
                     />
                     <Input
                         placeholder="Roasted"
@@ -80,12 +175,13 @@ const AddProduct = ({ navigation, route }) => {
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
+                        onChangeText={setProductRoasted}
                     />
                     <Input
                         placeholder="Price, size"
                         leftIcon={
                             <Icon
-                                name="map-marker"
+                                name="currency-usd"
                                 size={24}
                                 color={Colors.primaryOrangeHex}
                                 onPress={() => openModal()}
@@ -94,12 +190,13 @@ const AddProduct = ({ navigation, route }) => {
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
+                        onChangeText={setProductPrice1}
                     />
                     <Input
                         placeholder="Price, size"
                         leftIcon={
                             <Icon
-                                name="map-marker"
+                                name="currency-usd"
                                 size={24}
                                 color={Colors.primaryOrangeHex}
                                 onPress={() => openModal()}
@@ -108,6 +205,7 @@ const AddProduct = ({ navigation, route }) => {
                         containerStyle={styles.inputContainer}
                         inputStyle={styles.input}
                         inputContainerStyle={styles.inputContainerStyle}
+                        onChangeText={setProductPrice2}
                     />
 
                     <TouchableOpacity
@@ -119,16 +217,39 @@ const AddProduct = ({ navigation, route }) => {
                             },
                         ]}
                     >
-                        <Text style={styles.ButtonStyle}>Choose File</Text>
+                        <View style={{ flexDirection: 'row', gap: Spacing.space_10 }}>
+                            <Icon
+                                name="file"
+                                size={30}
+                                style={{
+                                    color: Colors.primaryOrangeHex,
+                                }}
+                            />
+                            <Text style={styles.ButtonStyle}>Choose File</Text>
+                        </View>
+
+                        <Icon
+                            name="check-circle"
+                            size={30}
+                            style={{
+                                color: document ? Colors.primaryOrangeHex : Colors.secondaryGreyHex,
+                            }}
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        // onPress={pickDocument}
+                        onPress={() => {
+                            buttonHandlerAddProduct();
+                        }}
                         style={[
                             styles.buttonChooseImg,
-                            { backgroundColor: Colors.primaryOrangeHex, marginTop: Spacing.space_20 },
+                            {
+                                backgroundColor: Colors.primaryOrangeHex,
+                                marginTop: Spacing.space_20,
+                                justifyContent: 'center',
+                            },
                         ]}
                     >
-                        <Text style={styles.ButtonStyle}>Add New Product</Text>
+                        <Text style={styles.ButtonStyleSubmit}>Add New Product</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -223,8 +344,62 @@ const styles = StyleSheet.create({
         height: 50,
         width: '95%',
         justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
-    ButtonStyle: { color: Colors.textInputColor, fontWeight: '700', fontSize: FontSize.size_16 },
+    ButtonStyleSubmit: {
+        fontWeight: '500',
+        fontSize: FontSize.size_18,
+        color: Colors.primaryWhiteHex,
+    },
+    ButtonStyle: { color: Colors.secondaryLightGreyHex, fontWeight: '500', fontSize: FontSize.size_18 },
+    dropdownButtonStyle: {
+        width: '95%',
+        height: 50,
+        // backgroundColor: '#E9ECEF',
+        borderRadius: 12,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 12,
+        marginBottom: Spacing.space_20,
+        borderWidth: 1,
+        borderColor: Colors.secondaryLightGreyHex,
+        gap: Spacing.space_10,
+        // marginVertical: Spacing.space_10,
+    },
+    dropdownButtonTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: Colors.secondaryLightGreyHex,
+    },
+    dropdownButtonArrowStyle: {
+        fontSize: 28,
+        color: Colors.secondaryLightGreyHex,
+    },
+    dropdownItemStyle: {
+        width: '100%',
+        flexDirection: 'row',
+        paddingHorizontal: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    dropdownItemTxtStyle: {
+        flex: 1,
+        fontSize: 18,
+        fontWeight: '500',
+        color: '#151E26',
+    },
+    dropdownItemIconStyle: {
+        fontSize: 28,
+        marginRight: 8,
+    },
+    dropdownMenuStyle: {
+        backgroundColor: '#E9ECEF',
+        borderRadius: 8,
+    },
 });
 
 export default AddProduct;

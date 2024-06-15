@@ -1,34 +1,22 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    StatusBar,
-    ScrollView,
-    Dimensions,
-    TouchableOpacity,
-    ToastAndroid,
-} from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Dimensions } from 'react-native';
 import { BorderRadius, Colors, FontSize, Spacing } from '../../theme/theme';
-import GradientBGIcon from '../../components/GradientBGIcon';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../redux/actions/index';
-import * as services from '../../services/index';
 import { BarChart } from 'react-native-chart-kit';
 const data = {
     labels: ['Pending', 'Delivering', 'Completed', 'Cancelled'],
     datasets: [
         {
-            data: [10, 20, 45, 28],
+            data: [2, 3, 5, 1],
         },
     ],
 };
 
 const chartConfig = {
-    backgroundGradientFrom: Colors.primaryBlackRGBA,
-    backgroundGradientTo: Colors.primaryBlackRGBA,
-    color: (opacity = 1) => `rgba(209, 120, 66, ${opacity})`, // tăng giá trị opacity lên 1
+    backgroundGradientFrom: '#333',
+    backgroundGradientTo: '#333',
+    color: (opacity = 1) => `rgba(209, 120, 66, ${opacity})`, // Đặt opacity về 1
     labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     strokeWidth: 2,
     barPercentage: 0.5,
@@ -56,7 +44,8 @@ const AdminStatisticScreen = ({ navigation, route }) => {
                     flex: 1,
                     borderWidth: 2,
                     color: Colors.primaryOrangeHex,
-                    // backgroundColor: 'red',
+                    // backgroundColor: '#959090',
+                    marginBottom: Spacing.space_20 * 4,
                 }}
             >
                 <BarChart
@@ -66,8 +55,17 @@ const AdminStatisticScreen = ({ navigation, route }) => {
                     // yAxisLabel="$"
                     chartConfig={chartConfig}
                     fromZero={true}
-
-                    // verticalLabelRotation={}
+                    style={{
+                        borderRadius: 16,
+                        shadowColor: Colors.primaryLightGreyHex,
+                        shadowOffset: {
+                            width: 0,
+                            height: 2,
+                        },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 2,
+                        elevation: 5,
+                    }}
                 />
                 <Text></Text>
             </View>
@@ -88,6 +86,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        // backgroundColor: '#959090',
     },
 
     HeaderText: {

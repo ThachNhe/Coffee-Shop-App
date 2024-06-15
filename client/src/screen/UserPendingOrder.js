@@ -1,13 +1,11 @@
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import useStore from '../store/store';
+import React, { useState, useEffect } from 'react';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
-import EmptyListAnimation from '../components/EmptyListAnimation';
 import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 const OrderHistoryScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -22,13 +20,17 @@ const OrderHistoryScreen = ({ navigation }) => {
     });
     // const OrderHistory = [];
     // const OrderHistoryList = useStore((state) => state.OrderHistoryList);
-    const [showAnimation, setShowAnimation] = useState(false);
     const CartList = useSelector((state) => state.CartList);
+    const [CarlistPropPendingOrder, setCarlistPropPendingOrder] = useState(CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
+    const isCancel = useSelector((state) => state.isCancelOrder);
+    useEffect(() => {
+        if (isCancel) {
+            setCarlistPropPendingOrder([]);
+        }
+    }, [isCancel]);
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
-    console.log('====================================');
-    console.log('check orderdate : ', OrderDate);
-    console.log('====================================');
+
     const navigationHandler = ({ index, id, type }) => {
         navigation.push('Details', {
             index,
@@ -36,21 +38,13 @@ const OrderHistoryScreen = ({ navigation }) => {
             type,
         });
     };
-
-    const buttonPressHandler = () => {
-        setShowAnimation(true);
-        setTimeout(() => {
-            setShowAnimation(false);
-        }, 2000);
-    };
-
     return (
         <View style={styles.ScreenContainer}>
-            {showAnimation ? (
+            {/* {showAnimation ? (
                 <PopUpAnimation style={styles.LottieAnimation} source={require('../lottie/download.json')} />
             ) : (
                 <></>
-            )}
+            )} */}
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 <View style={[styles.ScrollViewInnerView]}>
@@ -73,39 +67,12 @@ const OrderHistoryScreen = ({ navigation }) => {
                         <OrderHistoryCard
                             key={1}
                             navigationHandler={navigationHandler}
-                            CartList={CartList}
+                            CartList={CarlistPropPendingOrder}
                             CartListPrice={CartPrice}
                             OrderDate={OrderDate}
                             type={'ORDER_SCREEN'}
                         />
-                        {/* {OrderHistoryList.length == 0 ? (
-                            <EmptyListAnimation title={'No Order History'} />
-                        ) : (
-                            <View style={styles.ListItemContainer}>
-                                {OrderHistoryList.map((data, index) => (
-                                    <OrderHistoryCard
-                                        key={index.toString()}
-                                        navigationHandler={navigationHandler}
-                                        CartList={data.CartList}
-                                        CartListPrice={data.CartListPrice}
-                                        OrderDate={data.OrderDate}
-                                    />
-                                ))}
-                            </View>
-                        )} */}
                     </View>
-                    {/* {OrderHistoryList.length > 0 ? (
-                        <TouchableOpacity
-                            style={styles.DownloadButton}
-                            onPress={() => {
-                                buttonPressHandler();
-                            }}
-                        >
-                            <Text style={styles.ButtonText}>Download</Text>
-                        </TouchableOpacity>
-                    ) : (
-                        <></>
-                    )} */}
                 </View>
             </ScrollView>
         </View>

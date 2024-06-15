@@ -1,16 +1,11 @@
-import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import { Input } from 'react-native-elements';
-import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
-import EmptyListAnimation from '../components/EmptyListAnimation';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { BorderRadius, Colors, FontSize, Spacing } from '../theme/theme';
 import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
-import Modal from 'react-native-modal';
-import SelectDropdownComponent from '../components/SelectDropdownComponent';
-import { AirbnbRating } from 'react-native-ratings';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as actions from '../redux/actions/index';
 import { useSelector, useDispatch } from 'react-redux';
 const DeliveringScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
@@ -24,20 +19,39 @@ const DeliveringScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-
     const [isModalVisible, setModalVisible] = useState(false);
+    const [DeliveringPayment, setDeliveringPayment] = useState([]);
+    const AllPaymentListRedux = useSelector((state) => state.AllPaymentList);
+    const [AllPaymentList, setAllPaymentList] = useState([]);
 
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
+    useEffect(() => {
+        dispatch(actions.getAllPaymentByUserIdAction(userInfo.user?._id));
+    }, [dispatch]);
+    useEffect(() => {
+        if (AllPaymentListRedux && AllPaymentListRedux.payments && AllPaymentListRedux.payments.length > 0) {
+            setAllPaymentList(AllPaymentListRedux.payments);
+        }
+    }, [AllPaymentListRedux]);
+    /////
+    useEffect(() => {
+        if (AllPaymentList && AllPaymentList.length > 0) {
+            const DeliveringPaymentFilter = AllPaymentList.filter((payment) => payment.status === 'processing');
+            setDeliveringPayment(DeliveringPaymentFilter);
+            console.log('check DeliveringPaymentFilter : ', DeliveringPaymentFilter);
+        }
+    }, [AllPaymentList]);
+    // console.log('check AllPaymentList : ', AllPaymentListRedux);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+
     const [showAnimation, setShowAnimation] = useState(false);
     const CartList = useSelector((state) => state.CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const [Review, setReview] = useState('');
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
-    // console.log('====================================');
-    // console.log('check CartList : ', CartList);
-    // console.log('====================================');
     const newCoffeeTypes = CartList.map((coffeeType) => ({
         icon: 'emoticon-happy-outline',
         title: coffeeType.name,
@@ -83,15 +97,22 @@ const DeliveringScreen = ({ navigation }) => {
                             <Text style={styles.HeaderText}>Delivering Orders</Text>
                             <View style={styles.EmptyView} />
                         </View>
-                        <OrderHistoryCard
-                            key={1}
-                            navigationHandler={navigationHandler}
-                            CartList={CartList}
-                            CartListPrice={CartPrice}
-                            OrderDate={OrderDate}
-                            type={'DELIVERING_SCREEN'}
-                            onReviewPressReviewModal={toggleModal} // Truyền hàm toggleModal như một prop
-                        />
+                        {DeliveringPayment &&
+                            DeliveringPayment.length > 0 &&
+                            DeliveringPayment.map((order, index) => {
+                                return (
+                                    <OrderHistoryCard
+                                        key={index}
+                                        navigationHandler={navigationHandler}
+                                        CartList={order.products}
+                                        CartListPrice={order.total_price}
+                                        OrderDate={OrderDate}
+                                        type={'DELIVERING_SCREEN'}
+                                        onReviewPressReviewModal={toggleModal}
+                                        SizeType={1}
+                                    />
+                                );
+                            })}
                     </View>
                 </View>
             </ScrollView>

@@ -1,30 +1,68 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
-import PopUpAnimation from '../components/PopUpAnimation';
-import OrderHistoryCard from '../components/OrderHistoryCard';
-import GradientBGIcon from '../components/GradientBGIcon';
+import React, { useState, useEffect } from 'react';
+import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../../theme/theme';
+import OrderHistoryCard from '../../components/OrderHistoryCard';
+import GradientBGIcon from '../../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
+import * as actions from '../../redux/actions/index';
 import { useSelector, useDispatch } from 'react-redux';
-const CanceledSCreen = ({ navigation }) => {
+const AdminConfirmationOrder = ({ navigation }) => {
     const [fontsLoad] = useFonts({
-        poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
-        poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
-        poppins_light: require('../assets/fonts/Poppins-Light.ttf'),
-        poppins_black: require('../assets/fonts/Poppins-Black.ttf'),
-        poppins_bold: require('../assets/fonts/Poppins-Bold.ttf'),
-        poppins_extrabold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
-        poppins_extralight: require('../assets/fonts/Poppins-ExtraLight.ttf'),
-        poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
-        poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
+        poppins_semibold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
+        poppins_medium: require('../../assets/fonts/Poppins-Medium.ttf'),
+        poppins_light: require('../../assets/fonts/Poppins-Light.ttf'),
+        poppins_black: require('../../assets/fonts/Poppins-Black.ttf'),
+        poppins_bold: require('../../assets/fonts/Poppins-Bold.ttf'),
+        poppins_extrabold: require('../../assets/fonts/Poppins-ExtraBold.ttf'),
+        poppins_extralight: require('../../assets/fonts/Poppins-ExtraLight.ttf'),
+        poppins_regular: require('../../assets/fonts/Poppins-Regular.ttf'),
+        poppins_thin: require('../../assets/fonts/Poppins-Thin.ttf'),
     });
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state) => state.userInfo);
 
-    const [showAnimation, setShowAnimation] = useState(false);
+    useEffect(() => {
+        dispatch(actions.getAllPaymentAction());
+    }, [dispatch]);
+    /// ===================
+    const [PendingPayment, setPendingPayment] = useState([]);
+    const AllPaymentListRedux = useSelector((state) => state.AdminAllPayment);
+    const [AllPaymentList, setAllPaymentList] = useState([]);
+
+    useEffect(() => {
+        if (AllPaymentListRedux && AllPaymentListRedux.payments && AllPaymentListRedux.payments.length > 0) {
+            setAllPaymentList(AllPaymentListRedux.payments);
+        }
+    }, [AllPaymentListRedux]);
+    /////
+    useEffect(() => {
+        if (AllPaymentList && AllPaymentList.length > 0) {
+            const PendingPaymentFilter = AllPaymentList.filter((payment) => payment.status === 'completed');
+            setPendingPayment(PendingPaymentFilter);
+            console.log('check PendingPaymentFilter : ', PendingPaymentFilter);
+        }
+    }, [AllPaymentList]);
+    console.log('====================================');
+    console.log('check AllPaymentListRedux : ', AllPaymentListRedux);
+    console.log('====================================');
+    /// ============
+    console.log('check PendingPayment : ', PendingPayment);
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
     const CartList = useSelector((state) => state.CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
-
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
-
+    // console.log('====================================');
+    // console.log('check CartList : ', CartList);
+    // console.log('====================================');
+    const newCoffeeTypes = CartList.map((coffeeType) => ({
+        icon: 'emoticon-happy-outline',
+        title: coffeeType.name,
+    }));
     const navigationHandler = ({ index, id, type }) => {
         navigation.push('Details', {
             index,
@@ -42,12 +80,6 @@ const CanceledSCreen = ({ navigation }) => {
 
     return (
         <View style={styles.ScreenContainer}>
-            {showAnimation ? (
-                <PopUpAnimation style={styles.LottieAnimation} source={require('../lottie/download.json')} />
-            ) : (
-                <></>
-            )}
-
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 <View style={[styles.ScrollViewInnerView]}>
                     <View style={styles.ItemContainer}>
@@ -63,7 +95,7 @@ const CanceledSCreen = ({ navigation }) => {
                                     size={FontSize.size_16}
                                 />
                             </TouchableOpacity>
-                            <Text style={styles.HeaderText}>Canceled Orders</Text>
+                            <Text style={styles.HeaderText}>Confirmation</Text>
                             <View style={styles.EmptyView} />
                         </View>
                         <OrderHistoryCard
@@ -72,7 +104,8 @@ const CanceledSCreen = ({ navigation }) => {
                             CartList={CartList}
                             CartListPrice={CartPrice}
                             OrderDate={OrderDate}
-                            type={'CANCEL_SCREEN'}
+                            type={'CONFIR_SCREEN'}
+                            onReviewPressReviewModal={toggleModal} // Truyền hàm toggleModal như một prop
                         />
                     </View>
                 </View>
@@ -234,4 +267,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CanceledSCreen;
+export default AdminConfirmationOrder;

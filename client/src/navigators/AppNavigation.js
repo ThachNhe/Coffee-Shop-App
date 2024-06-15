@@ -19,6 +19,7 @@ import UserTabNavigator from './UserTabNavigator';
 import AdminTabNavigator from './AdminTabNavigator';
 import CompletedOrderScreen from '../screen/CompletedOrderScreen';
 import AdminStatisticUserScreen from '../screen/admin/AdminStatisticUserScreen';
+import AdminConfirmationOrder from '../screen/admin/AdminConfirmationOrder';
 const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -109,6 +110,11 @@ const AppNavigation = () => {
                 <Stack.Screen
                     name="StaticUser"
                     component={AdminStatisticUserScreen}
+                    options={{ animation: 'slide_from_bottom' }}
+                ></Stack.Screen>
+                <Stack.Screen
+                    name="AdminConfirmationOrder"
+                    component={AdminConfirmationOrder}
                     options={{ animation: 'slide_from_bottom' }}
                 ></Stack.Screen>
             </Stack.Navigator>

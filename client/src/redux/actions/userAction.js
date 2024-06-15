@@ -33,6 +33,8 @@ export const getBeanListAction = () => {
 export const getCartListAction = (userId) => {
     return async (dispatch) => {
         try {
+            console.log('check userId : ', userId);
+            if (userId === undefined) return console.log('userId is undefined');
             const cartList = await services.getCartListService(userId);
             console.log('get cart list action  :', cartList.cart);
             dispatch({
@@ -64,6 +66,7 @@ export const getFavouriteListAction = (userId) => {
     return async (dispatch) => {
         try {
             console.log('ACTION: ', userId);
+            if (userId === undefined) return console.log('userId is undefined');
             const itemFavourite = await services.getFavouriteItemService(userId);
 
             dispatch({
@@ -235,6 +238,48 @@ export const getReviewByProductIdAction = (productId) => {
             dispatch({
                 type: actionType.GET_REVIEW_BY_PRODUCT_ID,
                 payload: res,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
+export const getAllPaymentByUserIdAction = (userId) => {
+    return async (dispatch) => {
+        try {
+            let res = await services.getAllPaymentByUserIdService(userId);
+            dispatch({
+                type: actionType.GET_ALL_PAYMENT_BY_USER_ID,
+                payload: res,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
+export const getAllPaymentAction = () => {
+    return async (dispatch) => {
+        try {
+            let res = await services.getAllPaymentService();
+            console.log('====================================');
+            console.log('check res : ', res);
+            console.log('====================================');
+            dispatch({
+                type: actionType.GET_ALL_PAYMENT,
+                payload: res,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};
+
+export const cancelOrderAction = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({
+                type: actionType.CANCEL_ORDER,
+                payload: true,
             });
         } catch (error) {
             console.error(error);

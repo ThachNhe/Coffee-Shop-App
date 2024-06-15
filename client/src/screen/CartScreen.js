@@ -13,22 +13,26 @@ const CartScreen = ({ navigation, route }) => {
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
     useEffect(() => {
+        console.log('cart screen userInfo : ', userInfo);
         dispatch(actions.getCartListAction(userInfo.user?._id));
     }, [dispatch]);
+    useEffect(() => {
+        console.log('cart screen userInfo : ', userInfo);
+        dispatch(actions.getCartListAction(userInfo.user?._id));
+    }, [userInfo]);
     const CartList = useSelector((state) => state.CartList);
 
-    // console.log('check cartScreen : ', CartList);
+    console.log('check cartScreen : ', CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const tabBarHeight = useBottomTabBarHeight();
 
     const buttonPressHandler = () => {
         navigation.push('Payment', { amount: CartPrice });
     };
-    console.log('check cartlist[0] : ', CartList[0]);
     const incrementCartItemQuantityHandler = async (productId, quantity = 1, size, name) => {
         try {
             let data = { productId, quantity: 1, size };
-            console.log('check req  :', data);
+            // console.log('check req  :', data);
             let response = await services.AddCoffeeToCartService(userInfo.user?._id, data);
             if (response) {
                 dispatch(actions.getCartListAction(userInfo.user?._id));

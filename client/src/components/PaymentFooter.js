@@ -3,7 +3,16 @@ import React from 'react';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import { useFonts } from 'expo-font';
 
-const PaymentFooter = ({ price, buttonPressHandler, buttonTitle, amount, description, returnUrl, cancelUrl }) => {
+const PaymentFooter = ({
+    price,
+    buttonPressHandler,
+    buttonTitle,
+    amount,
+    description,
+    returnUrl,
+    cancelUrl,
+    products,
+}) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -16,6 +25,9 @@ const PaymentFooter = ({ price, buttonPressHandler, buttonTitle, amount, descrip
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
     // let amountTotal = amount * 100;
+    // console.log('====================================');
+    // console.log('check PPPPPPPP : ', products);
+    // console.log('====================================');
     return (
         <View style={styles.PriceFooter}>
             <View style={styles.PriceContainer}>
@@ -26,7 +38,7 @@ const PaymentFooter = ({ price, buttonPressHandler, buttonTitle, amount, descrip
             </View>
             <TouchableOpacity
                 style={styles.PayButton}
-                onPress={() => buttonPressHandler({ amount, description, returnUrl, cancelUrl })}
+                onPress={() => buttonPressHandler({ amount, description, returnUrl, cancelUrl, products })}
             >
                 <Text style={styles.ButtonText}>{buttonTitle}</Text>
             </TouchableOpacity>

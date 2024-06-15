@@ -36,6 +36,10 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         dispatch(actions.getCoffeeListAction());
     }, [dispatch]);
+    useEffect(() => {
+        dispatch(actions.getCartListAction(userInfo.user?._id));
+        dispatch(actions.getFavouriteListAction(userInfo.user?._id));
+    }, [userInfo]);
     const CoffeeList = useSelector((state) => state.CoffeeList);
     const userInfo = useSelector((state) => state.userInfo);
 

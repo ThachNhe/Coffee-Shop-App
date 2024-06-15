@@ -37,7 +37,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 <Text style={styles.tileAccount}>ACCOUNT</Text>
                 <View style={styles.personalInfoContent}>
                     <View style={styles.imageContainer}>
-                        <Image source={require('../assets/app_images/me.jpg')} style={styles.image} />
+                        <Image source={require('../assets/app_images/user.png')} style={styles.image} />
                     </View>
                     <View style={styles.personalInfo}>
                         <Text style={styles.fullNameText}>{userInfo.user?.name}</Text>

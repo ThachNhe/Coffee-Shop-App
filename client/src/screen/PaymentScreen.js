@@ -27,11 +27,6 @@ const PaymentList = [
         icon: require('../assets/app_images/applepay.png'),
         isIcon: false,
     },
-    // {
-    //     name: 'Amazon Pay',
-    //     icon: require('../assets/app_images/amazonpay.png'),
-    //     isIcon: false,
-    // },
 ];
 
 const PaymentScreen = ({ navigation, route }) => {
@@ -48,19 +43,63 @@ const PaymentScreen = ({ navigation, route }) => {
     });
     const [paymentMode, setPaymentMode] = useState('Credit Card');
     const [showAnimation, setShowAnimation] = useState(false);
+    const [addressList, setAddressList] = useState('');
+    const [paymentProduct, setPaymentProduct] = useState('');
+
+    const [defaultAddress, setDefaultAddress] = useState('');
     const CartList = useSelector((state) => state.CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const OrderDate = useSelector((state) => state.orderDateNow);
     const dispatch = useDispatch();
     const PaymentInfo = useSelector((state) => state.PaymentInfo);
+    const userInfo = useSelector((state) => state.userInfo);
+    const AddressListRedux = useSelector((state) => state.AddressList);
+
+    useEffect(() => {
+        dispatch(actions.getAddressListAction(userInfo.user?._id));
+        dispatch(actions.getCartListAction(userInfo.user?._id));
+    }, []);
+    useEffect(() => {
+        console.log('====================================');
+        console.log('Pay cart list : ', CartList[0]);
+        console.log('====================================');
+        if (CartList && CartList.length > 0) {
+            const transformedData = CartList.map((product) => {
+                return {
+                    product_id: product.product_id,
+                    size: product.size.size,
+                    quantity: product.quantity,
+                };
+            });
+
+            setPaymentProduct(transformedData);
+        }
+    }, [CartList]);
     useEffect(() => {
         if (PaymentInfo.qrCode) {
             navigation.navigate('QRCode');
         }
     }, [PaymentInfo]);
-    // console.log('payment info : ', PaymentInfo);
-    const buttonPressHandler = ({ amount, description, returnUrl, cancelUrl }) => {
-        dispatch(actions.createLinkPaymentAction({ amount, description, returnUrl, cancelUrl }));
+    useEffect(() => {
+        if (AddressListRedux) setAddressList(AddressListRedux.address);
+    }, [AddressListRedux]);
+    useEffect(() => {
+        if (addressList && addressList.length > 0) {
+            const defaultAddress = addressList?.find((address) => address.isDefault === true);
+            setDefaultAddress(defaultAddress);
+        }
+        // const defaultAddress = addressList?.find((address) => address.isDefault === true);
+        // setDefaultAddress(defaultAddress);
+    }, [addressList]);
+
+    const buttonPressHandler = (data) => {
+        console.log('====================================');
+        console.log('payment data  :', data);
+        console.log('====================================');
+        dispatch(actions.createLinkPaymentAction(data));
+        console.log('payment info : ', PaymentInfo);
+        console.log('====================================');
+        console.log('====================================');
         // if (PaymentInfo.qrCode) {
         //     navigation.navigate('QRCode');
         // }
@@ -104,9 +143,7 @@ const PaymentScreen = ({ navigation, route }) => {
                             <Text style={styles.userName}>Đinh Văn Thạch</Text>
                         </View>
                         <Text style={styles.userPhone}>Phone: 0846236478</Text>
-                        <Text style={styles.userAddress}>
-                            Kí túc xã Ngoại Ngữ, số 2 Phạm Văn Đồng, Dịch Vọng Hậu, Cầu Giấy, Hà Nội
-                        </Text>
+                        <Text style={styles.userAddress}>{defaultAddress ? defaultAddress.details : 'No address'}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.orderItemContainer}>
@@ -116,7 +153,7 @@ const PaymentScreen = ({ navigation, route }) => {
                     </View>
                     <View style={styles.FeeContainer}>
                         <Text style={styles.FeeTitle}>Shipping fee</Text>
-                        <Text style={styles.FeeValue}>$10</Text>
+                        <Text style={styles.FeeValue}>$5</Text>
                     </View>
                     <View style={styles.FeeContainer}>
                         <Text style={styles.FeeTitle}>Voucher discount</Text>
@@ -124,7 +161,7 @@ const PaymentScreen = ({ navigation, route }) => {
                     </View>
                     <View style={styles.FeeContainer}>
                         <Text style={styles.TotalFeeTitle}>Oder Total</Text>
-                        <Text style={styles.TotalFeeValue}>$1100</Text>
+                        <Text style={styles.TotalFeeValue}>${CartPrice + 5}</Text>
                     </View>
                 </View>
                 <View style={styles.PaymentOptionsContainer}>
@@ -205,10 +242,11 @@ const PaymentScreen = ({ navigation, route }) => {
 
             <PaymentFooter
                 buttonTitle={`Pay with ${paymentMode}`}
-                price={{ price: route.params.amount, currency: '$' }}
+                price={{ price: route.params.amount + 5, currency: '$' }}
                 buttonPressHandler={buttonPressHandler}
-                amount={CartPrice * 100}
-                description={'Test'}
+                amount={Math.floor(CartPrice * 100)}
+                products={paymentProduct}
+                description={'Payment for your order'}
                 returnUrl={'https://www.google.com.vn'}
                 cancelUrl={'https://www.facebook.com'}
             />

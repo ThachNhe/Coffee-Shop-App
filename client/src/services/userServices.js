@@ -41,13 +41,23 @@ const updateDefaultAddressService = (userId, addressId) => {
     return axios.put(`/users/${userId}/addresses/${addressId}/default`);
 };
 const addAddressService = (userId, addressBody) => {
-    return axios.post(`/users/${userId}/addresses`, { body: addressBody });
+    return axios.post(`/users/${userId}/addresses`, addressBody);
 };
 const getReviewByProductIdService = (productId) => {
     return axios.get(`/reviews/product/${productId}`);
 };
 const postReviewService = (productId, userId, body) => {
-    return axios.post(`/reviews/${productId}/users/${userId}/create`, { body: body });
+    return axios.post(`/reviews/${productId}/users/${userId}/create`, body);
+};
+const postNewProductService = (body) => {
+    return axios.post(`/products/createProduct`, body);
+};
+const getAllPaymentByUserIdService = (productId) => {
+    return axios.get(`/payment/users/${productId}`);
+};
+
+const getAllPaymentService = () => {
+    return axios.get(`/payment`);
 };
 export {
     getCoffeeList,
@@ -66,4 +76,7 @@ export {
     addAddressService,
     getReviewByProductIdService,
     postReviewService,
+    postNewProductService,
+    getAllPaymentByUserIdService,
+    getAllPaymentService,
 };

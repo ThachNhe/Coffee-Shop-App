@@ -3,7 +3,7 @@ import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BorderRadius, Colors, FontFamily, FontSize, Spacing } from '../theme/theme';
 import { useFonts } from 'expo-font';
-const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, prices, ItemPrice }) => {
+const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price, size, quantity, data }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
         poppins_medium: require('../assets/fonts/Poppins-Medium.ttf'),
@@ -18,6 +18,7 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
     const image = {
         uri: imagelink_square ? String(imagelink_square) : 'OKOK',
     };
+    console.log('check data : ', data);
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -35,47 +36,11 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                 </View>
                 <View>
                     <Text style={styles.CardCurrency}>
-                        <Text style={styles.CardPrice}> $10.0{ItemPrice}</Text>
+                        <Text style={styles.CardPrice}> ${quantity * price}</Text>
                     </Text>
                 </View>
             </View>
-            {/* {prices ? (
-                prices.map((data, index) => (
-                    <View key={index.toString()} style={styles.CardTableRow}>
-                        <View style={styles.CardTableRow}>
-                            <View style={styles.SizeBoxLeft}>
-                                <Text
-                                    style={[
-                                        styles.SizeText,
-                                        {
-                                            fontSize: type == 'Bean' ? FontSize.size_12 : FontSize.size_16,
-                                        },
-                                    ]}
-                                >
-                                    {data.size}
-                                </Text>
-                            </View>
-                            <View style={styles.PriceBoxRight}>
-                                <Text style={styles.PriceCurrency}>
-                                    {data.currency}
-                                    <Text style={styles.Price}> {data.price}</Text>
-                                </Text>
-                            </View>
-                        </View>
 
-                        <View style={styles.CardTableRow}>
-                            <Text style={styles.CardQuantityPriceText}>
-                                X <Text style={styles.Price}>{data.quantity}</Text>
-                            </Text>
-                            <Text style={styles.CardQuantityPriceText}>
-                                $ {(data.quantity * data.price).toFixed(2).toString()}
-                            </Text>
-                        </View>
-                    </View>
-                ))
-            ) : (
-                <></>
-            )} */}
             <View key={'index.toString()'} style={styles.CardTableRow}>
                 <View style={styles.CardTableRow}>
                     <View style={styles.SizeBoxLeft}>
@@ -83,28 +48,28 @@ const OrderItemCard = ({ type, name, imagelink_square, special_ingredient, price
                             style={[
                                 styles.SizeText,
                                 {
-                                    fontSize: FontSize.size_12,
+                                    fontSize: FontSize.size_16,
                                 },
                             ]}
                         >
-                            M
+                            {size}
                         </Text>
                     </View>
                     <View style={styles.PriceBoxRight}>
                         <Text style={styles.PriceCurrency}>
                             ${/* <Text style={styles.Price}> {data.price}</Text> */}
-                            <Text style={styles.Price}> 5</Text>
+                            <Text style={styles.Price}> {price}</Text>
                         </Text>
                     </View>
                 </View>
 
                 <View style={styles.CardTableRow}>
                     <Text style={styles.CardQuantityPriceText}>
-                        {/* X <Text style={styles.Price}>{data.quantity}</Text> */}X{' '}
-                        <Text style={styles.Price}>10</Text>
+                        <Text style={styles.Price}>X{quantity}</Text> {/* <Text style={styles.Price}>10</Text> */}
                     </Text>
                     <Text style={styles.CardQuantityPriceText}>
-                        {/* $ {(data.quantity * data.price).toFixed(2).toString()} */}$ {(10).toFixed(2).toString()}
+                        {/* $ {(data.quantity * data.price).toFixed(2).toString()} */}${' '}
+                        {(quantity * price).toFixed(2).toString()}
                     </Text>
                 </View>
             </View>
