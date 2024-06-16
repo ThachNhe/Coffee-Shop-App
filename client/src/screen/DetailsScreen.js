@@ -88,7 +88,7 @@ const DetailsScreen = ({ navigation, route }) => {
                     special_ingredient={itemOfIndex.special_ingredient}
                     ingredients={itemOfIndex.ingredients}
                     average_rating={itemOfIndex.average_rating}
-                    ratings_count={itemOfIndex.ratings_count}
+                    ratings_count={Math.floor(itemOfIndex.ratings_count)}
                     roasted={itemOfIndex.roasted}
                     BackHandler={backHandler}
                     productId={itemOfIndex._id}

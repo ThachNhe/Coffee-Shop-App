@@ -26,7 +26,7 @@ const AdminTabNavigator = () => {
         >
             <Tab.Screen
                 name="AdminHome"
-                component={AdminHomeScreen}
+                component={HomeScreen}
                 options={{
                     tabBarIcon: ({ focused, color, size }) => (
                         <CustomIcon

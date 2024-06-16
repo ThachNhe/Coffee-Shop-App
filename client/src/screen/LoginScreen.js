@@ -15,7 +15,7 @@ import {
 import { Colors, Spacing } from '../theme/theme';
 import * as actions from '../redux/actions/index';
 import { useSelector, useDispatch } from 'react-redux';
-const logo = require('../assets/app_images/logo.png');
+const logo = require('../assets/app_images/logo.jpg');
 const facebook = require('../assets/app_images/facebook.png');
 const linkedin = require('../assets/app_images/google.png');
 
@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     image: {
         height: 160,
         width: 170,
+        borderRadius: 100,
     },
     title: {
         fontSize: 30,

@@ -88,6 +88,10 @@ function rootReducer(state = initialState, action) {
         case actionTypes.CANCEL_ORDER:
             state.isCancelOrder = action.payload;
             return { ...state };
+        case actionTypes.NOT_CANCEL_ORDER:
+            state.isCancelOrder = action.payload;
+            return { ...state };
+
         default:
             return state;
     }

@@ -21,6 +21,7 @@ const CoffeeCard = ({
     price,
     buttonPressHandler,
     role,
+    cardType,
 }) => {
     // console.log('check props proID  :', productId);
 
@@ -49,12 +50,24 @@ const CoffeeCard = ({
             style={styles.cardLinearGradientContainer}
             colors={[Colors.primaryGreyHex, Colors.primaryBlackHex]}
         >
-            <ImageBackground source={image} style={styles.cardImageBG} resizeMode="cover">
-                <View style={styles.cardRatingContainer}>
-                    <CustomIcon name="star" color={Colors.primaryOrangeHex} size={FontSize.size_16} />
-                    <Text style={styles.cardRatingText}>{average_rating}</Text>
-                </View>
-            </ImageBackground>
+            {cardType === 'BEAN' && (
+                <ImageBackground source={imagelink_square} style={styles.cardImageBG} resizeMode="cover">
+                    <View style={styles.cardRatingContainer}>
+                        <CustomIcon name="star" color={Colors.primaryOrangeHex} size={FontSize.size_16} />
+                        <Text style={styles.cardRatingText}>{average_rating}</Text>
+                    </View>
+                </ImageBackground>
+            )}
+
+            {cardType === 'COFFEE' && (
+                <ImageBackground source={image} style={styles.cardImageBG} resizeMode="cover">
+                    <View style={styles.cardRatingContainer}>
+                        <CustomIcon name="star" color={Colors.primaryOrangeHex} size={FontSize.size_16} />
+                        <Text style={styles.cardRatingText}>{average_rating}</Text>
+                    </View>
+                </ImageBackground>
+            )}
+
             <Text style={styles.cardTitle}>{name}</Text>
             <Text style={styles.cardSubTitle}>{special_ingredient}</Text>
             <View style={styles.cardFooterRow}>

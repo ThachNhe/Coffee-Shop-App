@@ -241,6 +241,7 @@ const HomeScreen = ({ navigation }) => {
                                 average_rating={item.average_rating}
                                 price={item.prices[1]}
                                 buttonPressHandler={CoffeeCardAddToCart}
+                                cardType={'COFFEE'}
                             />
                         </TouchableOpacity>
                     )}
@@ -274,6 +275,7 @@ const HomeScreen = ({ navigation }) => {
                                 special_ingredient={item.special_ingredient}
                                 average_rating={item.average_rating}
                                 price={{ price: 6 }}
+                                cardType={'BEAN'}
                                 // buttonPressHandler={CoffeCardAddToCart}
                             />
                         </TouchableOpacity>

@@ -5,7 +5,8 @@ import PopUpAnimation from '../components/PopUpAnimation';
 import OrderHistoryCard from '../components/OrderHistoryCard';
 import GradientBGIcon from '../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
-import { useSelector } from 'react-redux';
+import * as actions from '../redux/actions/index';
+import { useSelector, useDispatch } from 'react-redux';
 const OrderHistoryScreen = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -18,15 +19,22 @@ const OrderHistoryScreen = ({ navigation }) => {
         poppins_regular: require('../assets/fonts/Poppins-Regular.ttf'),
         poppins_thin: require('../assets/fonts/Poppins-Thin.ttf'),
     });
-    // const OrderHistory = [];
-    // const OrderHistoryList = useStore((state) => state.OrderHistoryList);
+    const dispatch = useDispatch();
     const CartList = useSelector((state) => state.CartList);
     const [CarlistPropPendingOrder, setCarlistPropPendingOrder] = useState(CartList);
     const CartPrice = useSelector((state) => state.CartPrice);
     const isCancel = useSelector((state) => state.isCancelOrder);
     useEffect(() => {
+        dispatch(actions.notCancelOrderAction());
+    }, []);
+    useEffect(() => {
         if (isCancel) {
+            console.log('====================================');
+            console.log('Cancel Order', isCancel);
+            console.log('====================================');
             setCarlistPropPendingOrder([]);
+        } else {
+            setCarlistPropPendingOrder(CartList);
         }
     }, [isCancel]);
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
@@ -40,7 +48,7 @@ const OrderHistoryScreen = ({ navigation }) => {
     };
     return (
         <View style={styles.ScreenContainer}>
-            {/* {showAnimation ? (
+            {/* {isCancel ? (
                 <PopUpAnimation style={styles.LottieAnimation} source={require('../lottie/download.json')} />
             ) : (
                 <></>
@@ -64,14 +72,16 @@ const OrderHistoryScreen = ({ navigation }) => {
                             <Text style={styles.HeaderText}>Orders</Text>
                             <View style={styles.EmptyView} />
                         </View>
-                        <OrderHistoryCard
-                            key={1}
-                            navigationHandler={navigationHandler}
-                            CartList={CarlistPropPendingOrder}
-                            CartListPrice={CartPrice}
-                            OrderDate={OrderDate}
-                            type={'ORDER_SCREEN'}
-                        />
+                        {!isCancel && (
+                            <OrderHistoryCard
+                                key={1}
+                                navigationHandler={navigationHandler}
+                                CartList={CarlistPropPendingOrder}
+                                CartListPrice={CartPrice}
+                                OrderDate={OrderDate}
+                                type={'ORDER_SCREEN'}
+                            />
+                        )}
                     </View>
                 </View>
             </ScrollView>

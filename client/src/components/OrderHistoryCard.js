@@ -25,6 +25,7 @@ const OrderHistoryCard = ({
     onReviewPressReviewModal,
     dataDrop,
     SizeType,
+    paymentId,
 }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../assets/fonts/Poppins-SemiBold.ttf'),
@@ -40,7 +41,7 @@ const OrderHistoryCard = ({
     const [isModalVisible, setModalVisible] = useState(false);
     const [reviewProduct, setReviewProduct] = useState();
     const userInfo = useSelector((state) => state.userInfo);
-
+    const dispatch = useDispatch();
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -81,10 +82,45 @@ const OrderHistoryCard = ({
         }
     };
 
-    const selectProductType = (selectedItem, index) => {
+    const selectProductType = async (selectedItem, index) => {
         console.log('====================================');
         console.log('selectedItem : ', selectedItem);
+
         console.log('====================================');
+        try {
+            if (selectedItem && selectedItem.title === 'Delivering' && paymentId) {
+                console.log('ÓKOKO');
+                let res = await services.setPaymentStatusDeliveryService(paymentId);
+                console.log('check res delevering : ', res);
+                if (res && res.error === 0) {
+                    ToastAndroid.showWithGravity(`Order is delivering!`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+                    dispatch(actions.getAllPaymentAction());
+                } else {
+                    ToastAndroid.showWithGravity(
+                        `Update status isn't success!`,
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER,
+                    );
+                }
+            }
+            if (selectedItem && selectedItem.title === 'Completed' && paymentId) {
+                let res = await services.setPaymentStatusCompletedService(paymentId);
+                console.log('check res completed : ', res);
+
+                if (res && res.error === 0) {
+                    ToastAndroid.showWithGravity(`Order is completed!`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+                    dispatch(actions.getAllPaymentAction());
+                } else {
+                    ToastAndroid.showWithGravity(
+                        `Update status isn't success!`,
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER,
+                    );
+                }
+            }
+        } catch (error) {
+            console.log('update order status : ', error);
+        }
     };
     return (
         <View style={styles.CardContainer}>
@@ -121,7 +157,7 @@ const OrderHistoryCard = ({
                                     special_ingredient={data.special_ingredient}
                                     quantity={data.quantity}
                                     size={data.size[0]?.size}
-                                    price={data.size.price}
+                                    price={data.size[0]?.price}
                                     // ItemPrice={data.ItemPrice}
                                 />
                             ) : (

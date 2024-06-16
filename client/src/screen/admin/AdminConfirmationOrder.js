@@ -6,6 +6,10 @@ import GradientBGIcon from '../../components/GradientBGIcon';
 import { useFonts } from 'expo-font';
 import * as actions from '../../redux/actions/index';
 import { useSelector, useDispatch } from 'react-redux';
+// const data = [
+//     { icon: 'truck', title: 'Delivering' },
+//     { icon: 'check-circle', title: 'Completed' },
+// ];
 const AdminConfirmationOrder = ({ navigation }) => {
     const [fontsLoad] = useFonts({
         poppins_semibold: require('../../assets/fonts/Poppins-SemiBold.ttf'),
@@ -37,7 +41,7 @@ const AdminConfirmationOrder = ({ navigation }) => {
     /////
     useEffect(() => {
         if (AllPaymentList && AllPaymentList.length > 0) {
-            const PendingPaymentFilter = AllPaymentList.filter((payment) => payment.status === 'completed');
+            const PendingPaymentFilter = AllPaymentList.filter((payment) => payment.status === 'pending');
             setPendingPayment(PendingPaymentFilter);
             console.log('check PendingPaymentFilter : ', PendingPaymentFilter);
         }
@@ -49,33 +53,19 @@ const AdminConfirmationOrder = ({ navigation }) => {
     console.log('check PendingPayment : ', PendingPayment);
     const [isModalVisible, setModalVisible] = useState(false);
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-
     const CartList = useSelector((state) => state.CartList);
-    const CartPrice = useSelector((state) => state.CartPrice);
+    // const CartPrice = useSelector((state) => state.CartPrice);
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
     // console.log('====================================');
     // console.log('check CartList : ', CartList);
     // console.log('====================================');
-    const newCoffeeTypes = CartList.map((coffeeType) => ({
-        icon: 'emoticon-happy-outline',
-        title: coffeeType.name,
-    }));
+
     const navigationHandler = ({ index, id, type }) => {
         navigation.push('Details', {
             index,
             id,
             type,
         });
-    };
-
-    const buttonPressHandler = () => {
-        setShowAnimation(true);
-        setTimeout(() => {
-            setShowAnimation(false);
-        }, 2000);
     };
 
     return (
@@ -98,15 +88,22 @@ const AdminConfirmationOrder = ({ navigation }) => {
                             <Text style={styles.HeaderText}>Confirmation</Text>
                             <View style={styles.EmptyView} />
                         </View>
-                        <OrderHistoryCard
-                            key={1}
-                            navigationHandler={navigationHandler}
-                            CartList={CartList}
-                            CartListPrice={CartPrice}
-                            OrderDate={OrderDate}
-                            type={'CONFIR_SCREEN'}
-                            onReviewPressReviewModal={toggleModal} // Truyền hàm toggleModal như một prop
-                        />
+                        {PendingPayment &&
+                            PendingPayment.length > 0 &&
+                            PendingPayment.map((order, index) => {
+                                return (
+                                    <OrderHistoryCard
+                                        key={index}
+                                        navigationHandler={navigationHandler}
+                                        CartList={order.products}
+                                        CartListPrice={order.total_price}
+                                        OrderDate={OrderDate}
+                                        type={'CONFIR_SCREEN'}
+                                        SizeType={1}
+                                        paymentId={order._id}
+                                    />
+                                );
+                            })}
                     </View>
                 </View>
             </ScrollView>

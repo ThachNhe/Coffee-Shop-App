@@ -56,6 +56,9 @@ const ItemPayment = ({ navigationHandler, CartList, CartListPrice, OrderDate, ty
                                 { price: 5, size: 'M', quantity: 1, currency: '$' },
                                 { price: 2, size: 'S', quantity: 3, currency: '$' },
                             ]}
+                            price={data.size.price}
+                            quantity={data.quantity}
+                            size={data.size.size}
                             ItemPrice={data.ItemPrice}
                         />
                     </TouchableOpacity>

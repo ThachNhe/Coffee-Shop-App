@@ -22,9 +22,7 @@ const CompletedOrderScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
     const [showAnimation, setShowAnimation] = useState(false);
-    const CartList = useSelector((state) => state.CartList);
     const userInfo = useSelector((state) => state.userInfo);
-    const CartPrice = useSelector((state) => state.CartPrice);
 
     const OrderDate = new Date().toDateString() + ' ' + new Date().toLocaleTimeString();
 

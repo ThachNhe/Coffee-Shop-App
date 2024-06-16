@@ -286,3 +286,16 @@ export const cancelOrderAction = () => {
         }
     };
 };
+
+export const notCancelOrderAction = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({
+                type: actionType.NOT_CANCEL_ORDER,
+                payload: false,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+};

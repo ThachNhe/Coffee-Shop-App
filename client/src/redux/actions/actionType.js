@@ -20,5 +20,6 @@ const actionTypes = Object.freeze({
     GET_ALL_PAYMENT_BY_USER_ID: 'GET_ALL_PAYMENT_BY_USER_ID',
     GET_ALL_PAYMENT: 'GET_ALL_PAYMENT',
     CANCEL_ORDER: 'CANCEL_ORDER',
+    NOT_CANCEL_ORDER: 'NOT_CANCEL_ORDER',
 });
 export default actionTypes;

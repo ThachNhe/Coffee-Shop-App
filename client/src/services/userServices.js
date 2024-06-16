@@ -59,6 +59,12 @@ const getAllPaymentByUserIdService = (productId) => {
 const getAllPaymentService = () => {
     return axios.get(`/payment`);
 };
+const setPaymentStatusDeliveryService = (paymentId) => {
+    return axios.put(`/payment/${paymentId}/processing`);
+};
+const setPaymentStatusCompletedService = (paymentId) => {
+    return axios.put(`/payment/${paymentId}/completed`);
+};
 export {
     getCoffeeList,
     AddCoffeeToCartService,
@@ -79,4 +85,6 @@ export {
     postNewProductService,
     getAllPaymentByUserIdService,
     getAllPaymentService,
+    setPaymentStatusDeliveryService,
+    setPaymentStatusCompletedService,
 };
