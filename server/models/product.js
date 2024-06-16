@@ -10,12 +10,9 @@ const ProductSchema = new Schema({
     },
 
     imagelink_square: {
-        type: [String],
-    },
-    imagelink_portrait: [String],
-    type: {
         type: String,
     },
+    imagelink_portrait: String,
     ingredients: {
         type: [String],
     },
@@ -27,8 +24,7 @@ const ProductSchema = new Schema({
             type: String,
             default: "$",
         },
-    },
-    ],
+    }],
     roasted: String,
 });
 

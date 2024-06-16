@@ -7,9 +7,9 @@ const CartSchema = new Schema({
         required: true,
     },
     products: [{
-        product_id:mongoose.Schema.Types.ObjectId,
-        quantity:Number,
-        size:String,
+        product_id: mongoose.Schema.Types.ObjectId,
+        quantity: Number,
+        size: String,
     }],
 });
 

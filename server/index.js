@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const User = require("./models/user");
+
 const express = require("express");
 const MongoStore = require("connect-mongo");
 const routesInit = require("./routes/index_route");
@@ -38,9 +40,16 @@ app.get("/auth/google", passport.authenticate("google", {
     scope: ["profile", "email"],
 }));
 app.get("/auth/google/callback", passport.authenticate('google', {failureRedirect: "/",}),
-    (req, res) => {
+    async (req, res) => {
         req.session.User = req.session.passport.user;
-        res.redirect("/");
+        console.log(req.session);
+        const user = await User.findOne({
+            _id: req.session.User,
+        })
+        return res.status(200).json({
+            errorCode: 0,
+            user: user,
+        })
     });
 
 app.get("/", (req, res) => {

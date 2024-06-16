@@ -28,6 +28,7 @@ class ProductController {
                 roasted: roasted,
             });
             return res.status(200).json({
+                errorCode: 0,
                 msg: "OK",
             })
         } catch (e) {
@@ -43,37 +44,66 @@ class ProductController {
         });
         if (!product) {
             return res.status(404).json({
-                message: "Product not found",
+                errorCode: 1,
+                msg: "Product not found",
             });
         }
         return res.status(200).json({
             product,
-            message: "Query successfully",
+            errorCode: 0,
         })
     }
 
     //GET /products
     async getAllProducts(req, res) {
-        return res.status(200).json(await queryAllProducts());
+        let products = await queryAllProducts();
+        products = products.map((obj, index) => {
+            return {
+                ...obj,
+                index: index + 1,
+            }
+        })
+        return res.status(200).json({
+            errorCode: 0,
+            products
+        });
     }
 
     //GET /products/coffee
     async getAllCoffees(req, res) {
         const products = await queryAllProducts();
-        const coffees = products.filter((product) => product.type === "coffee" || product.type === "Coffee");
-        return res.status(200).json(coffees);
+        let coffees = products.filter((product) => product.type === "coffee" || product.type === "Coffee");
+        coffees = coffees.map((obj, index) => {
+            return {
+                ...obj,
+                index: index + 1,
+            }
+        })
+        return res.status(200).json({
+            errorCode: 0,
+            coffees
+        });
     }
 
     //GET /products/bean
-        async getAllBeans(req, res) {
-            const products = await queryAllProducts();
-            const beans = products.filter((product) => product.type === "bean" || product.type === "Bean");
-            return res.status(200).json(beans);
-        }
+    async getAllBeans(req, res) {
+        const products = await queryAllProducts();
+        let beans = products.filter((product) => product.type === "bean" || product.type === "Bean");
+        beans = beans.map((obj, index) => {
+            return {
+                ...obj,
+                index: index + 1,
+            }
+        })
+        return res.status(200).json({
+            errorCode: 0,
+            beans
+        });
+    }
 }
 
 function queryAllProducts() {
-    return Product.aggregate([
+    const products = Product.aggregate([
         {
             $lookup: {
                 from: "reviews",
@@ -98,13 +128,15 @@ function queryAllProducts() {
                     $size: '$reviews',
                 },
                 roasted: 1,
-                image_square: 1,
-                image_portrait: 1,
+                imagelink_square: 1,
+                imagelink_portrait: 1,
                 ingredients: 1,
+                prices: 1,
                 special_ingredient: 1,
             }
         }
     ]);
+    return products;
 }
 
 module.exports = new ProductController();

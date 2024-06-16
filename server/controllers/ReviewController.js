@@ -1,13 +1,13 @@
 const Review = require("../models/review");
 const Product = require("../models/product");
-const User=require("../models/user");
+const User = require("../models/user");
 
 class ReviewController {
 
-    //POST /reviews/:productId/create
+    //POST /reviews/:productId/users/:userId/create
     async createReview(req, res) {
         const productId = req.params.productId;
-        const userId = req.session._id;
+        const userId = req.params.userId;
         const rating = req.body.rating;
         const comment = req.body.comment;
         try {
@@ -17,7 +17,10 @@ class ReviewController {
                 rating: rating,
                 comment: comment,
             })
-            return res.status(200).json({msg: "OK"});
+            return res.status(200).json({
+                errorCode: 0,
+                msg: "OK"
+            });
         } catch (e) {
             console.log(e);
         }
@@ -34,8 +37,11 @@ class ReviewController {
         }
         const reviews = await Review.find({
             product_id: productId,
+        }).populate("user_id");
+        return res.status(200).json({
+            errorCode: 0,
+            reviews
         });
-        return res.status(200).json(reviews);
     }
 
     //GET /reviews/user/:userId
@@ -44,13 +50,17 @@ class ReviewController {
         const user = await User.findOne({_id: userId});
         if (!user) {
             return res.status(404).json({
+                errorCode: 1,
                 msg: "User not found",
             });
         }
         const reviews = await Review.find({
             user_id: userId,
         });
-        return res.status(200).json(reviews);
+        return res.status(200).json({
+            errorCode: 0,
+            reviews
+        });
     }
 }
 
